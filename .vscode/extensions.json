@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "formulahendry.auto-rename-tag",
+    "heybourn.headwind",
+    "christian-kohler.path-intellisense",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "vue.volar",
+  ],
+  "unwantedRecommendations": ["octref.vetur", "sdras.vue-vscode-snippets"]
+}

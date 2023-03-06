@@ -1,0 +1,23 @@
+<script setup lang="ts">
+import { useRoute } from 'vue-router/auto';
+import { exerciseLinks } from '../router'
+
+const route = useRoute('/[...pathMatch]')
+</script>
+
+<template>
+  <p>Error 404: Page Not Found</p>
+
+  <p v-if="route.params.pathMatch">
+    We don't have
+    <code>{{ $route.path }}</code
+    >. Maybe one of these:
+  </p>
+  <p v-else>Try one of these:</p>
+
+  <ul>
+    <li v-for="link in exerciseLinks" :key="link.name">
+      <router-link :to="link">{{ $router.resolve(link).path }}</router-link>
+    </li>
+  </ul>
+</template>

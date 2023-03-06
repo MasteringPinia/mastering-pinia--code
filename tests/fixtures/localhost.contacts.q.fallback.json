@@ -1,0 +1,14 @@
+[
+  {
+    "id": 2,
+    "firstName": "Jason",
+    "lastName": "The Fallback",
+    "email": "ghumbey1@yelp.com",
+    "avatar": "https://robohash.org/involuptatemomnis.png?size=250x250&set=set1",
+    "job": "VP Sales",
+    "bio": "Mandatory bifurcated conglomeration",
+    "pronouns": "they/them",
+    "registeredAt": "2021-05-21",
+    "isFavorite": false
+  }
+]

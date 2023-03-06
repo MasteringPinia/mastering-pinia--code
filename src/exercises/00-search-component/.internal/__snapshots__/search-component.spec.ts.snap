@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Search Component > show results when using the form > contact i0 1`] = `"Jason Sales MasterVP Sales"`;
+
+exports[`Search Component > show results when using the form > contact i1 1`] = `"Rosina CastanoSales Representative"`;
+
+exports[`Search Component > show results when using the form > contact i2 1`] = `"Karilynn ShropsheirSales Associate"`;
+
+exports[`Search Component > show results when using the form > contact i3 1`] = `"Sharla HollowsDirector of Sales"`;
+
+exports[`Search Component > show results when using the form > contact i4 1`] = `"Andeee LibbisSales Associate"`;
+
+exports[`Search Component > show results when using the form > contact i5 1`] = `"Sondra ScotchmurDirector of Sales"`;
+
+exports[`Search Component > show results when using the form > contact i6 1`] = `"Kellia JayeVP Sales"`;
+
+exports[`Search Component > show results when using the form > contact i7 1`] = `"Rosetta MagovernSales Associate"`;
+
+exports[`Search Component > show results when using the form > contact i8 1`] = `"Torr RabierSales Associate"`;
+
+exports[`Search Component > show results when using the form > contact i9 1`] = `"Barbra WileSales Representative"`;
+
+exports[`Search Component > show results when using the form > contact i10 1`] = `"Tucky KirkmanSenior Sales Associate"`;
+
+exports[`Search Component > show results when using the form > contact i11 1`] = `"Emma DumingoSenior Sales Associate"`;

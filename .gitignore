@@ -1,0 +1,11 @@
+.DS_Store
+node_modules
+coverage
+build
+dist
+dist-ssr
+.idea/
+.eslintcache
+*.local
+.env
+pnpm-debug.log

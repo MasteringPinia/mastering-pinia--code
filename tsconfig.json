@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "lib": ["esnext", "dom"],
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "types": ["vite/client"],
+    "paths": {
+      "@tests/*": ["tests/*"],
+      // change to exercises in setup
+      "@ex/*": ["src/exercises/*"],
+      "@/*": ["src/*"],
+      "~/*": ["src/*"]
+    }
+  },
+  "include": [
+    "*.ts",
+    "./typed-router.d.ts",
+    "src/*.ts",
+    "tests/**/*.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/.internal/**/*.ts",
+    "src/**/.internal/**/*.vue"
+  ]
+}
