@@ -1,5 +1,4 @@
-import { bind } from 'lodash-es'
-import type { DirectiveBinding, VNode, Directive, DirectiveHook, ObjectDirective } from 'vue'
+import type { DirectiveHook, ObjectDirective } from 'vue'
 const CLICK_AWAY_KEY = Symbol('click-away')
 
 interface HTMLElementClickAway extends HTMLElement {
