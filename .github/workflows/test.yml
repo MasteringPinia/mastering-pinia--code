@@ -1,0 +1,31 @@
+name: test
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - 'src/**/instructions.md'
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+      - 'src/**/instructions.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: 'pnpm'
+
+      - run: pnpm install
+      - run: pnpm run lint
+      - run: pnpm run internal:test:types
+      - run: pnpm run internal:test
+      - run: pnpm run build
