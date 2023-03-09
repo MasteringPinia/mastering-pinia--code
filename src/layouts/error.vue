@@ -7,7 +7,7 @@ import AppHeader from '@/components/.internal/AppHeader.vue'
   <AppHeader />
 
   <main class="grow">
-    <h2 v-if="$route.name === 'NotFound'">Hmm 🤔</h2>
+    <h2 v-if="$route.name === '/[...pathMatch]'">Hmm 🤔</h2>
 
     <template v-else>
       <h2>Oops...</h2>

@@ -8,6 +8,7 @@ import TestRunner from './.internal/TestRunner.vue'
       <component :is="$route.meta.resolvedLayout"></component>
     </div>
   </transition>
+
   <TestRunner />
 </template>
 

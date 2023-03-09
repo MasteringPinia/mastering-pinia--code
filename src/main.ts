@@ -11,8 +11,8 @@ const app = createApp(App)
 
 // install all possible modules from exercises
 const exModules = import.meta.glob<false, string, ExerciseModule>('./exercises/*/.internal/index.ts')
-Promise.all(Object.keys(exModules).map(path => exModules[path]())).then(modules =>
-  modules.map(m => m?.install?.({ pinia, router, app })),
-)
-
-app.use(pinia).use(router).mount('#app')
+Promise.all(Object.keys(exModules).map(path => exModules[path]()))
+  .then(modules => modules.map(m => m?.install?.({ pinia, router, app })))
+  .finally(() => {
+    app.use(pinia).use(router).mount('#app')
+  })

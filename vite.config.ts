@@ -10,7 +10,7 @@ export default defineConfig({
   plugins: [
     VueRouter({
       logs: false,
-      extensions: ['vue', 'md'],
+      extensions: ['.vue', '.md'],
       routesFolder: [
         {
           src: './src/exercises',
