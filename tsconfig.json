@@ -7,17 +7,27 @@
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
-    "lib": ["esnext", "dom"],
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "types": ["vite/client"],
+    "types": [
+      "vite/client"
+    ],
     "paths": {
-      "@tests/*": ["tests/*"],
+      "@tests/*": [
+        "tests/*"
+      ],
       // change to exercises in setup
-      "@ex/*": ["src/exercises/*"],
-      "@/*": ["src/*"],
-      "~/*": ["src/*"]
+      "@ex/*": [
+        "src/exercises/*"
+      ],
+      "@/*": [
+        "src/*"
+      ],
     }
   },
   "include": [

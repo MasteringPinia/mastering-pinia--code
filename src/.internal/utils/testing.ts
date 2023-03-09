@@ -3,13 +3,14 @@ import { type WebSocketStatus } from '@vueuse/core'
 import { ResolvedConfig, TaskState, File as TestFile, Test, Task, Suite, UserConsoleLog } from 'vitest'
 import { computed, onScopeDispose, reactive, Ref, ref, shallowRef, watch } from 'vue'
 import { useRoute } from 'vue-router/auto'
-import { $settings, LogMessageType, showMessage } from '~/utils'
+import { LogMessageType, showMessage } from './logging'
+import { $settings } from './settings'
 
 // NOTE: not exported by vitest
 export type TaskCustom = Exclude<Task, Test | TestFile | Suite>
 export type TestResult = Test | TaskCustom
 
-export const PORT = '51204'
+export const PORT = '51205'
 export const HOST = [location.hostname, PORT].filter(Boolean).join(':')
 export const ENTRY_URL = `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${HOST}/__vitest_api__`
 const RETRIES = 20

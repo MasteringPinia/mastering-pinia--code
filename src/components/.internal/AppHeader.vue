@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router/auto'
-import { openFile } from '@/api/.internal/files'
+import { openFile } from '@/.internal/utils/files'
 import InstructionsModal from './InstructionsModal.vue'
 
 const route = useRoute()

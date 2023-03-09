@@ -36,29 +36,9 @@ import type {
 declare module 'vue-router/auto/routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
-    '/_internal-test/': RouteRecordInfo<'/_internal-test/', '/_internal-test', Record<never, never>, Record<never, never>>,
+    '/__vitest__': RouteRecordInfo<'/__vitest__', '/__vitest__', Record<never, never>, Record<never, never>>,
     '/_template/': RouteRecordInfo<'/_template/', '/_template', Record<never, never>, Record<never, never>>,
     '/[...pathMatch]': RouteRecordInfo<'/[...pathMatch]', '/:pathMatch(.*)', { pathMatch: ParamValue<true> }, { pathMatch: ParamValue<false> }>,
-    '/00-components-pagination/': RouteRecordInfo<'/00-components-pagination/', '/00-components-pagination', Record<never, never>, Record<never, never>>,
-    '/00-composable-async-data/': RouteRecordInfo<'/00-composable-async-data/', '/00-composable-async-data', Record<never, never>, Record<never, never>>,
-    '/00-composable-getSelection/': RouteRecordInfo<'/00-composable-getSelection/', '/00-composable-getSelection', Record<never, never>, Record<never, never>>,
-    '/00-composables-local-storage/': RouteRecordInfo<'/00-composables-local-storage/', '/00-composables-local-storage', Record<never, never>, Record<never, never>>,
-    '/00-custom-ref/': RouteRecordInfo<'/00-custom-ref/', '/00-custom-ref', Record<never, never>, Record<never, never>>,
-    '/00-implementing-our-own-defineStore/': RouteRecordInfo<'/00-implementing-our-own-defineStore/', '/00-implementing-our-own-defineStore', Record<never, never>, Record<never, never>>,
-    '/00-perf-shallow-ref/': RouteRecordInfo<'/00-perf-shallow-ref/', '/00-perf-shallow-ref', Record<never, never>, Record<never, never>>,
-    '/00-pinia-error-handling/': RouteRecordInfo<'/00-pinia-error-handling/', '/00-pinia-error-handling', Record<never, never>, Record<never, never>>,
-    '/00-pinia-getting-started/': RouteRecordInfo<'/00-pinia-getting-started/', '/00-pinia-getting-started', Record<never, never>, Record<never, never>>,
-    '/00-pinia-plugin-persist-plugin/': RouteRecordInfo<'/00-pinia-plugin-persist-plugin/', '/00-pinia-plugin-persist-plugin', Record<never, never>, Record<never, never>>,
-    '/00-pinia-setup-store/': RouteRecordInfo<'/00-pinia-setup-store/', '/00-pinia-setup-store', Record<never, never>, Record<never, never>>,
-    '/00-pinia-using-composables/': RouteRecordInfo<'/00-pinia-using-composables/', '/00-pinia-using-composables', Record<never, never>, Record<never, never>>,
-    '/00-pinia-watch-option/': RouteRecordInfo<'/00-pinia-watch-option/', '/00-pinia-watch-option', Record<never, never>, Record<never, never>>,
-    '/00-provide-inject-tab-system/': RouteRecordInfo<'/00-provide-inject-tab-system/', '/00-provide-inject-tab-system', Record<never, never>, Record<never, never>>,
-    '/00-routing-meta-title/': RouteRecordInfo<'/00-routing-meta-title/', '/00-routing-meta-title', Record<never, never>, Record<never, never>>,
-    '/00-search-component/': RouteRecordInfo<'/00-search-component/', '/00-search-component', Record<never, never>, Record<never, never>>,
-    '/00-settings/': RouteRecordInfo<'/00-settings/', '/00-settings', Record<never, never>, Record<never, never>>,
-    '/00-testing-components/': RouteRecordInfo<'/00-testing-components/', '/00-testing-components', Record<never, never>, Record<never, never>>,
-    '/00-todo-list/': RouteRecordInfo<'/00-todo-list/', '/00-todo-list', Record<never, never>, Record<never, never>>,
-    '/0x-routing-meta-data-fetching/': RouteRecordInfo<'/0x-routing-meta-data-fetching/', '/0x-routing-meta-data-fetching', Record<never, never>, Record<never, never>>,
   }
 }
 

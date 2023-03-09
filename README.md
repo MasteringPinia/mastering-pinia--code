@@ -25,7 +25,7 @@ pnpm i
 
 ## Working on the Exercises
 
-Start the project with `nr dev` or `pnpm run dev` and visit http://localhost:5173. Note 3 servers will be running in
+Start the project with `nr dev` or `pnpm run dev` and visit <http://localhost:5173>. Note 3 servers will be running in
 parallel and require ports 5173, 7777, and 5555. Make sure to not have any application running on those ports.
 
 ### Structure
@@ -37,4 +37,4 @@ parallel and require ports 5173, 7777, and 5555. Make sure to not have any appli
 
 ### Verifying your solution
 
-If you have failing tests, you can visit http://localhost:5555 to get more information about the failing tests.
+If you have failing tests, you can visit [http://localhost:51205/\_\_vitest\_\_/](http://localhost:51205/__vitest__/) to get more information about the failing tests.

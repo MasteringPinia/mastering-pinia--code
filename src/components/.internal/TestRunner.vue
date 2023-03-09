@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getStatusIcon, useTestStatus } from '~/api/.internal/testing'
+import { getStatusIcon, useTestStatus } from '@/.internal/utils/testing'
 import { ref } from 'vue'
 
 const {
@@ -17,6 +17,12 @@ const isEnlarged = ref(false)
 
 function enlarge() {
   isEnlarged.value = !isEnlarged.value
+  if (isEnlarged.value) {
+    const details = Array.from(document.querySelectorAll<HTMLDetailsElement>('#test-runner details'))
+    for (const detailEl of details) {
+      detailEl.open = true
+    }
+  }
 }
 </script>
 
@@ -75,7 +81,7 @@ function enlarge() {
           <hr class="m-1" />
         </div>
 
-        <details v-if="currentPassingTests.length" key="pass" class="p-0 pb-[0.75rem]" :open="isEnlarged">
+        <details v-if="currentPassingTests.length" key="pass" class="p-0 pb-[0.75rem]">
           <summary class="sticky z-20 px-2 top-[30px] bg-gray-50/30 backdrop-blur dark:bg-gray-900/30">
             <span class="mr-2">🟢</span>
             {{ currentPassingTests.length }} tests passing

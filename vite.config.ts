@@ -10,6 +10,7 @@ export default defineConfig({
   plugins: [
     VueRouter({
       logs: false,
+      extensions: ['vue', 'md'],
       routesFolder: [
         {
           src: './src/exercises',
@@ -18,7 +19,6 @@ export default defineConfig({
         },
         {
           src: './src/views',
-          exclude: ['ErrorView.vue'],
         },
       ],
 
@@ -56,8 +56,6 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      // allows import ... from '~/components/...'
-      '~': fileURLToPath(new URL('./src', import.meta.url)),
       // allows import ... from '@/components/...'
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@ex': fileURLToPath(new URL('./src/exercises', import.meta.url)),

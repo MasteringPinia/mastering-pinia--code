@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Component, computed, defineAsyncComponent, DefineComponent, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router/auto'
-import { openFile } from '~/api/.internal/files'
+import { openFile } from '@/.internal/utils/files'
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void

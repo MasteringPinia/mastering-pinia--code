@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
-import type { Contact } from '~/api/contacts'
+import { computed } from 'vue'
+import type { Contact } from '@/api/contacts'
 
 const props = defineProps<{ contact: Contact }>()
 

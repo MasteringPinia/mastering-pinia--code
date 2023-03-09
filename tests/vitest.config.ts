@@ -28,7 +28,7 @@ export default mergeConfig(
       open: false,
       api: {
         // default port
-        port: 51204,
+        port: 51205,
         strictPort: true,
       },
     },
