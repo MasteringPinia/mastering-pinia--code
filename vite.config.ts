@@ -14,6 +14,7 @@ export default defineConfig({
         {
           src: './src/exercises',
           filePatterns: '*/index',
+          exclude: ['*/_start'],
         },
         {
           src: './src/views',

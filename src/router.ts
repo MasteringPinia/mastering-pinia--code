@@ -2,13 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router/auto'
 import { Component, TransitionProps } from 'vue'
 import { RouteRecordOverride } from './utils'
 
-// imports from exercise
-import { metaFetchingGuard } from '@ex/0x-routing-meta-data-fetching/navigation-guard'
-import ex0xRouteOverride from '@ex/0x-routing-meta-data-fetching/route-override'
-
 const exerciseRoutesOverrides: Record<string, RouteRecordOverride | undefined> = {
   // TODO: automatic to all folders with some kind of plugin architecture
-  '0x-routing-meta-data-fetching': ex0xRouteOverride,
 }
 
 export const router = createRouter({
@@ -39,9 +34,6 @@ router.beforeResolve(async to => {
 
   to.meta.resolvedLayout = resolvedLayouts.get(layout)!
 })
-
-// 0x-routing-meta-data-fetching
-router.beforeResolve(metaFetchingGuard)
 
 // TS extensions
 
