@@ -19,30 +19,48 @@
     "parser": "@typescript-eslint/parser",
     "sourceType": "module"
   },
-  "plugins": ["vue", "@typescript-eslint"],
+  "plugins": [
+    "vue",
+    "@typescript-eslint"
+  ],
   "rules": {
     "promise/param-names": "off",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error"],
-
+    "@typescript-eslint/no-unused-vars": [
+      "error"
+    ],
     // make the workshop easier, it's not mainly about TS
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
-
     "vue/require-v-for-key": "off",
     "vue/script-setup-uses-vars": "error",
     "vue/multi-word-component-names": [
       "error",
       {
-        "ignores": ["index", "page", "Layout", "404", "error", "default", "Example"]
+        "ignores": [
+          "index",
+          "page",
+          "Layout",
+          "404",
+          "error",
+          "default",
+          "Example"
+        ]
       }
     ],
-    "vue/v-slot-style": ["warn", { "default": "v-slot" }]
+    "vue/v-slot-style": [
+      "warn",
+      {
+        "default": "v-slot"
+      }
+    ]
   },
   "overrides": [
     {
-      "files": ["./src/exercises/*/_start/**/*.{ts,vue,md,js}"],
+      "files": [
+        "./src/exercises/*/_start/**/*.{ts,vue,md,js}"
+      ],
       "rules": {
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-empty-interface": "off",
@@ -51,7 +69,9 @@
       }
     },
     {
-      "files": ["*.vue"],
+      "files": [
+        "*.vue"
+      ],
       "rules": {
         // this creates a bug when using multiple scripts
         "import/first": "off"

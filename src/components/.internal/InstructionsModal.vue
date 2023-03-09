@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Component, computed, defineAsyncComponent, DefineComponent, nextTick, onMounted, ref, watch } from 'vue'
+import { Component, computed, defineAsyncComponent, nextTick, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router/auto'
 import { openFile } from '@/.internal/utils/files'
 
@@ -88,7 +88,7 @@ function closeIfOutside(event: MouseEvent) {
     @click="closeIfOutside"
     @close="closeDialog()"
   >
-    <div class="content" v-if="Instructions">
+    <div v-if="Instructions" class="content">
       <header>
         <nav class="text-xs">
           <a

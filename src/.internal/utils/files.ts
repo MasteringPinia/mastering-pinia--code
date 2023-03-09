@@ -1,5 +1,5 @@
-import { mande } from 'mande'
 import { HOST } from './testing'
+import { mande } from 'mande'
 
 const openInEditor = mande(`${location.protocol}//${HOST}/__open-in-editor`)
 
