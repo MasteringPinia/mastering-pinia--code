@@ -7,6 +7,6 @@ describe('custom defineStore', () => {
   it('mounts a component', async () => {
     const wrapper = mount(TestComponent)
 
-    // expect(wrapper.text()).toContain('Template to start')
+    expect(wrapper.text()).toContain('Toggle')
   })
 })
