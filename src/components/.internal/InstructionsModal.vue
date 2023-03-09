@@ -83,12 +83,14 @@ function closeIfOutside(event: MouseEvent) {
   <!-- @cancel is triggered when pressing Esc on some browsers -->
   <dialog
     id="instructions-modal"
+    aria-describedby="instructions"
+    aria-modal="true"
     @transitionend="_updateCloseState"
     @cancel.prevent="closeDialog()"
     @click="closeIfOutside"
     @close="closeDialog()"
   >
-    <div v-if="Instructions" class="content">
+    <div v-if="Instructions" class="relative content">
       <header>
         <nav class="text-xs">
           <a
@@ -107,11 +109,13 @@ function closeIfOutside(event: MouseEvent) {
             >Open <code class="text-xs">instructions.md</code> on Editor</a
           >
           |
-          <a href="#" role="button" @click="closeDialog()">Close (Esc)</a>
+          <a href="#" autofocus role="button" @click="closeDialog()">Close <span aria-hidden="true">(Esc)</span></a>
         </nav>
       </header>
 
-      <Instructions />
+      <main id="instructions">
+        <Instructions />
+      </main>
     </div>
   </dialog>
 </template>
