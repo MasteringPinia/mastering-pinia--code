@@ -5,6 +5,9 @@ const { double, n } = useCountStore()
 </script>
 
 <template>
-  <p>Count: {{ n }}. {{ n }} x 2 = {{ double }}</p>
-  <button @click="n++">Increment ({{ n }})</button>
+  <p>
+    Count: <span data-test="count">{{ n }}</span
+    >. {{ n }} x 2 = <span data-test="double">{{ double }}</span>
+  </p>
+  <button data-test="increment" @click="n++">Increment ({{ n }})</button>
 </template>
