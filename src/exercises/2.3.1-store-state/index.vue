@@ -23,11 +23,9 @@ const dangoShop = useDangoShop()
   </template>
 
   <!-- You won't need to change any of the classes of these elements -->
-  <div data-test="dangos" class="grid lg:grid-cols-5 grid-cols-3 pt-[100px] pl-[40px] pr-[200px]">
+  <section data-test="dangos" class="grid lg:grid-cols-5 grid-cols-3 pt-[100px] pl-[40px] pr-[200px]">
     <div v-for="i in dangoShop.cartAmount" :key="i" class="w-1/3 h-[50px] rotate-[262deg] origin-center">
       <DangoStick />
     </div>
-  </div>
+  </section>
 </template>
-
-<style></style>

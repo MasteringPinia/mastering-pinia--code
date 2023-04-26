@@ -78,7 +78,7 @@ describe('store state', () => {
     expect(wrapper.get('[data-test="dangos"]>div').element.children).toHaveLength(2)
   })
 
-  it('disables the add button if the cartAmount is more than 100', async () => {
+  it('disables the add button if the cartAmount is more than 99', async () => {
     const wrapper = mount(TestComponent, {
       global: {
         plugins: [createPinia()],
@@ -97,7 +97,23 @@ describe('store state', () => {
     expect(wrapper.find('[data-test="btn-add"]').attributes('disabled')).toBeDefined()
   })
 
-  it('shows the reset button if the cartAmount is more than 50', async () => {
+  it('disables the remove button if the cartAmount is less than 1', async () => {
+    const wrapper = mount(TestComponent, {
+      global: {
+        plugins: [createPinia()],
+      },
+    })
+
+    const dangoShop = useDangoShop()
+    dangoShop.cartAmount = 1
+    await nextTick()
+    expect(wrapper.find('[data-test="btn-remove"]').attributes('disabled')).toBe(undefined)
+    dangoShop.cartAmount = 0
+    await nextTick()
+    expect(wrapper.find('[data-test="btn-remove"]').attributes('disabled')).toBeDefined()
+  })
+
+  it('shows the reset button if the cartAmount is more than 49', async () => {
     const wrapper = mount(TestComponent, {
       global: {
         plugins: [createPinia()],
@@ -129,5 +145,24 @@ describe('store state', () => {
     expect(wrapper.find('[data-test="btn-reset"]').exists()).toBe(true)
     await wrapper.get('[data-test="btn-reset"]').trigger('click')
     expect(dangoShop.cartAmount).toBe(0)
+  })
+
+  it('displays a message when the cartAmount is more than 49', async () => {
+    const wrapper = mount(TestComponent, {
+      global: {
+        plugins: [createPinia()],
+      },
+    })
+
+    const dangoShop = useDangoShop()
+    dangoShop.cartAmount = 49
+    await nextTick()
+    expect(wrapper.find('[data-test="msg-huge-order"]').exists()).toBe(false)
+    dangoShop.cartAmount = 50
+    await nextTick()
+    expect(wrapper.find('[data-test="msg-huge-order"]').exists()).toBe(true)
+    dangoShop.cartAmount = 53
+    await nextTick()
+    expect(wrapper.find('[data-test="msg-huge-order"]').exists()).toBe(true)
   })
 })
