@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import DangoStick from './.internal/DangoStick.vue'
-import DangoShopMessages from './.internal/DangoShopMessages.vue'
 import { useDangoShop } from './dango-shop'
 
 const dangoShop = useDangoShop()
