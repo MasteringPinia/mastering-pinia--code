@@ -202,6 +202,7 @@ export function useTestStatus() {
           titleFontSize: '22px',
         })
       } else {
+        const failingTest = currentFailingTests.value.at(0)!
         showMessage(
           'error',
           {
@@ -210,6 +211,8 @@ export function useTestStatus() {
             title: `${failedCount} test${failedCount === 1 ? ' is' : 's are'} still failing`,
           },
           ...currentFailingTests.value.map(test => '- ' + test.name),
+          `You can inspect the error at http://localhost:51205/__vitest__/` +
+            (failingTest.file ? `#file=${failingTest.file.id}` : ''),
         )
       }
 
