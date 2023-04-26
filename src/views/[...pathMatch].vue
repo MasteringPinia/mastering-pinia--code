@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router/auto'
 import { exerciseLinks } from '../router'
 
 const route = useRoute('/[...pathMatch]')
@@ -17,7 +17,7 @@ const route = useRoute('/[...pathMatch]')
 
   <ul>
     <li v-for="link in exerciseLinks" :key="link.name">
-      <router-link :to="link">{{ $router.resolve(link).path }}</router-link>
+      <RouterLink :to="link">{{ $router.resolve(link).path }}</RouterLink>
     </li>
   </ul>
 </template>

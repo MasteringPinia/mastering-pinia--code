@@ -1,9 +1,10 @@
 // /// <reference types="vitest" />
+import { fileURLToPath } from 'url'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Markdown from 'vite-plugin-vue-markdown'
 import VueRouter from 'unplugin-vue-router/vite'
-import { fileURLToPath } from 'url'
+import Components from 'unplugin-vue-components/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -37,6 +38,15 @@ export default defineConfig({
           }
         }
       },
+    }),
+    Components({
+      types: [
+        {
+          from: 'vue-router/auto',
+          names: ['RouterLink', 'RouterView'],
+        },
+      ],
+      globs: ['src/exercises/*/.internal/**/*.vue'],
     }),
     Vue({ include: [/\.vue$/, /\.md$/] }),
     // could be used to display instructions within the page

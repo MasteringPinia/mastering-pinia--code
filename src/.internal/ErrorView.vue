@@ -10,7 +10,7 @@
 
   <ul>
     <li v-for="link in exerciseLinks" :key="link.name">
-      <router-link :to="link">{{ $router.resolve(link).path }}</router-link>
+      <RouterLink :to="link">{{ $router.resolve(link).path }}</RouterLink>
     </li>
   </ul>
 </template>

@@ -13,7 +13,7 @@ const isModalOpened = ref(false)
     <h1>Vue 3 Workshop</h1>
 
     <nav>
-      <router-link class="pb-1 border-b-2 border-dashed hover:border-solid link" to="/">All Exercises</router-link>
+      <RouterLink class="pb-1 border-b-2 border-dashed hover:border-solid link" to="/">All Exercises</RouterLink>
     </nav>
 
     <div v-if="route.meta.exerciseData" class="text-xs">

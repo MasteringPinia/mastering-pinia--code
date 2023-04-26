@@ -1,3 +1,19 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { TransitionProps } from 'vue'
+import { useRoute } from 'vue-router/auto'
+import AppFooter from '@/components/.internal/AppFooter.vue'
+import AppHeader from '@/components/.internal/AppHeader.vue'
+
+const route = useRoute()
+
+const transitionProps = computed<TransitionProps | undefined>(() => {
+  const { transition } = route.meta
+  if (!transition) return { name: 'fade-down', mode: 'default' }
+  return typeof transition === 'string' ? { name: transition } : transition
+})
+</script>
+
 <template>
   <AppHeader />
 
@@ -15,22 +31,6 @@
 
   <AppFooter />
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import type { TransitionProps } from 'vue'
-import { useRoute } from 'vue-router/auto'
-import AppFooter from '@/components/.internal/AppFooter.vue'
-import AppHeader from '@/components/.internal/AppHeader.vue'
-
-const route = useRoute()
-
-const transitionProps = computed<TransitionProps | undefined>(() => {
-  const { transition } = route.meta
-  if (!transition) return { name: 'fade-down', mode: 'default' }
-  return typeof transition === 'string' ? { name: transition } : transition
-})
-</script>
 
 <style>
 :root {

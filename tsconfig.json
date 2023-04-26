@@ -35,6 +35,7 @@
   "include": [
     "*.ts",
     "./typed-router.d.ts",
+    "./components.d.ts",
     "src/*.ts",
     "tests/**/*.ts",
     "src/**/*.ts",
