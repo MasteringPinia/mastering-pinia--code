@@ -1,14 +1,14 @@
 <template>
   <AppHeader />
 
-  <div class="relative overflow-hidden grow">
-    <router-view v-slot="{ Component }">
-      <transition v-bind="transitionProps">
+  <div class="relative grow">
+    <RouterView v-slot="{ Component }">
+      <Transition v-bind="transitionProps">
         <div :key="$route.path" class="grow">
           <component :is="Component" />
         </div>
-      </transition>
-    </router-view>
+      </Transition>
+    </RouterView>
   </div>
 
   <hr />
