@@ -41,6 +41,7 @@ declare module 'vue-router/auto/routes' {
     '/[...pathMatch]': RouteRecordInfo<'/[...pathMatch]', '/:pathMatch(.*)', { pathMatch: ParamValue<true> }, { pathMatch: ParamValue<false> }>,
     '/1.4-implementing-our-own-defineStore/': RouteRecordInfo<'/1.4-implementing-our-own-defineStore/', '/1/4-implementing-our-own-defineStore', Record<never, never>, Record<never, never>>,
     '/1.6-adding-inject-provide-to-defineStore/': RouteRecordInfo<'/1.6-adding-inject-provide-to-defineStore/', '/1/6-adding-inject-provide-to-defineStore', Record<never, never>, Record<never, never>>,
+    '/2.3.1-store-state/': RouteRecordInfo<'/2.3.1-store-state/', '/2/3/1-store-state', Record<never, never>, Record<never, never>>,
   }
 }
 
