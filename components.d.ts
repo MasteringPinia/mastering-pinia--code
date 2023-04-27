@@ -9,8 +9,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    DangoShopMessages: typeof import('./src/exercises/2.3.1-store-state/.internal/DangoShopMessages.vue')['default']
-    DangoStick: typeof import('./src/exercises/2.3.1-store-state/.internal/DangoStick.vue')['default']
+    DangoShopMessages231: typeof import('./src/exercises/2.3.1-store-state/.internal/DangoShopMessages-231.vue')['default']
+    DangoStick231: typeof import('./src/exercises/2.3.1-store-state/.internal/DangoStick-231.vue')['default']
     RouterLink: typeof import('vue-router/auto')['RouterLink']
     RouterView: typeof import('vue-router/auto')['RouterView']
   }

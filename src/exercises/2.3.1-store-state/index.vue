@@ -15,7 +15,7 @@ const dangoShop = useDangoShop()
   </button>
 
   <!-- You don't need to change this line -->
-  <DangoShopMessages />
+  <DangoShopMessages231 />
 
   <template v-if="dangoShop.cartAmount >= 50">
     <p data-test="msg-huge-order">Are you sure? That's a <b>huge</b> order 😅.</p>
@@ -25,7 +25,7 @@ const dangoShop = useDangoShop()
   <!-- You won't need to change any of the classes of these elements -->
   <section data-test="dangos" class="grid lg:grid-cols-5 grid-cols-3 pt-[100px] pl-[40px] pr-[200px]">
     <div v-for="i in dangoShop.cartAmount" :key="i" class="w-1/3 h-[50px] rotate-[262deg] origin-center">
-      <DangoStick />
+      <DangoStick231 />
     </div>
   </section>
 </template>
