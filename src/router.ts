@@ -21,7 +21,10 @@ export const router = createRouter({
   },
 })
 
-export const exerciseLinks = router.getRoutes().filter(route => route.meta.exerciseData)
+export const exerciseLinks = router
+  .getRoutes()
+  .filter(route => route.meta.exerciseData)
+  .sort((a, b) => a.path.localeCompare(b.path))
 
 // layout system
 
