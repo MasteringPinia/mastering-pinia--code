@@ -45,6 +45,7 @@ onMounted(() => {
 })
 
 async function openDialog() {
+  document.body.classList.add('overflow-y-hidden')
   dialog?.classList.add('from')
   dialog?.showModal()
   await nextTick()
@@ -55,6 +56,7 @@ async function openDialog() {
 }
 
 function closeDialog() {
+  document.body.classList.remove('overflow-y-hidden')
   dialog?.classList.add('from')
   // avoid never updating the open state in the parent
   if (!dialog?.open) {
@@ -126,10 +128,18 @@ function closeIfOutside(event: MouseEvent) {
 }
 
 .content > header {
+  --nc-header-bg: rgba(0, 0, 0, 0.8);
+
   position: sticky;
   top: 0;
-  background-color: rgba(35, 35, 35, 0.8);
+  background-color: var(--nc-header-bg);
   backdrop-filter: blur(5px);
+}
+
+@media (prefers-color-scheme: light) {
+  .content > header {
+    --nc-header-bg: rgba(255, 255, 255, 0.8);
+  }
 }
 
 #instructions-modal:modal {
