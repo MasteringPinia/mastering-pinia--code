@@ -31,6 +31,8 @@ function handleTestConsoleLogs(log: UserConsoleLog) {
 }
 
 function useTestClient() {
+  const runId = ref(0)
+
   const client = createClient(ENTRY_URL, {
     // makes the client state reactive
     reactive: reactive as any,
@@ -38,6 +40,9 @@ function useTestClient() {
     reconnectInterval: 2500,
     handlers: {
       onTaskUpdate() {
+        if (testRunState.value !== 'running') {
+          runId.value++
+        }
         testRunState.value = 'running'
       },
       onFinished() {
@@ -132,6 +137,7 @@ function useTestClient() {
     config,
     status,
     testRunState,
+    runId,
     files,
   }
 }
@@ -152,7 +158,7 @@ export function getStatusIcon(test: Test | TaskCustom) {
 
 export function useTestStatus() {
   const route = useRoute()
-  const { files, client, testRunState } = useTestClient()
+  const { files, client, testRunState, runId } = useTestClient()
 
   const currentSpecFiles = computed(() => {
     const target = route.meta.exerciseData?.dirname
@@ -179,6 +185,18 @@ export function useTestStatus() {
     }
 
     return '❓ '
+  })
+
+  const testResult = computed<'fail' | 'pass' | 'idle'>(() => {
+    if (testRunState.value === 'running') {
+      return 'idle'
+    }
+    if (currentFailingTests.value.length > 0) {
+      return 'fail'
+    } else if (currentPassingTests.value.length > 0) {
+      return 'pass'
+    }
+    return 'idle'
   })
 
   const hasTests = computed(() => _hasTests(currentSpecFiles.value))
@@ -236,7 +254,9 @@ export function useTestStatus() {
   const title = computed(() => route.meta.exerciseData?.dirname || 'All Tests')
 
   return {
+    runId,
     hasTests,
+    testResult,
     currentResult,
     currentSpecFiles,
     currentLogs,

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { getStatusIcon, useTestStatus } from '@/.internal/utils/testing'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const {
   //
@@ -11,9 +11,13 @@ const {
   currentFailingTests,
   currentResult,
   title,
+  runId,
+  testResult,
 } = useTestStatus()
 
 const isEnlarged = ref(false)
+
+const isRunFinished = computed(() => testResult.value === 'fail' || testResult.value === 'pass')
 
 function enlarge() {
   isEnlarged.value = !isEnlarged.value
@@ -32,14 +36,20 @@ function enlarge() {
       v-if="hasTests"
       id="test-runner"
       :key="title"
-      class="fixed z-50 m-0 overflow-scroll border border-gray-800 rounded-lg dark:border-gray-300 bg-gray-50 dark:bg-gray-900 bottom-10 left-4"
+      class="fixed z-50 m-0 border border-gray-800 rounded-lg dark:border-gray-300 bg-gray-50 dark:bg-gray-900 bottom-10 left-4"
       :class="[isEnlarged ? 'right-4 top-10 bg-opacity-75 dark:bg-opacity-70' : 'w-72 max-h-72']"
     >
       <h3
         class="sticky top-0 z-30 flex px-3 py-1 m-0 text-sm font-bold border-b-2 border-solid border-light-100 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-900/30"
         :class="[isEnlarged ? '' : 'backdrop-blur']"
       >
-        <span class="mr-2">{{ currentResult }}</span>
+        <span
+          id="test-runner-status"
+          :key="runId"
+          class="mr-2"
+          :class="isRunFinished && 'animate__animated animate__bounce'"
+          >{{ currentResult }}</span
+        >
         <span>{{ title }}</span>
         <span class="flex-grow"></span>
         <a href="#" role="button" title="Rerun tests" @click="rerun">▶️</a>
@@ -128,5 +138,9 @@ details {
   background: none;
   border: none;
   border-radius: 0;
+}
+
+#test-runner-status {
+  animation-delay: 160ms;
 }
 </style>
