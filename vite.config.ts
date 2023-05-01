@@ -1,5 +1,5 @@
 // /// <reference types="vitest" />
-import { fileURLToPath } from 'url'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Markdown from 'vite-plugin-vue-markdown'
@@ -11,7 +11,8 @@ export default defineConfig({
   plugins: [
     VueRouter({
       pathParser: {
-        dotNesting: false,
+        // waiting for https://github.com/vitejs/vite/pull/2634
+        dotNesting: true,
       },
       logs: false,
       extensions: ['.vue', '.md'],
