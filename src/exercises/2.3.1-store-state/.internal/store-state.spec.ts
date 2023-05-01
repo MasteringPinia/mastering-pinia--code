@@ -69,13 +69,13 @@ describe('store state', () => {
     const dangoShop = useDangoShop()
     dangoShop.cartAmount = 0
     await nextTick()
-    expect(wrapper.get('[data-test="dangos"]>div').element.children).toHaveLength(0)
+    expect(wrapper.findAll('[data-test="dangos"]>div')).toHaveLength(0)
     dangoShop.cartAmount = 1
     await nextTick()
-    expect(wrapper.get('[data-test="dangos"]>div').element.children).toHaveLength(1)
+    expect(wrapper.findAll('[data-test="dangos"]>div')).toHaveLength(1)
     dangoShop.cartAmount = 2
     await nextTick()
-    expect(wrapper.get('[data-test="dangos"]>div').element.children).toHaveLength(2)
+    expect(wrapper.findAll('[data-test="dangos"]>div')).toHaveLength(2)
   })
 
   it('disables the add button if the cartAmount is more than 99', async () => {
