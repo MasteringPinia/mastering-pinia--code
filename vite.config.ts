@@ -10,6 +10,9 @@ import Components from 'unplugin-vue-components/vite'
 export default defineConfig({
   plugins: [
     VueRouter({
+      pathParser: {
+        dotNesting: false,
+      },
       logs: false,
       extensions: ['.vue', '.md'],
       routesFolder: [
