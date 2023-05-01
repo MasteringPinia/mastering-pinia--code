@@ -11,7 +11,11 @@ const dangoShop = useDangoShop()
   <button data-test="btn-remove">Remove one 🍡</button>
 
   <!-- You don't need to change this line -->
-  <DangoShopMessages232 />
+  <DangoShopMessages232>
+    You are ordering {{ dangoShop.amount }} dango{{ dangoShop.amount > 1 ? 's' : '' }}. That would be a total of ¥{{
+      350 * dangoShop.amount
+    }}. You are saving ¥{{ 0 }} with our special offer.
+  </DangoShopMessages232>
 
   <p data-test="msg-huge-order">Are you sure? That's a <b>huge</b> order 😅.</p>
   <button data-test="btn-reset">Let's start over</button>
