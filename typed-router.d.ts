@@ -43,6 +43,7 @@ declare module 'vue-router/auto/routes' {
     '/1.4-implementing-our-own-defineStore/': RouteRecordInfo<'/1.4-implementing-our-own-defineStore/', '/1/4-implementing-our-own-defineStore', Record<never, never>, Record<never, never>>,
     '/1.6-adding-inject-provide-to-defineStore/': RouteRecordInfo<'/1.6-adding-inject-provide-to-defineStore/', '/1/6-adding-inject-provide-to-defineStore', Record<never, never>, Record<never, never>>,
     '/2.3.1-store-state/': RouteRecordInfo<'/2.3.1-store-state/', '/2/3/1-store-state', Record<never, never>, Record<never, never>>,
+    '/2.5.1-store-actions/': RouteRecordInfo<'/2.5.1-store-actions/', '/2/5/1-store-actions', Record<never, never>, Record<never, never>>,
   }
 }
 
