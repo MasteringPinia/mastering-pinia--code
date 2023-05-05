@@ -1,32 +1,45 @@
 <script lang="ts" setup>
-import { useDangoShop } from './dango-shop'
+import { useDango } from './dango'
 
-const dangoShop = useDangoShop()
+const dango = useDango()
 </script>
 
 <template>
-  <h1>Dango Shop 🍡</h1>
+  <h1>Let's eat some Dango 🍡</h1>
 
-  <button data-test="btn-add" class="mx-2" :disabled="dangoShop.amount >= 100" @click="dangoShop.amount++">
-    More 🍡
+  <button data-test="btn-eat" :disabled="dango.amount < 1 || dango.isEating" class="mr-1" @click="dango.eatDango()">
+    Eat!
   </button>
-  <button data-test="btn-remove" :disabled="dangoShop.amount < 1" @click="dangoShop.amount--">Remove one 🍡</button>
-
-  <DangoShopMessages232>
-    <!-- You will only need to display new things here -->
-    You are ordering {{ dangoShop.amount }} dango{{ dangoShop.amount > 1 ? 's' : '' }}. That would be a total of
-    <span :class="dangoShop.hasPriceDiscount ? 'line-through' : ''">¥{{ dangoShop.totalPrice }}</span>
-    <span v-if="dangoShop.hasPriceDiscount" class="font-bold">¥{{ dangoShop.discountedPrice }}</span
-    >.
-    <template v-if="dangoShop.hasPriceDiscount">
-      You are saving ¥{{ dangoShop.savedMoney }} with our special offer.
-    </template>
-  </DangoShopMessages232>
+  <button
+    data-test="btn-start-eating"
+    class="mr-1"
+    :disabled="dango.isEating || dango.amount < 1"
+    @click="dango.startEating()"
+  >
+    Start Eating until finished
+  </button>
+  <button data-test="btn-stop-eating" :disabled="!dango.isEating" @click="dango.stopEating()">Stop eating</button>
 
   <!-- You won't need to change any of the classes of these elements -->
-  <section data-test="dangos" class="grid lg:grid-cols-5 grid-cols-3 pt-[100px] pl-[40px] pr-[200px]">
-    <div v-for="i in dangoShop.amount" :key="i" class="w-1/3 h-[50px] rotate-[262deg] origin-center">
-      <DangoStick232 />
+  <section data-test="dangos" class="grid grid-cols-3 pt-8 pb-32">
+    <div class="">
+      <template v-if="dango.amount > 1">
+        <div v-for="i in dango.amount - 1" :key="i" class="h-[56px] -mb-[38px] animate__animated animate__bounceIn">
+          <DangoStick251 class="rotate-[262deg] translate-y-[-28px]" />
+        </div>
+      </template>
+    </div>
+
+    <div class="">
+      <div v-if="dango.amount > 0" :key="dango.amount" class="h-[56px] -mb-[38px] animate__animated animate__bounceIn">
+        <DangoStick251 :dango="3 - (dango.eatenBalls % 3)" />
+      </div>
+    </div>
+
+    <div class="">
+      <div v-for="i in dango.finishedSticks" :key="i" class="h-[56px] -mb-[46px] animate__animated animate__bounceIn">
+        <DangoStick251 :dango="0" class="rotate-[-262deg] translate-y-[-28px]" />
+      </div>
     </div>
   </section>
 </template>
