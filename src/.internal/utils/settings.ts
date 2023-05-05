@@ -63,11 +63,6 @@ declare global {
   }
 }
 
-if (typeof window !== 'undefined') {
-  window.$settings = $settings
-  window.hardMode = () => ($settings.showTips = false)
-}
-
 /**
  * Returns a Capitalized string split in words.
  *
