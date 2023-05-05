@@ -7,18 +7,12 @@ const dango = useDango()
 <template>
   <h1>Let's eat some Dango 🍡</h1>
 
-  <button data-test="btn-eat" :disabled="dango.amount < 1 || dango.isEating" class="mr-1" @click="dango.eatDango()">
-    Eat!
-  </button>
-  <button
-    data-test="btn-start-eating"
-    class="mr-1"
-    :disabled="dango.isEating || dango.amount < 1"
-    @click="dango.startEating()"
-  >
+  <button data-test="btn-eat" :disabled="dango.amount < 1 || dango.isEating" @click="dango.eatDango()">Eat!</button>
+  <button data-test="btn-start-eating" :disabled="dango.isEating || dango.amount < 1" @click="dango.startEating()">
     Start Eating until finished
   </button>
   <button data-test="btn-stop-eating" :disabled="!dango.isEating" @click="dango.stopEating()">Stop eating</button>
+  <button @click="dango.$reset()">Reset</button>
 
   <!-- You won't need to change any of the classes of these elements -->
   <section data-test="dangos" class="grid grid-cols-3 pt-8 pb-32">
