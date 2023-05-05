@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 
-export const useDangoShop = defineStore('2.3.2 store-getters', {
+export const useDangoShop = defineStore('2.4.1 store-getters', {
   state: () => ({
     amount: 0,
   }),
@@ -25,3 +25,7 @@ export const useDangoShop = defineStore('2.3.2 store-getters', {
 
 // Do not change this value
 const DANGO_PRICE = 350
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useDangoShop, import.meta.hot))
+}
