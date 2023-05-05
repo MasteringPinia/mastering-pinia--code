@@ -1,6 +1,7 @@
 # Store getters
 
-Let's review the different ways to add and use getters to stores with Pinia. In this exercise, we will limit ourselves to exploring the `getters` property of the store, without using _actions_.
+Let's review actions actions in Pinia. In this exercise we will practice with synchronous actions and asynchronous
+actions. We will consider we have a stock of dangos that we can eat
 
 ## 📝 Your Notes
 
@@ -8,15 +9,20 @@ Write your notes or questions here.
 
 ## 🎯 Goals
 
-- Create a getter `totalPrice` on the Dango Shop store that returns the total price of the cart
-- Display that total amount
-- Discount calculator:
-  - Create a getter to display the discounted price of the cart based on the following rules:
-    - 10% discount if the cart at least 3 dangos (and less than 5)
-    - 15% discount if the cart has at least 5 dangos (and less than 10)
-    - 20% discount if the cart has at least 10 dangos
-  - Make sure the price is rounded up with no decimal (e.g. 350.2 becomes 351)
-  - Display the discounted price of the cart when there is one
-  - Always display the original price of the cart, crossed out if there is a discount (you can apply the existing class `line-through` for that)
-- Add a getter that returns how much the person saved with the discount and display it
-- Ensure all the getters are correctly typed
+- Create an action named `eatDango` that eats one dango ball. Each dango stick has 3 balls, so only once we eat 3 times,
+  we will be able to decrement the number of sticks.
+  - Make sure not to do anything if there are no dangos left
+  - Don't reset the `eatenBalls` variable, use the module operator `%` to check if we have eaten 3 balls
+- Call that action when the user clicks on the "Eat!" button
+- Create an action named `startEating` that starts eating dangos every 500ms until there are no dangos left
+  - It should call the `eatDango` action
+  - Add a state property that would allow us to stop eating and interrupt the action at any time
+- Call that action when the user clicks on the "Start eating!" button
+- Create an action named `stopEating` that stops eating dangos
+- Call that action when the user clicks on the "Stop eating!" button
+
+Hints:
+
+- `startEating` should return a promise and run as
+- If they are calling setInterval instead of setTimeout, hint them
+-

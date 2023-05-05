@@ -13,16 +13,23 @@ withDefaults(
     seed: () => Math.floor(Math.random() * dangoColors.length),
   },
 )
+
+const BASE_WIDTH = 103
+const BASE_HEIGHT = 285
+
+const factor = 0.4
+const width = BASE_WIDTH * factor
+const height = BASE_HEIGHT * factor
 </script>
 
 <template>
   <svg
-    width="103"
-    height="285"
+    :width="width"
+    :height="height"
     viewBox="0 0 103 285"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    class="block m-auto animate__animated animate__bounceIn"
+    class="block mx-auto origin-center"
   >
     <path
       d="M57.25 65.3098V231.506L61 236.699V281.364C57.8508 284.069 55.6355 284.821 51 285C45.8603 284.574 43.5883 283.745 41 280.845V236.699L44.75 231.506V65.3098C44.75 64.1412 48.25 0 51 0C53.75 0 57.25 64.2711 57.25 65.3098Z"
