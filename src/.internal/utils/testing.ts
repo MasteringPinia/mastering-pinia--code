@@ -3,7 +3,7 @@ import { type WebSocketStatus } from '@vueuse/core'
 import { ResolvedConfig, TaskState, File as TestFile, Test, Task, Suite, UserConsoleLog } from 'vitest'
 import { computed, onScopeDispose, reactive, Ref, ref, shallowRef, watch } from 'vue'
 import { useRoute } from 'vue-router/auto'
-import { LogMessageType, showMessage } from './logging'
+import { LogMessageTypeEnum, showMessage } from './logging'
 import { $settings } from './settings'
 
 // NOTE: not exported by vitest
@@ -23,7 +23,7 @@ function handleTestConsoleLogs(log: UserConsoleLog) {
     const match = MESSAGE_RE.exec(log.content)
     if (match) {
       const [, logType, message] = match
-      showMessage(logType as LogMessageType, {}, message)
+      showMessage(logType as LogMessageTypeEnum, {}, message)
     }
   } else if (log.type === 'stderr') {
     showMessage('error', {}, `Failed running test`, log.content)
@@ -232,9 +232,8 @@ export function useTestStatus() {
           `You can inspect the error at http://localhost:51205/__vitest__/` +
             (failingTest.file ? `#file=${failingTest.file.id}` : ''),
         )
+        currentFailingTests.value.flatMap(t => t.logs || []).forEach(handleTestConsoleLogs)
       }
-
-      currentLogs.value.forEach(handleTestConsoleLogs)
     } else if (state === 'running') {
       const now = new Date()
 

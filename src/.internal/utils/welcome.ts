@@ -1,4 +1,4 @@
-import { LogMessageType, showMessage } from './logging'
+import { LogMessageTypeEnum, showMessage } from './logging'
 import { $settings } from './settings'
 
 // Welcome message
@@ -9,7 +9,7 @@ if (
   $settings.showTips
 ) {
   showMessage(
-    LogMessageType.tip,
+    LogMessageTypeEnum.tip,
     { label: '👋 Welcome!', title: `Let's get you started with the workshop, click here 👇`, endGroup: false },
     'Tips should help you unblock your way through exercises.',
     'Only unveil them after being blocked for at least a few minutes!',
@@ -25,21 +25,21 @@ if (
   )
 
   showMessage(
-    LogMessageType.info,
+    LogMessageTypeEnum.info,
     { collapsed: true, title: 'This is an info message' },
     'This message contains useful information about the exercise',
     'Try not to miss info messages',
     'These messages appear expanded by default',
   )
   showMessage(
-    LogMessageType.warn,
+    LogMessageTypeEnum.warn,
     { collapsed: true, title: 'This is an warning message' },
     'It means that something unexpected was found in your code or that there is something you should pay attention to',
     'You should always read warnings',
     'These messages appear expanded by default',
   )
   showMessage(
-    LogMessageType.error,
+    LogMessageTypeEnum.error,
     { collapsed: true, title: 'This is an error message' },
     'Something unexpected happened, you might need to reach out to your instructor for help',
     'Pay extra attention to error messages',
@@ -47,7 +47,7 @@ if (
   )
 
   showMessage(
-    LogMessageType.info,
+    LogMessageTypeEnum.info,
     { title: 'Hide the whole welcome message with:' },
     '$settings.hideWelcomeMessage = true',
   )

@@ -1,38 +1,38 @@
 import { $settings } from './settings'
 
-export enum LogMessageType {
+export enum LogMessageTypeEnum {
   tip = 'tip',
   info = 'info',
   warn = 'warn',
   error = 'error',
 }
 
-export type LogeMessageTypes = LogMessageType | keyof typeof LogMessageType
+export type LogeMessageType = LogMessageTypeEnum | keyof typeof LogMessageTypeEnum
 
-const LOG_MESSAGES_COLOR: Record<LogeMessageTypes, string> = {
-  [LogMessageType.tip]: 'background: #8b5cf6; color: #0f0f0f',
-  [LogMessageType.info]: 'background: #bfdbfe; color: #1e1e1e',
-  [LogMessageType.warn]: 'background: #f97316; color: #0b0b0b',
-  [LogMessageType.error]: 'background: #ff5e56; color: #2e2e2e',
+const LOG_MESSAGES_COLOR: Record<LogeMessageType, string> = {
+  [LogMessageTypeEnum.tip]: 'background: #8b5cf6; color: #0f0f0f',
+  [LogMessageTypeEnum.info]: 'background: #bfdbfe; color: #1e1e1e',
+  [LogMessageTypeEnum.warn]: 'background: #f97316; color: #0b0b0b',
+  [LogMessageTypeEnum.error]: 'background: #ff5e56; color: #2e2e2e',
 }
 
-const LABELS_FOR_TYPE: Record<LogeMessageTypes, string> = {
-  [LogMessageType.tip]: '👉 Tip',
-  [LogMessageType.info]: 'ℹ️',
+const LABELS_FOR_TYPE: Record<LogeMessageType, string> = {
+  [LogMessageTypeEnum.tip]: '👉 Tip',
+  [LogMessageTypeEnum.info]: 'ℹ️',
   // [LogMessageType.warn]: '⚠️', // NOTE: doesn't show well in Chromium browsers
-  [LogMessageType.warn]: '🚧',
-  [LogMessageType.error]: '⛔️',
+  [LogMessageTypeEnum.warn]: '🚧',
+  [LogMessageTypeEnum.error]: '⛔️',
 }
 
-const TITLES_FOR_TYPE: Record<LogeMessageTypes, string> = {
-  [LogMessageType.tip]: 'Unfold this if you are blocked',
-  [LogMessageType.info]: 'info',
-  [LogMessageType.warn]: 'warning',
-  [LogMessageType.error]: 'error',
+const TITLES_FOR_TYPE: Record<LogeMessageType, string> = {
+  [LogMessageTypeEnum.tip]: 'Unfold this if you are blocked',
+  [LogMessageTypeEnum.info]: 'info',
+  [LogMessageTypeEnum.warn]: 'warning',
+  [LogMessageTypeEnum.error]: 'error',
 }
 
-export function showMessage<M extends LogMessageType>(
-  type: M | keyof typeof LogMessageType,
+export function showMessage<M extends LogMessageTypeEnum>(
+  type: M | keyof typeof LogMessageTypeEnum,
   {
     label = LABELS_FOR_TYPE[type],
     title = TITLES_FOR_TYPE[type],
@@ -41,7 +41,7 @@ export function showMessage<M extends LogMessageType>(
     titleFontSize = '1em',
     labelStyle = LOG_MESSAGES_COLOR[type],
     extraStyle = '',
-    collapsed = type === LogMessageType.tip || type === LogMessageType.error,
+    collapsed = type === LogMessageTypeEnum.tip || type === LogMessageTypeEnum.error,
     endGroup = true,
   }: {
     label?: string
@@ -56,7 +56,7 @@ export function showMessage<M extends LogMessageType>(
   },
   ...messages: any[]
 ) {
-  if (!$settings.showTips && type === LogMessageType.tip) return
+  if (!$settings.showTips && type === LogMessageTypeEnum.tip) return
   // only keep errors and warns in tests
   if (process.env.NODE_ENV !== 'development' && type !== 'error' && type !== 'warn') return
 
