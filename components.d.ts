@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     DangoStick231: typeof import('./src/exercises/2.3.1-store-state/.internal/DangoStick-231.vue')['default']
     DangoStick232: typeof import('./src/exercises/2.5.1-store-actions/.internal/DangoStick-232.vue')['default']
     DangoStick251: typeof import('./src/exercises/2.5.1-store-actions/.internal/DangoStick-251.vue')['default']
+    EatingDango251: typeof import('./src/exercises/2.5.1-store-actions/.internal/EatingDango-251.vue')['default']
     RouterLink: typeof import('vue-router/auto')['RouterLink']
     RouterView: typeof import('vue-router/auto')['RouterView']
   }
