@@ -1,6 +1,6 @@
 # Building a Gradient Generator
 
-![Gradient Generator](../.internal/screenshot.png)
+![Gradient Generator](./.internal/screenshot.png)
 
 During this exercise, you will build a gradient generator. The user should be able to select different colors and see
 the gradient change in real time. We will add the ability to generate random gradients. The user will be able to
@@ -27,4 +27,6 @@ Write your notes or questions here.
 
 _Extra goals might not have any tests and can be done later or skipped._
 
-As an extra goal, let's add a history of all the generated gradients. Everytime the user randomizes the gradient, we save the current one into an array. Then you can display the list with a `<select>` and let the user go back to any previous gradient.
+As an extra goal, let's add a history of all the generated gradients. Everytime the user randomizes the gradient, we
+save the current one into an array. Then you can display the list with a `<select>` and let the user go back to any
+previous gradient.
