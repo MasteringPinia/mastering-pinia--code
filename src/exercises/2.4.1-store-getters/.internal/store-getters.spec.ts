@@ -103,6 +103,20 @@ describe('store getters', () => {
     expect(wrapper.get('[data-test="price-message"]').text()).toContain('¥700.')
   })
 
+  it('does not display the discount price when the amount is less than 3', async () => {
+    setActivePinia(undefined)
+
+    const wrapper = mount(TestComponent, {
+      global: {
+        plugins: [createPinia()],
+      },
+    })
+    const dangoShop = useDangoShop()
+    dangoShop.amount = 2
+    await nextTick()
+    expect(wrapper.get('[data-test="price-message"]').text()).not.toContain('¥700¥700')
+  })
+
   it('displays the amount without the discount alongside the discounted price', async () => {
     setActivePinia(undefined)
 
