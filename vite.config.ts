@@ -28,18 +28,17 @@ export default defineConfig({
       ],
 
       extendRoute(route) {
-        if (!route.isPassThrough) {
-          // extend exercises routes with exerciseData
-          const filepath = route.components.get('default')
-          if (filepath?.includes('exercises/')) {
-            route.addToMeta({
-              exerciseData: {
-                filepath,
-                dirname: filepath.replace(/^.*\/(.*?)\/index\.vue$/, '$1'),
-                instructions: filepath.replace('index.vue', '_start/instructions.md'),
-              },
-            })
-          }
+        if (route.isPassThrough) return
+        // extend exercises routes with exerciseData
+        const filepath = route.components.get('default')
+        if (filepath?.includes('exercises/')) {
+          route.addToMeta({
+            exerciseData: {
+              filepath,
+              dirname: filepath.replace(/^.*\/(.*?)\/index\.vue$/, '$1'),
+              instructions: filepath.replace('index.vue', 'instructions.md'),
+            },
+          })
         }
       },
     }),

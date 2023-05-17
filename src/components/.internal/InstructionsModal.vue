@@ -14,7 +14,7 @@ const route = useRoute()
 const Instructions = computed<undefined | Component>(
   () =>
     route.meta.exerciseData?.dirname &&
-    defineAsyncComponent(() => import(`../../exercises/${route.meta.exerciseData!.dirname}/_start/instructions.md`)),
+    defineAsyncComponent(() => import(`../../exercises/${route.meta.exerciseData!.dirname}/instructions.md`)),
 )
 
 let dialog: HTMLDialogElement | undefined
