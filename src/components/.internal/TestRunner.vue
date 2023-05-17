@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { getStatusIcon, useTestStatus } from '@/.internal/utils/testing'
 import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 const {
   //
@@ -16,6 +17,9 @@ const {
 } = useTestStatus()
 
 const isEnlarged = ref(false)
+
+const route = useRoute()
+const isHidden = computed(() => 'hideTests' in route.query)
 
 const isRunFinished = computed(() => testResult.value === 'fail' || testResult.value === 'pass')
 
@@ -33,7 +37,7 @@ function enlarge() {
 <template>
   <transition name="slide" mode="out-in">
     <section
-      v-if="hasTests"
+      v-if="hasTests && !isHidden"
       id="test-runner"
       :key="title"
       class="fixed z-50 m-0 border border-gray-800 rounded-lg dark:border-gray-300 bg-gray-50 dark:bg-gray-900 bottom-10 left-4"
