@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useDangoShop = defineStore('2.3.1 store-state', {
+export const useDangoShop = defineStore('2.4.1 store-getters', {
   state: () => ({ amount: 0 }),
 })
 
