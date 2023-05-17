@@ -15,7 +15,9 @@ const dangoShop = useDangoShop()
   <DangoShopMessages241>
     <!-- You will only need to display new things here -->
     You are ordering {{ dangoShop.amount }} dango{{ dangoShop.amount > 1 ? 's' : '' }}. That would be a total of
-    <span>¥350</span>. You are saving ¥0 with our special offer.
+    <span class="line-through">¥700</span>
+    <span class="font-bold">¥650</span>
+    . You are saving ¥50 with our special offer.
   </DangoShopMessages241>
 
   <!-- You won't need to change any of the classes of these elements -->
