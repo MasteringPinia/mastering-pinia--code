@@ -4,7 +4,6 @@ export const useDango = defineStore('2.5.1 store-actions', {
   state: () => ({
     amount: 20,
     eatenBalls: 0,
-
     isEating: false,
   }),
 
@@ -13,27 +12,24 @@ export const useDango = defineStore('2.5.1 store-actions', {
   },
 
   actions: {
-    eatDango(): void {
-      if (this.amount < 1) return
+    eatDango() {
+      if (this.amount === 0) return
       this.eatenBalls++
       if (this.eatenBalls % 3 === 0) {
         this.amount--
       }
     },
-
-    async startEating(interval = 300) {
-      if (this.isEating || this.amount < 1) return
-
+    startEating() {
       this.isEating = true
-      do {
-        await new Promise(resolve => setTimeout(resolve, interval))
-        if (!this.isEating) return
+      const interval = setInterval(() => {
+        if (this.amount === 0 || !this.isEating) {
+          this.isEating = false
+          clearInterval(interval)
+          return
+        }
         this.eatDango()
-      } while (this.amount > 0)
-
-      this.isEating = false
+      }, 500)
     },
-
     stopEating() {
       this.isEating = false
     },

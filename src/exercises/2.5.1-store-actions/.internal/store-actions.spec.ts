@@ -87,15 +87,6 @@ describe('store actions', () => {
     expect(startEatingSpy).toHaveBeenCalled()
   })
 
-  it('startEating returns a Promise', async () => {
-    setActivePinia(createPinia())
-    const dango = useDango()
-    tipOnFail(() => {
-      expect(dango.startEating()).toBeInstanceOf(Promise)
-      console.log('what')
-    }, 'Using async/await will definitely make your life easier here')
-  })
-
   it('startEating calls eatDango until no dangos are left', async () => {
     setActivePinia(createPinia())
     const dango = useDango()

@@ -2,7 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 
 export const useDango = defineStore('2.5.1 store-actions', {
   state: () => ({
-    amount: 20,
+    amount: 20, // the number of dango sticks
     eatenBalls: 0,
   }),
 
