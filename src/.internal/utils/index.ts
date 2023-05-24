@@ -1,6 +1,6 @@
 import { Pinia } from 'pinia'
-import { App } from 'vue'
-import { Router } from 'vue-router/auto'
+import { App, onScopeDispose } from 'vue'
+import { useRouter, Router, NavigationHookAfter } from 'vue-router/auto'
 
 /**
  * The `install` function is called with application globals.
@@ -14,4 +14,11 @@ export interface ExerciseInstall {
  */
 export interface ExerciseModule {
   install?: ExerciseInstall
+}
+
+export function onAfterEach(guard: NavigationHookAfter) {
+  const router = useRouter()
+  const remove = router.afterEach(guard)
+  onScopeDispose(remove)
+  return remove
 }

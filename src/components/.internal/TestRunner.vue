@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { onAfterEach } from '@/.internal/utils'
 import { getStatusIcon, useTestStatus } from '@/.internal/utils/testing'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -22,6 +23,14 @@ const route = useRoute()
 const isHidden = computed(() => 'hideTests' in route.query)
 
 const isRunFinished = computed(() => testResult.value === 'fail' || testResult.value === 'pass')
+
+// rerun tests when entering the exercise for the first time
+// so they appear on the user console
+onAfterEach((to, from) => {
+  if (to.meta.exerciseData && to.meta.exerciseData.dirname !== from.meta.exerciseData?.dirname) {
+    rerun()
+  }
+})
 
 function enlarge() {
   isEnlarged.value = !isEnlarged.value
