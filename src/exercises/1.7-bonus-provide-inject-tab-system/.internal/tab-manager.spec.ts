@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils'
 import TestComponent from '../index.vue'
 import { describe, it, expect } from 'vitest'
 import { nextTick } from 'vue'
+import { tipOnFail } from '@tests/utils'
 
 describe('Tab Manager', () => {
   it('shows 4 tabs buttons', async () => {
@@ -39,10 +40,14 @@ describe('Tab Manager', () => {
     const wrapper = mount(TestComponent)
     await nextTick()
 
-    await wrapper.get('button:nth(2)').trigger('click')
+    tipOnFail(() => {
+      expect(wrapper.findAll('button')).toHaveLength(4)
+    }, `Make sure to use <button> elements to allow changing the current tab. There should be 4 buttons rendered in your template unless you changed the value of the "n" variable in "index.vue".`)
+
+    await wrapper.findAll('button').at(1)!.trigger('click')
     expect(wrapper.get('h2').text()).toContain('This is Tab 2')
-    expect(wrapper.get('button:nth(2)').attributes('disabled')).not.toBeUndefined()
-    expect(wrapper.get('button:nth(1)').attributes('disabled')).toBeUndefined()
+    expect(wrapper.findAll('button').at(1)!.attributes('disabled')).not.toBeUndefined()
+    expect(wrapper.findAll('button').at(0)!.attributes('disabled')).toBeUndefined()
   })
 
   it('adapts if the amount of tabs change', async () => {
