@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "run-p dev:vite dev:test-server dev:api",
-    "dev:vite": "vite",
+    "dev:vite": "vite --open",
     "dev:test-server": "vitest -c tests/vitest.config.ts --ui",
     "dev:api": "json-server -p 7777 -w db.json",
     "build": "vite build",
