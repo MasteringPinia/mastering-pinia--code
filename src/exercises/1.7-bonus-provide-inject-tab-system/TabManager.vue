@@ -46,7 +46,7 @@ provide(registerTabKey, (title: Ref<string>) => {
 </script>
 
 <template>
-  <div>
+  <div class="space-x-1 space-y-1">
     <button v-for="[tabId, title] in tabList" :disabled="currentTab === tabId" @click="currentTab = tabId">
       {{ title }}
     </button>
