@@ -44,3 +44,5 @@ export function showMessage(type: LogeMessageType, ...messages: unknown[]) {
 export function showTip(...messages: unknown[]) {
   showMessage('tip', ...messages)
 }
+
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
