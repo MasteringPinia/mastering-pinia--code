@@ -71,7 +71,7 @@ function enlarge() {
         }}</a>
       </h3>
 
-      <div class="relative overflow-y-auto text-xs" :class="[isEnlarged ? '' : 'max-h-52']">
+      <div class="relative overflow-y-auto text-xs" :class="[isEnlarged ? '' : 'max-h-72']">
         <div v-if="currentFailingTests.length" key="failing">
           <span
             class="sticky top-0 z-20 block px-2 mt-1 bg-gray-50/30 dark:bg-gray-900/30"
