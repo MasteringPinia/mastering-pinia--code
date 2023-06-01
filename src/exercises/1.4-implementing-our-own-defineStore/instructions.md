@@ -1,6 +1,7 @@
 # Implementing our own `defineStore()` to understand `effectScope()`
 
-Let's refactor our store to use `effectScope()` and bring it closer to compatibility with SSR. During this exercise, we will create our own `defineStore()` function, similar to pinia's `defineStore()`.
+Let's refactor our store to use `effectScope()` and bring it closer to compatibility with SSR. During this exercise, we
+will create our own `defineStore()` function, similar to pinia's `defineStore()`.
 
 ## 🎯 Goals
 
@@ -29,4 +30,4 @@ const useMyStore = defineStore(() => {
 Optional goals that are not required but can be done later or skipped.
 
 - Create one global `effectScope()` that is the parent of each store's `effectScope()`
-- Make your `useStore()` function automatically _unwrap_ refs and reactive objects
+- Make your `useStore()` function automatically _unwrap_ refs and reactive objects (**this will make tests fail**)
