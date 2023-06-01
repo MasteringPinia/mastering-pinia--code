@@ -72,7 +72,7 @@
   },
   "keywords": [],
   "author": "Eduardo San Martin Morote <posva13@gmail.com> (https://esm.dev)",
-  "license": "GPL-3.0-only",
+  "license": "LicenseRef-LICENSE",
   "bugs": {
     "url": "https://github.com/Posva-Workshops/vue-3-intermediate/issues"
   },
