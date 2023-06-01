@@ -9,3 +9,6 @@ dist-ssr
 *.local
 .env
 pnpm-debug.log
+# This is usually tracked but it's easier for the project to be this way
+typed-router.d.ts
+components.d.ts
