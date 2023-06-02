@@ -16,7 +16,7 @@ const isModalOpened = ref(false)
       <RouterLink class="pb-1 border-b-2 border-dashed hover:border-solid link" to="/">All Exercises</RouterLink>
     </nav>
 
-    <div v-if="route.meta.exerciseData" class="text-xs">
+    <div v-if="route.meta.exerciseData" class="text-xs w-fit">
       <a
         :href="`file://.${route.meta.exerciseData.filepath}`"
         role="button"
@@ -50,5 +50,6 @@ const isModalOpened = ref(false)
 <style scoped>
 header {
   background-image: linear-gradient(to top, var(--nc-bg-gradient), var(--nc-bg-1));
+  view-transition-name: main-header;
 }
 </style>

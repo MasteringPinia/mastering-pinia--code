@@ -6,3 +6,11 @@ ul {
   /* undone by tailwind */
   list-style: disc;
 }
+
+[data-vt-name='figure'] {
+  view-transition-name: figure;
+}
+
+[data-vt-name='title'] {
+  view-transition-name: title;
+}

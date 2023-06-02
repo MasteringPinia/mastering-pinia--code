@@ -153,6 +153,10 @@ details {
   border-radius: 0;
 }
 
+#test-runner {
+  view-transition-name: test-runner;
+}
+
 #test-runner-status {
   animation-delay: 160ms;
 }

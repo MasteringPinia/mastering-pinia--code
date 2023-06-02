@@ -21,6 +21,27 @@ export const router = createRouter({
   },
 })
 
+router.beforeEach(to => {
+  const vtElements: HTMLElement[] = Array.from(document.querySelectorAll('[data-vt-name]'))
+
+  to.meta.vtEls = vtElements
+
+  for (const el of vtElements) {
+    el.dataset.vtNameOld = el.dataset.vtName!
+    delete el.dataset.vtName
+    el.style.viewTransitionName = ''
+    console.log('reset transition for', el)
+  }
+})
+router.afterEach((to, from, error) => {
+  if (error && to.meta.vtElements) {
+    to.meta.vtElements.forEach((el: HTMLElement) => {
+      el.dataset.vtName = el.dataset.vtNameOld
+      console.log('restored', el)
+    })
+  }
+})
+
 export const exerciseLinks = router
   .getRoutes()
   .filter(route => route.meta.exerciseData)
