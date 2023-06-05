@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { exerciseLinks } from '../router'
+</script>
+
 <template>
   <h2 class="mb-6">Exercises:</h2>
 
@@ -7,7 +11,3 @@
     </li>
   </ul>
 </template>
-
-<script setup lang="ts">
-import { exerciseLinks } from '../router'
-</script>
