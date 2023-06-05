@@ -88,12 +88,12 @@ export default defineConfig({
 
   // config for vitest
   // test: {
-  //   // enable it, describe, and other globals so we don't need to import them from vitest
   //   environment: 'happy-dom',
   //   coverage: {
   //     exclude: ['**/*.{spec,test}.*'],
   //   },
-  //   globals: true,
+  //   // when set to true, it globally enables `describe`, `it`, and other globals
+  //   globals: false,
   //   include: ['./src/exercises/00-testing-*/*.{spec,test}.{js,ts}'],
   // },
 })
