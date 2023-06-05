@@ -17,7 +17,7 @@
     "serve": "vite preview",
     "lint": "eslint --ext=.ts,.vue src tests",
     "dev:test": "vitest",
-    "internal:test": "IS_TEST_RUN=yes vitest -c tests/vitest.config.ts --no-api",
+    "internal:test": "IS_TEST_RUN=yes vitest run -c tests/vitest.config.ts --no-api",
     "internal:test:types": "vue-tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
