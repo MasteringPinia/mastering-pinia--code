@@ -22,6 +22,6 @@ jobs:
 
       - run: pnpm install
       - run: pnpm run lint
+      - run: pnpm run build # generates the types
       - run: pnpm run internal:test:types
       - run: pnpm run internal:test
-      - run: pnpm run build
