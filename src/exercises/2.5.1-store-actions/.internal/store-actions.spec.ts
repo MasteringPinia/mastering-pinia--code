@@ -3,7 +3,7 @@ import TestComponent from '../index.vue'
 import { describe, it, expect, vi, beforeEach, afterAll } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { useDango } from '../dango'
-import { tipOnFail } from '@tests/utils'
+import { tipOnFail, tipOnFailCaught } from '@tests/utils'
 import { nextTick } from 'vue'
 
 describe('store actions', () => {
@@ -90,10 +90,25 @@ describe('store actions', () => {
   it('startEating returns a Promise', async () => {
     setActivePinia(createPinia())
     const dango = useDango()
+    const spy = vi.spyOn(globalThis, 'setInterval')
+    await tipOnFailCaught(
+      async () => {
+        dango.startEating()
+        await vi.runAllTimersAsync()
+        expect(spy).not.toHaveBeenCalled()
+      },
+      `You seem to be using setInterval but that would not allows us to return a Promise that resolves when the eating is done. Try to use "await" within a while loop instead:`,
+
+      `\`\`\`js
+while (this.amount > 0) {
+  // wait 500ms
+  await new Promise(resolve => setTimeout(resolve, 500))
+}
+\`\`\``,
+    )
     tipOnFail(() => {
       expect(dango.startEating()).toBeInstanceOf(Promise)
-      console.log('what')
-    }, 'Using async/await will definitely make your life easier here')
+    }, 'Make sure "startEating()" returns a Promise! Making it "async" should do the trick.')
   })
 
   it('startEating calls eatDango until no dangos are left', async () => {

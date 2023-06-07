@@ -6,6 +6,8 @@ import { LogeMessageType } from '@/.internal/utils/logging'
  * @param fn - function to run, can throw error or return false
  * @param messageTips - messages to show on fail
  */
+export function tipOnFail(fn: () => Promise<unknown>, ...messageTips: unknown[]): Promise<void>
+export function tipOnFail(fn: () => unknown, ...messageTips: unknown[]): void
 export function tipOnFail(fn: () => unknown, ...messageTips: unknown[]): Promise<void> | void {
   try {
     const result = fn()
@@ -30,6 +32,25 @@ export function tipOnFail(fn: () => unknown, ...messageTips: unknown[]): Promise
   } catch (e) {
     showTip(...messageTips)
     throw e
+  }
+}
+
+export function tipOnFailCaught(fn: () => Promise<unknown>, ...messageTips: unknown[]): Promise<void>
+export function tipOnFailCaught(fn: () => unknown, ...messageTips: unknown[]): void
+export function tipOnFailCaught(fn: () => unknown, ...messageTips: unknown[]): Promise<void> | void {
+  try {
+    const result = tipOnFail(fn, ...messageTips)
+    if (isPromise(result)) {
+      return result
+        .catch(() => {
+          // ignore error
+        })
+        .then(() => {
+          // to add the void return type
+        })
+    }
+  } catch (e) {
+    // ignore error
   }
 }
 

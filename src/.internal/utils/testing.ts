@@ -14,16 +14,33 @@ export const PORT = '51205'
 export const HOST = [location.hostname, PORT].filter(Boolean).join(':')
 export const ENTRY_URL = `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${HOST}/__vitest_api__`
 const RETRIES = 20
-const MESSAGE_RE = /^__MESSAGE\[([^\]]+)\]\s*(.*)$/gim
+// allows to extract the logType and messages
+// s to match newlines with "."
+// const MESSAGE_RE = /^__MESSAGE\[([^\]]+)\]\s*(.*)/is
+const MESSAGE_TYPE_RE = /^\[([^\]]+)\]\s*(.*)/is
+const MESSAGE_MARKER = '__MESSAGE'
 
 export type RunState = 'idle' | 'running'
 
 function handleTestConsoleLogs(log: UserConsoleLog) {
-  if (log.type === 'stdout' && log.content.startsWith('__MESSAGE[')) {
-    const match = MESSAGE_RE.exec(log.content)
-    if (match) {
-      const [, logType, message] = match
-      showMessage(logType as LogMessageTypeEnum, {}, message)
+  if (log.type === 'stdout' && log.content.startsWith(MESSAGE_MARKER)) {
+    // one log content can contain multiple messages
+    const messages = log.content
+      // remove the initial marker
+      .slice(MESSAGE_MARKER.length)
+      // Remove the last empty line added by log
+      .replace(/\n$/, '')
+      // the newline removes empty lines between grouped logs
+      // while still matching the first
+      .split('\n__MESSAGE')
+
+    for (const message of messages) {
+      const match = MESSAGE_TYPE_RE.exec(message)
+      if (match) {
+        const [, logType, messages] = match
+        // split by line to apply the custom formatting
+        showMessage(logType as LogMessageTypeEnum, {}, ...messages.split('\n'))
+      }
     }
   } else if (log.type === 'stderr') {
     showMessage('error', {}, `Failed running test`, log.content)
