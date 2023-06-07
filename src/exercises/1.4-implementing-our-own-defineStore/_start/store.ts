@@ -11,6 +11,7 @@ let store: {
 export function useCountStore() {
   if (!store) {
     const n = ref(0)
+    // variable instead of function because functions are hoisted
     const increment = (amount = 1) => {
       n.value += amount
     }
