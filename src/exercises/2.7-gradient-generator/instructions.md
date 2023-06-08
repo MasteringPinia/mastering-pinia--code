@@ -2,9 +2,14 @@
 
 ![Gradient Generator](./.internal/screenshot.png)
 
-During this exercise, you will build a gradient generator. The user should be able to select different colors and see
-the gradient change in real time. We will add the ability to generate random gradients. The user will be able to
-visualize the CSS code for the gradient and copy it to the clipboard with the press of a button.
+During this exercise, you will build a gradient generator setup store and hook it up to a nice UI.
+
+The user should be able to select different colors and see the gradient change in real time.
+
+We will add the ability to generate random gradients.
+
+The user will be able to visualize the CSS code for the gradient and copy it to the clipboard with the press of a
+button.
 
 ## 📝 Your Notes
 
@@ -12,16 +17,22 @@ Write your notes or questions here.
 
 ## 🎯 Goals
 
-- Store the different colors of the gradient in an array named `colors`
-- Generate the CSS gradient using the array
-- Apply that gradient as a `background-image` property to the `.gradient-preview` element
-- Allow changing the color using the `<input type="color">` element (a native color picker)
-- Create a function that allows adding a new color to the gradient
-- Allow removing colors from the gradient
-  - The user should not be able to remove a color if there are only two colors left
-- Add an `angle` property to the store so the user can control the angle of the gradient
-- Display the preview of the CSS code for the gradient
-- Add a button that allows the user to copy it to the clipboard
+- Inside of the `GradientGenerator` store:
+  - Store the different colors of the gradient in an array named `colors`
+  - Add an `angle` property to the store so the user can control the angle of the gradient
+  - Generate the CSS gradient using the colors and the angle
+  - Create a function that allows adding a new color to the gradient
+  - Create a function that allows removing a color from the gradient
+    - (The user should not be able to remove a color if there are only two colors left)
+  - Create a function to randomize the array
+  - Create a funciton to reset the colors
+- Use the `GradientGenerator` in the component to:
+  - Apply the gradient as a `background-image` property to the `.gradient-preview` element
+  - Allow changing the color using the `<input type="color">` element (a native color picker)
+  - Display the preview of the CSS code for the gradient
+  - Hookup the UI buttons to the proper store functions
+  - Add a button that allows the user to copy it to the clipboard
+    - 💡HINT: VueUse is installed and exposes a useClipboard composable
 
 ## 💪 Extra goals
 
