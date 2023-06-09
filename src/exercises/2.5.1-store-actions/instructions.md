@@ -23,8 +23,3 @@ Write your notes or questions here.
   - Ensure `startEating` stops if `isEating` is false
 - Create an action named `stopEating` that stops eating dangos
 - Call that action when the user clicks on the "Stop eating!" button
-
-Hints:
-
-- `startEating` should return a promise and run as
-- If they are calling setInterval instead of setTimeout, hint them
