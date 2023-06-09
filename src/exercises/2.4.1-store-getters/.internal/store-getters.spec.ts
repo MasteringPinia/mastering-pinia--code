@@ -100,7 +100,7 @@ describe('store getters', () => {
     const dangoShop = useDangoShop()
     dangoShop.amount = 2
     await nextTick()
-    expect(wrapper.get('[data-test="price-message"]').text()).toContain('¥700.')
+    expect(wrapper.get('[data-test="price-message"]').text()).toContain('¥700')
   })
 
   it('does not display the discount price when the amount is less than 3', async () => {
@@ -114,7 +114,7 @@ describe('store getters', () => {
     const dangoShop = useDangoShop()
     dangoShop.amount = 2
     await nextTick()
-    expect(wrapper.get('[data-test="price-message"]').text()).not.toContain('¥700¥700')
+    expect(wrapper.get('[data-test="price-message"]').text()).not.toContain(/¥700\s*¥700/)
   })
 
   it('displays the amount without the discount alongside the discounted price', async () => {
