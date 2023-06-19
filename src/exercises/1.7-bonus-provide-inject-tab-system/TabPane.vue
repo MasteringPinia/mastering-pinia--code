@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { inject, onUnmounted, toRef } from 'vue'
-import { registerTabKey } from './injectionKey'
+import { inject, toRef } from 'vue'
+import { useTabKey } from './injectionKey'
 
 const props = defineProps<{ title: string }>()
 
-const registerTab = inject(registerTabKey)!
-
-const { isVisible, unregister } = registerTab(toRef(props, 'title'))
-onUnmounted(unregister)
+const useTab = inject(useTabKey)!
+const { isVisible } = useTab(toRef(props, 'title'))
 </script>
 
 <template>

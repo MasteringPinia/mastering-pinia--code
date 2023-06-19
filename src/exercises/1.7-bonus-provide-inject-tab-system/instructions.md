@@ -8,7 +8,7 @@ the time. One example of this is a Tab Manager / System: where two components, `
 together to display one single tab at a time:
 
 ```vue
-<TabManager>
+<TabManager v-model="currentTab">
   <TabPane title="Overview">
     Overview of the restaurant
   </TabPane>
@@ -31,19 +31,34 @@ Write your notes or questions here.
 
 ## 🎯 Goals
 
-- Find a way to store what `TabPanes` are currently _registered_ within `TabManager`
-- Each `TabPane` should allow customizing its `title` with a prop
+- Allow each `TabPane` to customize its `title` with a prop
+  - It will be the only prop you will need to pass to `TabPane`
+- Start by displaying all the `TabPane`s content ("This is Tab 1" will be displayed at the same time as "This is Tab 2",
+- Find a way to store what `TabPane`s are currently _registered_ within `TabManager`
+  - Each `TabPane` should _communicate_ to `TabManager` that it exists
+  - Use the injection key inside `injectionKey.ts` for `provide`/`inject`
+    - Replace the `TODO` type with the type of what you want to provide etc.). We will focus later on only displaying
+      the currently selected tab
 - `TabManager` should display one button per `TabPane`
-- Use the injection key inside `injectionKey.ts` for `provide`/`inject`
-- Each button should display the `title` prop
-- Clicking on the buttons should switch tabs
+- Each button should display the `title` prop corresponding to its associated `TabPane`
+- Clicking on the buttons should switch between tabs
 - Disable the currently selected tab's button
-- Ensure the minimal information is passed from `TabManager` to `TabPane`
+- Find A way to only display the currently selected tab
+  - `TabManager` should be the one holding the state of the currently selected tab. This information should be
+    serializable (a number or string). It will be necessary for one of the extra goals
+- Ensure changes to the `title` prop are reflected on the buttons. You can try this by changing the total of tabs
 
 ## 💪 Extra goals
 
 _Extra goals might not have any tests and can be done later or skipped._
 
-- Allow `TabManager` to accept both a v-model and no v-model
+- Ensure the minimal information is passed from `TabManager` to `TabPane`
+  - `TabPane` should not know about the other `TabPane`s
+  - `TabPane` should not know about the currently selected tab
+  - `TabPane` should **only know** if it is selected or not
+- Allow `TabManager` to accept both a `v-model` to control the currently selected tab
+- Allow `TabManager` to work without a `v-model`
 - Connect the current tab to the URL using a query
-- Ensure changes to the `title` prop are reflected on the buttons
+  - Changing the tab should update the URL
+  - Changing the URL should update the tab
+  - It's better to use a composable for this than to write any new logic in `TabManager`

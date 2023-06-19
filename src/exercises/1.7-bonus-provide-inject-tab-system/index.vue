@@ -4,7 +4,6 @@ import TabManager from './TabManager.vue'
 import TabPane from './TabPane.vue'
 
 const n = ref(4)
-
 const currentTab = ref(0)
 // We could also connect the currentTab to the route
 // const routeTab = useRouteQuery<string>('tab', '', { mode: 'push' })

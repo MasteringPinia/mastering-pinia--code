@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, provide, reactive, ref, Ref, watch } from 'vue'
-import { registerTabKey } from './injectionKey'
+import { computed, onUnmounted, provide, reactive, ref, Ref, watch } from 'vue'
+import { useTabKey } from './injectionKey'
 
 const props = defineProps<{ modelValue?: number }>()
 const emit = defineEmits<{
@@ -23,7 +23,7 @@ const tabList = reactive(new Map<number, string>())
 
 let currentId = 0
 
-provide(registerTabKey, (title: Ref<string>) => {
+provide(useTabKey, (title: Ref<string>) => {
   const myId = currentId++
 
   tabList.set(myId, title.value)
@@ -32,15 +32,14 @@ provide(registerTabKey, (title: Ref<string>) => {
     tabList.set(myId, title.value)
   })
 
-  function unregister() {
+  onUnmounted(() => {
     tabList.delete(myId)
-  }
+  })
 
   const isVisible = computed(() => currentTab.value === myId)
 
   return {
     isVisible,
-    unregister,
   }
 })
 </script>
