@@ -6,7 +6,7 @@ const showPage = ref(true)
 </script>
 
 <template>
-  <button @click="showPage = !showPage">Toggle page</button>
+  <button data-test="toggle" @click="showPage = !showPage">Toggle page</button>
 
   <MyPage v-if="showPage" />
   <MyPage v-if="showPage" />
