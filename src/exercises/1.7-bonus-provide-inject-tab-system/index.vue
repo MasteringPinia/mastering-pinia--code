@@ -5,14 +5,6 @@ import TabPane from './TabPane.vue'
 
 const n = ref(4)
 const currentTab = ref(0)
-// We could also connect the currentTab to the route
-// const routeTab = useRouteQuery<string>('tab', '', { mode: 'push' })
-// const currentTab = computed<number>({
-//   get: () => Number(routeTab.value) || 0,
-//   set(tab) {
-//     routeTab.value = String(tab)
-//   },
-// })
 </script>
 
 <template>

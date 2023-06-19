@@ -41,11 +41,12 @@ Write your notes or questions here.
       the currently selected tab
 - `TabManager` should display one button per `TabPane`
 - Each button should display the `title` prop corresponding to its associated `TabPane`
-- Clicking on the buttons should switch between tabs
-- Disable the currently selected tab's button
-- Find A way to only display the currently selected tab
+- Each `TabPane` should display its content, start by displaying all of them
+- Find a way to only display the currently selected tab
   - `TabManager` should be the one holding the state of the currently selected tab. This information should be
     serializable (a number or string). It will be necessary for one of the extra goals
+- Clicking on the buttons should switch between tabs
+- Disable the currently selected tab's button
 - Ensure changes to the `title` prop are reflected on the buttons. You can try this by changing the total of tabs
 
 ## 💪 Extra goals
