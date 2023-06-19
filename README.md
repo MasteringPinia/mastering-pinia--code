@@ -1,4 +1,4 @@
-# Vue 3 Intermediate Workshop
+# Mastering State Management Exercise Platform
 
 ## Prerequisites
 
@@ -37,4 +37,5 @@ parallel and require ports 5173, 7777, and 5555. Make sure to not have any appli
 
 ### Verifying your solution
 
-If you have failing tests, you can visit [http://localhost:51205/\_\_vitest\_\_/](http://localhost:51205/__vitest__/) to get more information about the failing tests.
+If you have failing tests, you can visit [http://localhost:51205/\_\_vitest\_\_/](http://localhost:51205/__vitest__/) to
+get more information about the failing tests.

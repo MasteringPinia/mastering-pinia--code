@@ -10,7 +10,7 @@ const isModalOpened = ref(false)
 
 <template>
   <header>
-    <h1>Vue 3 Workshop</h1>
+    <h1>Mastering State Management</h1>
 
     <nav>
       <RouterLink class="pb-1 border-b-2 border-dashed hover:border-solid link" to="/">All Exercises</RouterLink>

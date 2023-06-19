@@ -10,7 +10,7 @@ if (
 ) {
   showMessage(
     LogMessageTypeEnum.tip,
-    { label: '👋 Welcome!', title: `Let's get you started with the workshop, click here 👇`, endGroup: false },
+    { label: '👋 Welcome!', title: `Let's get you started with the Exercise Platform, click here 👇`, endGroup: false },
     'Tips should help you unblock your way through exercises.',
     'Only unveil them after being blocked for at least a few minutes!',
     'You can completely disable tips by executing the following snippet in the console:',

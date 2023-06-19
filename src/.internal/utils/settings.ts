@@ -19,7 +19,7 @@ export function createSettingsManager<
 >(
   initialSettings: S,
   inputTypes: I,
-  prefix = 'posva:workshop:vue 3',
+  prefix = 'posva:mastering-state-management-course',
 ): S & {
   readonly $initial: Readonly<S>
   $reset(): void
