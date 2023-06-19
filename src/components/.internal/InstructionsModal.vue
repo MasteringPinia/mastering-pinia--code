@@ -85,6 +85,7 @@ function closeIfOutside(event: MouseEvent) {
   <!-- @cancel is triggered when pressing Esc on some browsers -->
   <dialog
     id="instructions-modal"
+    class="max-w-6xl md:w-5/6 w-11/12 h-5/6 m-auto"
     aria-describedby="instructions"
     aria-modal="true"
     @transitionend="_updateCloseState"
@@ -115,7 +116,7 @@ function closeIfOutside(event: MouseEvent) {
         </nav>
       </header>
 
-      <main id="instructions">
+      <main id="instructions" class="mx-auto w-full max-w-4xl">
         <Instructions />
       </main>
     </div>
@@ -151,9 +152,6 @@ function closeIfOutside(event: MouseEvent) {
 
   transform: translateY(0px);
 
-  margin: auto auto;
-  width: 80vw;
-  height: 80vh;
   border-radius: 6px;
   overflow-x: hidden;
   word-break: break-word;
@@ -166,6 +164,12 @@ function closeIfOutside(event: MouseEvent) {
 
 #instructions-modal .content {
   padding: 2rem;
+}
+
+/* Make images a bit smaller on big screens */
+#instructions :deep(img) {
+  width: 100%;
+  max-width: 800px;
 }
 
 #instructions-modal::backdrop {
