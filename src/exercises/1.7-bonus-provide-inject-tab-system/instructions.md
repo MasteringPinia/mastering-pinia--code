@@ -1,6 +1,11 @@
 # Tab System with inject/provide
 
-Some components are always meant to be used together, we call these coupled components. Very often they also need a mechanism to communicate with each other to make sure everything is in sync and they render the correct information all the time. One example of this is a Tab Manager / System: where two components, `<TabManager>` and `<TabPane>` are used together to display one single tab at a time:
+![Tab System](./.internal/screenshot.png)
+
+Some components are always meant to be used together, we call these coupled components. Very often they also need a
+mechanism to communicate with each other to make sure everything is in sync and they render the correct information all
+the time. One example of this is a Tab Manager / System: where two components, `<TabManager>` and `<TabPane>` are used
+together to display one single tab at a time:
 
 ```vue
 <TabManager>
@@ -13,7 +18,12 @@ Some components are always meant to be used together, we call these coupled comp
 </TabManager>
 ```
 
-Semantically, they use _slots_ to be expressive. Internally, they rely on `inject`/`provide` to keep everything in sync. Let's build them!
+Semantically, they use _slots_ to be expressive. Internally, they rely on `inject`/`provide` to keep everything in sync.
+Let's build them!
+
+NOTE: this is a bonus exercise, it's meant **to be really hard** and push you to your limits. It goes beyond what has
+been taught in the course so far. **It's completely okay to give up in the middle of it**. Feel free to completely skip
+it as **it's not needed to fully understand Pinia**.
 
 ## 📝 Your Notes
 
