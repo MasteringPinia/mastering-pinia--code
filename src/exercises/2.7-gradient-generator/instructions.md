@@ -20,13 +20,16 @@ Write your notes or questions here.
 - Allow removing colors from the gradient
   - The user should not be able to remove a color if there are only two colors left
 - Add an `angle` property to the store so the user can control the angle of the gradient
+- Use the angle in the generated gradient
 - Display the preview of the CSS code for the gradient
 - Add a button that allows the user to copy it to the clipboard
+
+> 💡 HINT: VueUse is installed and exposes a `useClipboard()` composable
 
 ## 💪 Extra goals
 
 _Extra goals might not have any tests and can be done later or skipped._
 
-As an extra goal, let's add a history of all the generated gradients. Everytime the user randomizes the gradient, we
+As an extra goal, let's add a history of all the generated gradients. Every time the user randomizes the gradient, we
 save the current one into an array. Then you can display the list with a `<select>` and let the user go back to any
 previous gradient.
