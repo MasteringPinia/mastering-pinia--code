@@ -3,10 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node create-screenshots.mjs ../src/exercises/*/",
+    "screenshot": "node create-screenshots.mjs",
+    "screenshot:all": "node create-screenshots.mjs ../src/exercises/*/",
     "optimize": "open -a ImageOptim ../src/exercises/*/.internal/*.png"
   },
   "dependencies": {
+    "minimist": "^1.2.8",
     "puppeteer": "^20.7.4"
   }
 }

@@ -1,19 +1,42 @@
 import puppeteer from 'puppeteer'
 import path from 'node:path'
-;(async () => {
-  // Start local server
-  console.log('Starting local server...')
-  // Add the command to start the local server here
+import minimist from 'minimist'
+import { spawn } from 'node:child_process'
 
-  // Wait for server to start
-  // await new Promise(resolve => setTimeout(resolve, 3000))
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+//
+;(async () => {
+  const argv = minimist(process.argv.slice(2), {})
+
+  const waitTime = Number(argv.wait || argv.w) || 0
 
   // Retrieve the folders from command line arguments
-  const folders = process.argv.slice(2)
+  const folders = argv._
+
+  if (!folders.length) {
+    console.error('No folders specified')
+    process.exit(1)
+  }
+
+  // Start local server
+  console.log('Starting local server...')
+  const PORT = 5173
+  const server = spawn('pnpm', ['exec', 'vite', '--port', PORT], {
+    cwd: path.join(path.dirname(new URL(import.meta.url).pathname), '..'),
+  })
+
+  // let the server start
+  await sleep(1000)
+
+  server.on('error', error => {
+    console.error('Error starting local server')
+    console.error(error)
+    process.exit(1)
+  })
 
   // Launch Puppeteer
   const browser = await puppeteer.launch({
-    headless: 'new',
+    headless: waitTime ? false : 'new',
   })
   const page = await browser.newPage()
 
@@ -32,7 +55,7 @@ import path from 'node:path'
 
     try {
       // Navigate to the URL
-      const url = `http://localhost:5173/${transformedFolder}?hideTests`
+      const url = `http://localhost:${PORT}/${transformedFolder}?hideTests`
       await page.goto(url)
 
       // Wait for the content to load
@@ -44,10 +67,12 @@ import path from 'node:path'
       // Capture the screenshot
       console.log(`Capturing light mode screenshot...`)
       await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' }])
+      await sleep(waitTime)
       await page.screenshot({ path: path.join(folderPath, '.internal/screenshot-light.png') })
 
       console.log(`Capturing dark mode screenshot...`)
       await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'dark' }])
+      await sleep(waitTime)
       await page.screenshot({ path: path.join(folderPath, '.internal/screenshot-dark.png') })
 
       console.log(`Screenshot captured for folder: ${transformedFolder}`)
@@ -62,7 +87,7 @@ import path from 'node:path'
 
   // Stop local server
   console.log('Stopping local server...')
-  // Add the command to stop the local server here
+  server.kill('SIGINT')
 
   console.log('Done ✅')
 })()
