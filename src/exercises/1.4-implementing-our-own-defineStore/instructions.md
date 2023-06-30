@@ -1,5 +1,10 @@
 # Implementing our own `defineStore()` to understand `effectScope()`
 
+<picture>
+  <source srcset="./.internal/screenshot-dark.png" media="(prefers-color-scheme: dark)">
+  <img src="./.internal/screenshot-light.png">
+</picture>
+
 Let's refactor our store to use `effectScope()` and bring it closer to compatibility with SSR. During this exercise, we
 will create our own `defineStore()` function, similar to pinia's `defineStore()`.
 

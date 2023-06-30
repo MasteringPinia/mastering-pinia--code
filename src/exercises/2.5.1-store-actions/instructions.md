@@ -1,5 +1,10 @@
 # Store getters
 
+<picture>
+  <source srcset="./.internal/screenshot-dark.png" media="(prefers-color-scheme: dark)">
+  <img src="./.internal/screenshot-light.png">
+</picture>
+
 Let's review actions actions in Pinia. In this exercise, we will practice with actions and enjoy eating some yummy
 dangos in the process!
 

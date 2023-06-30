@@ -1,6 +1,13 @@
 # Dependency Injection: Using `inject()` and `provide()` for our `defineStore()`
 
-Let's refactor our store to use what we just saw and bring it a bit closer to compatibility with SSR. During this exercise, we will refactor the `defineStore()` function from the previous exercise and rely on `effectScope()`, `inject()` `provide()` to make it more robust.
+<picture>
+  <source srcset="./.internal/screenshot-dark.png" media="(prefers-color-scheme: dark)">
+  <img src="./.internal/screenshot-light.png">
+</picture>
+
+Let's refactor our store to use what we just saw and bring it a bit closer to compatibility with SSR. During this
+exercise, we will refactor the `defineStore()` function from the previous exercise and rely on `effectScope()`,
+`inject()` `provide()` to make it more robust.
 
 ## 📝 Your Notes
 

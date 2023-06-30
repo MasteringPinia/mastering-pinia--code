@@ -1,5 +1,10 @@
 # Tab System with inject/provide
 
+<picture>
+  <source srcset="./.internal/screenshot-dark.png" media="(prefers-color-scheme: dark)">
+  <img src="./.internal/screenshot-light.png">
+</picture>
+
 ![Tab System](./.internal/screenshot.png)
 
 Some components are always meant to be used together, we call these coupled components. Very often they also need a
