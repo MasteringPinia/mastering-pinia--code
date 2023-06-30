@@ -1,6 +1,9 @@
 # Building a Gradient Generator
 
-![Gradient Generator](./.internal/screenshot.png)
+<picture>
+  <source srcset="./.internal/screenshot-dark.png" media="(prefers-color-scheme: dark)">
+  <img src="./.internal/screenshot-light.png">
+</picture>
 
 During this exercise, you will build a gradient generator. The user should be able to select different colors and see
 the gradient change in real time. We will add the ability to generate random gradients. The user will be able to
