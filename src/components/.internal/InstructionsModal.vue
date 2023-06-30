@@ -143,6 +143,13 @@ function closeIfOutside(event: MouseEvent) {
   }
 }
 
+#instructions :deep(img:first-of-type) {
+  @apply border rounded-lg my-6;
+  border-color: var(--nc-bg-3);
+  /* border: 1px solid var(--nc-bg-3);
+  border-radius: 0.5rem; */
+}
+
 #instructions-modal:modal {
   background-color: var(--nc-bg-1);
   color: currentColor;

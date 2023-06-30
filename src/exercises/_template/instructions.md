@@ -1,5 +1,10 @@
 # Title
 
+<picture>
+  <source srcset="./.internal/screenshot-dark.png" media="(prefers-color-scheme: dark)">
+  <img src="./.internal/screenshot-light.png">
+</picture>
+
 short description
 
 ## 📝 Your Notes
