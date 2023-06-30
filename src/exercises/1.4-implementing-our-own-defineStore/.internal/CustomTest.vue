@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+import { Ref } from 'vue'
+
 const props = defineProps<{
   useStore: () => {
-    double: number
-    n: number
+    double: Ref<number>
+    n: Ref<number>
   }
 }>()
 
