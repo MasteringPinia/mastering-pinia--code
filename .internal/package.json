@@ -1,0 +1,12 @@
+{
+  "name": "internal-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node create-screenshots.mjs ../src/exercises/*/",
+    "optimize": "open -a ImageOptim ../src/exercises/*/.internal/*.png"
+  },
+  "dependencies": {
+    "puppeteer": "^20.7.4"
+  }
+}
