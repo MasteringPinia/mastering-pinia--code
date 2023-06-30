@@ -1,5 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { computed, ref, shallowRef } from 'vue'
+import { useClipboard } from '@vueuse/core'
 
 export const useGradientGenerator = defineStore('gradient-generator', () => {
   const colors = ref<string[]>(['#00c9ff', '#92fe9d'])
@@ -49,6 +50,12 @@ export const useGradientGenerator = defineStore('gradient-generator', () => {
     angle.value = Math.floor(Math.random() * 360)
   }
 
+  const { copy } = useClipboard({})
+
+  function copyToClipboard() {
+    return copy(`background-color: ${background.value};`)
+  }
+
   function $reset() {
     saveColors()
     angle.value = 90
@@ -65,6 +72,7 @@ export const useGradientGenerator = defineStore('gradient-generator', () => {
     removeColor,
     $reset,
     saveColors,
+    copyToClipboard,
   }
 })
 

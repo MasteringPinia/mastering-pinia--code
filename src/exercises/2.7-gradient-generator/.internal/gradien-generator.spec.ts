@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import TestComponent from '../index.vue'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { useGradientGenerator } from '../gradient-generator'
 import { tipOnFail } from '@tests/utils'
@@ -60,5 +60,28 @@ describe('Gradient Generator', () => {
     // expect(window.getComputedStyle(el).backgroundColor).toBe(
     //   'linear-gradient(90deg, rgb(0, 201, 255), rgb(146, 254, 157))',
     // )
+  })
+
+  it('copies the gradient as a CSS rule to the clipboard', async () => {
+    if (!navigator.clipboard) {
+      // @ts-expect-error: readonly
+      navigator.clipboard = {
+        writeText: vi.fn(() => Promise.resolve()),
+        readText: vi.fn(() => Promise.resolve('read')),
+      }
+    } else {
+      vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue(undefined)
+      vi.spyOn(navigator.clipboard, 'readText').mockResolvedValue('read')
+    }
+    const wrapper = mount(TestComponent, {
+      global: {
+        plugins: [createPinia()],
+      },
+    })
+
+    await wrapper.get('[data-test="btn-clipboard"]').trigger('click')
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      expect.stringMatching(/background-color: linear-gradient\([^)]+\);/),
+    )
   })
 })

@@ -17,11 +17,16 @@ const historyColor = computed({
   <h1 class="mb-5">Gradient Generator</h1>
 
   <div class="my-2">
-    <button class="mr-1" data-test="btn-reset" @click="gradient.$reset()">Reset</button>
-    <button class="mr-1" data-test="btn-randomize" @click="gradient.randomize(2 + Math.floor(Math.random() * 2))">
-      Randomize
-    </button>
+    <div class="space-x-1">
+      <button data-test="btn-reset" @click="gradient.$reset()">Reset</button>
+      <button data-test="btn-randomize" @click="gradient.randomize(2 + Math.floor(Math.random() * 2))">
+        Randomize
+      </button>
+      <button data-test="btn-clipboard" @click="gradient.copyToClipboard()">Copy to Clipboard</button>
+    </div>
+
     <hr />
+
     <label>
       Revert to a previous color:
       <select v-model="historyColor" data-test="history-value" class="max-w-full" title="Saved Colors">
