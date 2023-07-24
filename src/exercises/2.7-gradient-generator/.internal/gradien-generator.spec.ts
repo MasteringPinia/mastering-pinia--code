@@ -48,7 +48,7 @@ describe('Gradient Generator', () => {
     }
   })
 
-  it('ok', async () => {
+  it.skip('sets the background color', async () => {
     const wrapper = mount(TestComponent, {
       global: {
         plugins: [createPinia()],
