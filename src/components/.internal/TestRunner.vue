@@ -20,7 +20,9 @@ const {
 const isEnlarged = ref(false)
 
 const route = useRoute()
-const isHidden = computed(() => 'hideTests' in route.query)
+const isForcefullyHidden = computed(() => 'hideTests' in route.query)
+const isHidden = computed(() => isForcefullyHidden.value || isMinimized.value)
+const isMinimized = ref(false)
 
 const isRunFinished = computed(() => testResult.value === 'fail' || testResult.value === 'pass')
 
@@ -49,12 +51,12 @@ function enlarge() {
       v-if="hasTests && !isHidden"
       id="test-runner"
       :key="title"
-      class="fixed z-50 m-0 border border-gray-800 rounded-lg dark:border-gray-300 bg-gray-50 dark:bg-gray-900 bottom-10 left-4"
+      class="fixed bottom-10 left-4 z-50 m-0 border border-gray-800 rounded-lg dark:border-gray-300 bg-gray-50 dark:bg-gray-900"
       :class="[isEnlarged ? 'right-4 top-10 bg-opacity-75 dark:bg-opacity-70' : 'w-72']"
     >
       <h3
-        class="sticky top-0 z-30 flex px-3 py-1 m-0 text-sm font-bold border-b-2 border-solid rounded-t-lg border-light-100 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-900/30"
-        :class="[isEnlarged ? '' : 'backdrop-blur']"
+        class="sticky top-0 z-30 flex px-3 py-1 m-0 text-sm font-bold border-solid border-light-100 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-900/30"
+        :class="[isEnlarged ? '' : 'backdrop-blur', isMinimized ? 'rounded-lg' : 'rounded-t-lg border-b-2']"
       >
         <span
           id="test-runner-status"
@@ -65,13 +67,31 @@ function enlarge() {
         >
         <span>{{ title }}</span>
         <span class="flex-grow"></span>
-        <a href="#" role="button" title="Rerun tests" @click="rerun">▶️</a>
-        <a href="#" role="button" :title="isEnlarged ? 'Collapse' : 'Enlarge'" @click="enlarge">{{
-          isEnlarged ? '↙' : '↗️'
-        }}</a>
+        <a
+          href="#"
+          class="font-serif"
+          role="button"
+          title="Hide test runner"
+          aria-label="Hide test runner"
+          @click.prevent="isMinimized = true"
+          >&#x2b05;&#xFE0F;</a
+        >
+        <!-- ⬅ -->
+        <a href="#" class="font-serif" role="button" title="Rerun tests" aria-label="Rerun tests" @click.prevent="rerun"
+          >&#x25b6;&#xFE0F;</a
+        >
+        <a
+          href="#"
+          class="font-serif"
+          role="button"
+          :aria-label="isEnlarged ? 'Collapse' : 'Enlarge'"
+          :title="isEnlarged ? 'Collapse' : 'Enlarge'"
+          @click.prevent="enlarge"
+          >{{ isEnlarged ? '↙️' : '↗️' }}</a
+        >
       </h3>
 
-      <div class="relative overflow-y-auto text-xs" :class="[isEnlarged ? '' : 'max-h-72']">
+      <div v-if="!isMinimized" class="relative overflow-y-auto text-xs" :class="[isEnlarged ? '' : 'max-h-72']">
         <div v-if="currentFailingTests.length" key="failing">
           <span
             class="sticky top-0 z-20 block px-2 mt-1 bg-gray-50/30 dark:bg-gray-900/30"
@@ -118,6 +138,18 @@ function enlarge() {
         </details>
       </div>
     </section>
+    <div v-else-if="!isForcefullyHidden && hasTests" class="fixed bottom-10 left-4 z-50">
+      <button
+        data-test="btn-show-tests"
+        class="px-3 py-1 text-sm border border-dashed border-gray-500 bg-gray-50 dark:bg-gray-900 group space-x-2"
+        @click="isMinimized = false"
+      >
+        <span id="test-runner-status" :key="runId" :class="isRunFinished && 'animate__animated animate__bounce'">{{
+          currentResult
+        }}</span>
+        <span class="hidden group-hover:inline">Show Test Runner</span>
+      </button>
+    </div>
   </transition>
 </template>
 
