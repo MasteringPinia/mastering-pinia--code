@@ -1,4 +1,4 @@
-# Mastering State Management Exercise Platform
+# Mastering Pinia Exercise Platform
 
 ## Prerequisites
 
