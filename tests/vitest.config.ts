@@ -1,5 +1,4 @@
-import { mergeConfig } from 'vite'
-import { defineConfig } from 'vitest/config'
+import { defineConfig, mergeConfig } from 'vitest/config'
 import baseConfig from '../vite.config'
 
 // extract everything but test to avoid conflicts with exercises
