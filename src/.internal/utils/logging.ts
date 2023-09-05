@@ -56,7 +56,7 @@ export function showMessage<M extends LogMessageTypeEnum>(
   },
   ...messages: any[]
 ) {
-  if (!$settings.showTips && type === LogMessageTypeEnum.tip) return
+  if (!$settings?.showTips && type === LogMessageTypeEnum.tip) return
   // only keep errors and warns in tests
   if (process.env.NODE_ENV !== 'development' && type !== 'error' && type !== 'warn') return
 

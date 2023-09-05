@@ -2,10 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.png" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="/src/index.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css" />
     <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css" />
     <style>
@@ -33,9 +34,11 @@
     </style>
 
     <title>Mastering Pinia Course - Exercise Platform 🧑‍💻</title>
+    <!--preload-links-->
   </head>
   <body class="p-0">
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="app"><!--app-html--></div>
+    <!--pinia-state-->
+    <script type="module" src="/src/entry-client.ts"></script>
   </body>
 </html>

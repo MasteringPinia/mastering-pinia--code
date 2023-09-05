@@ -1,20 +1,38 @@
-import { createApp } from 'vue'
-import 'animate.css'
-import './index.css'
-import '@exampledev/new.css'
+import { createSSRApp, createApp as _createApp } from 'vue'
 import App from './App.vue'
 import { createPinia } from 'pinia'
-import { router } from './router'
-import { ExerciseModule } from './.internal/utils'
+import { createRouter } from './router'
+import type { ExerciseModule } from './.internal/utils'
 import './.internal/utils/welcome'
 
-const pinia = createPinia()
-const app = createApp(App)
+// SSR requires a fresh app instance per request, therefore we export a function
+// that creates a fresh app instance. If using Vuex, we'd also be creating a
+// fresh store here.
+export function createApp() {
+  const app =
+    // avoid a hydration error when doing no SSR
+    !import.meta.env.SSR && new URLSearchParams(location.search).has('no-ssr') ? _createApp(App) : createSSRApp(App)
+  const pinia = createPinia()
+  // hydrate the state on client side
+  if (!import.meta.env.SSR) {
+    pinia.state.value = window.__PINIA_STATE__ || {}
+  }
 
-// install all possible modules from exercises
-const exModules = import.meta.glob<false, string, ExerciseModule>('./exercises/*/.internal/index.ts')
-Promise.all(Object.keys(exModules).map(path => exModules[path]()))
-  .then(modules => modules.map(m => m?.install?.({ pinia, router, app })))
-  .finally(() => {
-    app.use(pinia).use(router).mount('#app')
-  })
+  const router = createRouter()
+
+  // install all possible modules from exercises
+  const exModules = import.meta.glob<false, string, ExerciseModule>('./exercises/*/.internal/index.ts')
+  return Promise.all(Object.keys(exModules).map(path => exModules[path]()))
+    .then(modules => modules.map(m => m?.install?.({ pinia, router, app })))
+    .finally(() => {
+      // we add plugins but we don't mount here
+      app.use(pinia).use(router)
+    })
+    .then(() => ({ app, router, pinia }))
+}
+
+declare global {
+  interface Window {
+    __PINIA_STATE__: any
+  }
+}

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { exerciseLinks } from '../router'
+import { useExerciseLinks } from '../router'
+
+const exerciseLinks = useExerciseLinks()
 </script>
 
 <template>

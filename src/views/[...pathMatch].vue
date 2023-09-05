@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router/auto'
-import { exerciseLinks } from '../router'
+import { useExerciseLinks } from '../router'
+
+const exerciseLinks = useExerciseLinks()
 
 const route = useRoute('/[...pathMatch]')
 </script>

@@ -11,8 +11,10 @@ export type TaskCustom = Exclude<Task, Test | TestFile | Suite>
 export type TestResult = Test | TaskCustom
 
 export const PORT = '51205'
-export const HOST = [location.hostname, PORT].filter(Boolean).join(':')
-export const ENTRY_URL = `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${HOST}/__vitest_api__`
+export const HOST = import.meta.env.SSR ? 'localhost' : [location.hostname, PORT].filter(Boolean).join(':')
+export const ENTRY_URL = `${
+  import.meta.env.SSR || location.protocol === 'https:' ? 'wss:' : 'ws:'
+}//${HOST}/__vitest_api__`
 const RETRIES = 20
 // allows to extract the logType and messages
 // s to match newlines with "."
@@ -254,7 +256,7 @@ export function useTestStatus() {
     } else if (state === 'running') {
       const now = new Date()
 
-      if (++timesRan > 1 && $settings.clearOnTestRun) {
+      if (++timesRan > 1 && $settings!.clearOnTestRun) {
         console.clear()
       }
       showMessage('info', {

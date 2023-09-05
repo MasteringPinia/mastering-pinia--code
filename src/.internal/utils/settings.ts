@@ -44,17 +44,21 @@ export function createSettingsManager<
   return settings
 }
 
-export const $settings = createSettingsManager(
-  {
-    showTips: true,
-    clearOnTestRun: false,
-    hideWelcomeMessage: false,
-    testRunnerPosition: 'bottom-left' as `${'bottom' | 'top'}-${'right' | 'left'}`,
-  },
-  {
-    testRunnerPosition: ['bottom-left', 'bottom-right', 'top-left', 'top-right'] as const,
-  },
-)
+export const $settings =
+  // only create the settings manager in the browser to avoid leaks
+  typeof window !== 'undefined'
+    ? createSettingsManager(
+        {
+          showTips: true,
+          clearOnTestRun: false,
+          hideWelcomeMessage: false,
+          testRunnerPosition: 'bottom-left' as `${'bottom' | 'top'}-${'right' | 'left'}`,
+        },
+        {
+          testRunnerPosition: ['bottom-left', 'bottom-right', 'top-left', 'top-right'] as const,
+        },
+      )
+    : null
 
 declare global {
   export interface Window {

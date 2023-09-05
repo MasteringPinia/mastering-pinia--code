@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import type { MandeError } from 'mande'
+import { useExerciseLinks } from '../router'
+
+const exerciseLinks = useExerciseLinks()
+
+defineProps<{ error: MandeError<{ code: number; msg: string }> }>()
+</script>
+
 <template>
   <h3>{{ error.message }}</h3>
 
@@ -14,10 +23,3 @@
     </li>
   </ul>
 </template>
-
-<script setup lang="ts">
-import type { MandeError } from 'mande'
-import { exerciseLinks } from '../router'
-
-defineProps<{ error: MandeError<{ code: number; msg: string }> }>()
-</script>
