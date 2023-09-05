@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ClientOnly } from './.internal/ClientOnly'
 import TestRunner from './.internal/TestRunner.vue'
 </script>
 
@@ -9,7 +10,9 @@ import TestRunner from './.internal/TestRunner.vue'
     </main>
   </transition>
 
-  <TestRunner />
+  <ClientOnly>
+    <TestRunner />
+  </ClientOnly>
 </template>
 
 <style scoped>

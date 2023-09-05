@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router/auto'
+import { createRouter as _createRouter, createWebHistory, useRouter, createMemoryHistory } from 'vue-router/auto'
 import { Component, TransitionProps } from 'vue'
 import { RouteRecordOverride } from './utils'
 
@@ -6,38 +6,43 @@ const exerciseRoutesOverrides: Record<string, RouteRecordOverride | undefined> =
   // TODO: automatic to all folders with some kind of plugin architecture
 }
 
-export const router = createRouter({
-  history: createWebHistory(),
-  extendRoutes(routes) {
-    for (const route of routes) {
-      if (typeof route.name === 'string' && route.name in exerciseRoutesOverrides) {
-        const oldMeta = route.meta
-        const override = exerciseRoutesOverrides[route.name]!
-        Object.assign(route, override)
-        route.meta = { ...oldMeta, ...override.meta }
+export function createRouter() {
+  const router = _createRouter({
+    history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
+    extendRoutes(routes) {
+      for (const route of routes) {
+        if (typeof route.name === 'string' && route.name in exerciseRoutesOverrides) {
+          const oldMeta = route.meta
+          const override = exerciseRoutesOverrides[route.name]!
+          Object.assign(route, override)
+          route.meta = { ...oldMeta, ...override.meta }
+        }
       }
-    }
-    return routes
-  },
-})
+      return routes
+    },
+  })
 
-export const exerciseLinks = router
-  .getRoutes()
-  .filter(route => route.meta.exerciseData)
-  .sort((a, b) => a.path.localeCompare(b.path))
+  const resolvedLayouts = new Map<string, Component>()
+  router.beforeResolve(async to => {
+    const layout = to.meta.layout || 'default'
+    if (!resolvedLayouts.has(layout)) {
+      resolvedLayouts.set(layout, (await import(`./layouts/${layout}.vue`)).default)
+    }
+
+    to.meta.resolvedLayout = resolvedLayouts.get(layout)!
+  })
+
+  return router
+}
+
+export function useExerciseLinks() {
+  return useRouter()
+    .getRoutes()
+    .filter(route => route.meta.exerciseData)
+    .sort((a, b) => a.path.localeCompare(b.path))
+}
 
 // layout system
-
-const resolvedLayouts = new Map<string, Component>()
-router.beforeResolve(async to => {
-  const layout = to.meta.layout || 'default'
-  if (!resolvedLayouts.has(layout)) {
-    resolvedLayouts.set(layout, (await import(`./layouts/${layout}.vue`)).default)
-  }
-
-  to.meta.resolvedLayout = resolvedLayouts.get(layout)!
-})
-
 // TS extensions
 
 declare module 'vue-router' {

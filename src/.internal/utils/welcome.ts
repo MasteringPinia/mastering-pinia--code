@@ -5,6 +5,7 @@ import { $settings } from './settings'
 if (
   process.env.NODE_ENV === 'development' &&
   typeof window !== 'undefined' &&
+  $settings &&
   !$settings.hideWelcomeMessage &&
   $settings.showTips
 ) {
@@ -58,7 +59,7 @@ if (
 if (typeof window !== 'undefined') {
   window.$settings = $settings
   window.hardMode = function hardMode() {
-    if (!$settings.showTips) {
+    if (!$settings!.showTips) {
       showMessage(
         'info',
         {
@@ -87,7 +88,7 @@ if (typeof window !== 'undefined') {
       },
       `You are a brave one, aren't you?`,
     )
-    $settings.showTips = false
+    $settings!.showTips = false
   }
   // hardMode()
 }

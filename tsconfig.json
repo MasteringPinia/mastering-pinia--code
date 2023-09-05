@@ -43,6 +43,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "src/**/.internal/**/*.ts",
-    "src/**/.internal/**/*.vue"
+    "src/**/.internal/**/*.vue",
+    "server.mjs"
   ]
 }

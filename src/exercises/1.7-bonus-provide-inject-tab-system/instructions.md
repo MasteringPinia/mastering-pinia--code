@@ -5,8 +5,6 @@
   <img src="./.internal/screenshot-light.png">
 </picture>
 
-![Tab System](./.internal/screenshot.png)
-
 Some components are always meant to be used together, we call these coupled components. Very often they also need a
 mechanism to communicate with each other to make sure everything is in sync and they render the correct information all
 the time. One example of this is a Tab Manager / System: where two components, `<TabManager>` and `<TabPane>` are used
