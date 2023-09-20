@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ClientOnly } from './.internal/ClientOnly'
 import TestRunner from './.internal/TestRunner.vue'
 </script>
 

@@ -4,6 +4,7 @@ import { createPinia } from 'pinia'
 import { createRouter } from './router'
 import type { ExerciseModule } from './.internal/utils'
 import './.internal/utils/welcome'
+import { ClientOnly } from './components/.internal/ClientOnly'
 
 // SSR requires a fresh app instance per request, therefore we export a function
 // that creates a fresh app instance. If using Vuex, we'd also be creating a
@@ -12,6 +13,7 @@ export function createApp() {
   const app =
     // avoid a hydration error when doing no SSR
     !import.meta.env.SSR && new URLSearchParams(location.search).has('no-ssr') ? _createApp(App) : createSSRApp(App)
+  app.component('ClientOnly', ClientOnly)
   const pinia = createPinia()
   // hydrate the state on client side
   if (!import.meta.env.SSR) {
