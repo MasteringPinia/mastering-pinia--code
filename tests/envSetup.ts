@@ -1,12 +1,13 @@
 import { VueRouterMock, createRouterMock, injectRouterMock } from 'vue-router-mock'
 import { config } from '@vue/test-utils'
-import { SpyInstance, vi } from 'vitest'
+import { SpyInstance, beforeEach, vi } from 'vitest'
 import { ClientOnly } from '@/components/.internal/ClientOnly'
+import { createPinia, setActivePinia } from 'pinia'
 
-// this doesn't work with peeky...
-// beforeAll(() => server.listen())
-// afterEach(() => server.resetHandlers())
-// afterAll(() => server.close())
+beforeEach(() => {
+  // to make all tests work if they use pinia
+  setActivePinia(createPinia())
+})
 
 // create one router per test file
 const router = createRouterMock({
@@ -19,9 +20,6 @@ const router = createRouterMock({
 })
 // allows calling getRouter()
 injectRouterMock(router)
-
-// FIXME: https://github.com/capricorn86/happy-dom/issues/678
-location.href = 'http://localhost:5173'
 
 // // Add properties to the wrapper
 config.plugins.VueWrapper.install(VueRouterMock)

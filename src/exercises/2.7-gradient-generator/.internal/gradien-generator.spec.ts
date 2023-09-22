@@ -1,13 +1,12 @@
 import { mount } from '@vue/test-utils'
 import TestComponent from '../index.vue'
 import { describe, it, expect, vi } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
+import { createPinia } from 'pinia'
 import { useGradientGenerator } from '../gradient-generator'
 import { tipOnFail } from '@tests/utils'
 
 describe('Gradient Generator', () => {
   it('has a color property', async () => {
-    setActivePinia(createPinia())
     const gradient = useGradientGenerator()
 
     tipOnFail(() => {
@@ -19,7 +18,6 @@ describe('Gradient Generator', () => {
   })
 
   it('has a computed with the linear-gradient', async () => {
-    setActivePinia(createPinia())
     const gradient = useGradientGenerator()
 
     tipOnFail(() => {
