@@ -14,6 +14,7 @@ const route = useRoute()
 const Instructions = computed<undefined | Component>(
   () =>
     route.meta.exerciseData?.dirname &&
+    // we cannot directly use route.meta.exerciseData?.instructions because it wouldn't let Vite code split
     defineAsyncComponent(() => import(`../../exercises/${route.meta.exerciseData!.dirname}/instructions.md`)),
 )
 
