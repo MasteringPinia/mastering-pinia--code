@@ -23,6 +23,17 @@ export default defineConfig({
           exclude: ['*/_start'],
         },
         {
+          src: './src/exercises',
+          filePatterns: ['*/pages/**', '*/.internal/pages/**'],
+          path: file => {
+            const prefix = 'src/exercises/'
+            return file
+              .slice(file.lastIndexOf(prefix) + prefix.length)
+              .replace('/.internal', '')
+              .replace('/pages', '')
+          },
+        },
+        {
           src: './src/views',
         },
       ],
@@ -31,12 +42,22 @@ export default defineConfig({
         if (route.isPassThrough) return
         // extend exercises routes with exerciseData
         const filepath = route.components.get('default')
-        if (filepath?.includes('exercises/')) {
+        // if (filepath && /exercises\/[^/]+\/index\.vue$/i.test(filepath)) {
+        if (filepath?.includes('/exercises/')) {
+          // this allows us to link subpages to the exercise
+          const isIndex = /\/exercises\/([^/]+?)\/index\.vue$/i.test(filepath)
+          const index = filepath.replace(/\/exercises\/([^/]+?)\/.*$/i, '/exercises/$1/index.vue')
           route.addToMeta({
             exerciseData: {
               filepath,
-              dirname: filepath.replace(/^.*\/(.*?)\/index\.vue$/, '$1'),
-              instructions: filepath.replace('index.vue', 'instructions.md'),
+              dirname: index.replace(/^.*\/(.*?)\/index\.vue$/, '$1'),
+              instructions: index.replace('index.vue', 'instructions.md'),
+              index: isIndex
+                ? null
+                : index
+                    .slice(index.lastIndexOf('/exercises') + '/exercises'.length)
+                    // remove the index.vue from the end
+                    .slice(0, -'index.vue'.length),
             },
           })
         }

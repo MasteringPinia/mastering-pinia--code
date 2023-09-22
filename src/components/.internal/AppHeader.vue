@@ -27,6 +27,12 @@ const isModalOpened = ref(false)
       <a :href="`file://.${route.meta.exerciseData.instructions}`" role="button" @click.prevent="isModalOpened = true"
         >Open instructions</a
       >
+      <template v-if="route.meta.exerciseData.index">
+        |
+        <RouterLink active-class="" exact-active-class="" :to="{ name: route.meta.exerciseData.index }">
+          Back to index page
+        </RouterLink>
+      </template>
     </div>
 
     <!-- TODO: previous / next -->

@@ -38,7 +38,7 @@ export function createRouter() {
 export function useExerciseLinks() {
   return useRouter()
     .getRoutes()
-    .filter(route => route.meta.exerciseData)
+    .filter(route => route.meta.exerciseData?.index === null)
     .sort((a, b) => a.path.localeCompare(b.path))
 }
 
@@ -80,6 +80,11 @@ declare module 'vue-router' {
        * Filepath to the instructions of the exercise.
        */
       instructions: string
+
+      /**
+       * Filepath to the index file of the exercise. Null if this is the index file.
+       */
+      index: string | null
     }
   }
 }

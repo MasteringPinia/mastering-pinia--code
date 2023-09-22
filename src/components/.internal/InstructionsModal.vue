@@ -98,21 +98,15 @@ function closeIfOutside(event: MouseEvent) {
         <nav class="text-xs">
           <a
             v-if="route.meta.exerciseData"
-            :href="`file://.${route.meta.exerciseData.filepath}`"
-            role="button"
-            @click.prevent="openFile(route.meta.exerciseData!.filepath)"
-            >Open <code class="text-xs">index.vue</code> in Editor</a
-          >
-          |
-          <a
-            v-if="route.meta.exerciseData"
             :href="`file://.${route.meta.exerciseData.instructions}`"
             role="button"
             @click.prevent="openFile(route.meta.exerciseData!.instructions)"
             >Open <code class="text-xs">instructions.md</code> on Editor</a
           >
           |
-          <a href="#" autofocus role="button" @click="closeDialog()">Close <span aria-hidden="true">(Esc)</span></a>
+          <a href="#" autofocus role="button" @click.prevent="closeDialog()"
+            >Close <span aria-hidden="true">(Esc)</span></a
+          >
         </nav>
       </header>
 
