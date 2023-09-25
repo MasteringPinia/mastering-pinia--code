@@ -96,11 +96,13 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
   console.log('Stopping local server...')
   server.kill('SIGINT')
 
-  console.log('Optimizing screenshots...')
+  if (screenshots.length < 4) {
+    console.log('Optimizing screenshots...')
 
-  spawnSync('open', ['-a', 'ImageOptim', ...screenshots], {
-    cwd: path.join(path.dirname(new URL(import.meta.url).pathname), '.'),
-  })
+    spawnSync('open', ['-a', 'ImageOptim', ...screenshots], {
+      cwd: path.join(path.dirname(new URL(import.meta.url).pathname), '.'),
+    })
+  }
 
   console.log('Done ✅')
 })()
