@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer'
 import path from 'node:path'
 import minimist from 'minimist'
-import { spawn } from 'node:child_process'
+import { spawn, spawnSync } from 'node:child_process'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 //
@@ -33,6 +33,9 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
     console.error(error)
     process.exit(1)
   })
+
+  /** @type {string[]} */
+  const screenshots = []
 
   // Launch Puppeteer
   const browser = await puppeteer.launch({
@@ -68,12 +71,16 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
       console.log(`Capturing light mode screenshot...`)
       await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' }])
       await sleep(waitTime)
-      await page.screenshot({ path: path.join(folderPath, '.internal/screenshot-light.png') })
+      const screenshotLight = path.join(folderPath, '.internal/screenshot-light.png')
+      await page.screenshot({ path: screenshotLight })
 
       console.log(`Capturing dark mode screenshot...`)
       await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'dark' }])
       await sleep(waitTime)
-      await page.screenshot({ path: path.join(folderPath, '.internal/screenshot-dark.png') })
+      const screenshotDark = path.join(folderPath, '.internal/screenshot-dark.png')
+      await page.screenshot({ path: screenshotDark })
+
+      screenshots.push(screenshotLight, screenshotDark)
 
       console.log(`Screenshot captured for folder: ${transformedFolder}`)
     } catch (error) {
@@ -88,6 +95,12 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
   // Stop local server
   console.log('Stopping local server...')
   server.kill('SIGINT')
+
+  console.log('Optimizing screenshots...')
+
+  spawnSync('open', ['-a', 'ImageOptim', ...screenshots], {
+    cwd: path.join(path.dirname(new URL(import.meta.url).pathname), '.'),
+  })
 
   console.log('Done ✅')
 })()
