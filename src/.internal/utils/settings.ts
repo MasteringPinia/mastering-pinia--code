@@ -19,7 +19,7 @@ export function createSettingsManager<
 >(
   initialSettings: S,
   inputTypes: I,
-  prefix = 'posva:mastering-state-management-course',
+  prefix = 'posva:mastering-pinia-course',
 ): S & {
   readonly $initial: Readonly<S>
   $reset(): void

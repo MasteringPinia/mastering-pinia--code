@@ -77,13 +77,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/posva/mastering-state-management--code.git"
+    "url": "git+https://github.com/posva/mastering-pinia--code.git"
   },
   "keywords": [],
   "author": "Eduardo San Martin Morote <posva13@gmail.com> (https://esm.dev)",
   "license": "LicenseRef-LICENSE",
   "bugs": {
-    "url": "https://github.com/posva/mastering-state-management--code/issues"
+    "url": "https://github.com/posva/mastering-pinia--code/issues"
   },
-  "homepage": "https://github.com/posva/mastering-state-management--code#readme"
+  "homepage": "https://github.com/posva/mastering-pinia--code#readme"
 }

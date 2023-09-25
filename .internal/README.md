@@ -11,7 +11,7 @@
 Students are expected to fetch the code with this script:
 
 ```sh
-npx zx@7.2 https://esm.is/mastering-state-management
+npx zx@7.2 https://esm.is/mastering-pinia
 ```
 
 It does this verifications:
@@ -25,7 +25,7 @@ It clones the repository on a folder at the Home of the user with the current da
 change it:
 
 ```sh
-npx zx@7.2 https://esm.is/mastering-state-management --dir test-folder
+npx zx@7.2 https://esm.is/mastering-pinia --dir test-folder
 ```
 
 ### Testing a specific branch
@@ -33,8 +33,8 @@ npx zx@7.2 https://esm.is/mastering-state-management --dir test-folder
 Use the `-b` or `--branch` argument to test a specific branch:
 
 ```sh
-# Test https://github.com/posva/mastering-state-management--code/pull/7
-npx zx@7.2 https://esm.is/mastering-state-management -b ex/2.7-gradient-builder
+# Test https://github.com/posva/mastering-pinia--code/pull/7
+npx zx@7.2 https://esm.is/mastering-pinia -b ex/2.7-gradient-builder
 ```
 
 ### Debugging
