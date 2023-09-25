@@ -102,7 +102,7 @@ function closeIfOutside(event: MouseEvent) {
             :href="`file://.${route.meta.exerciseData.instructions}`"
             role="button"
             @click.prevent="openFile(route.meta.exerciseData!.instructions)"
-            >Open <code class="text-xs">instructions.md</code> on Editor</a
+            >Open <code class="text-xs">instructions.md</code> in Editor</a
           >
           |
           <a href="#" autofocus role="button" @click.prevent="closeDialog()"

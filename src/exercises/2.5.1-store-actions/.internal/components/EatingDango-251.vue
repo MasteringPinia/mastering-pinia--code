@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useDango } from '../dango'
+import { useDango } from '../../dango'
 
 const dango = useDango()
 </script>

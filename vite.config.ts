@@ -70,7 +70,7 @@ export default defineConfig({
           names: ['RouterLink', 'RouterView'],
         },
       ],
-      globs: ['src/exercises/*/.internal/**/*.vue'],
+      globs: ['src/exercises/*/.internal/components/*.vue'],
     }),
     Vue({ include: [/\.vue$/, /\.md$/] }),
     // could be used to display instructions within the page

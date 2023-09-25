@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useDangoShop } from '../dango-shop'
+import { useDangoShop } from '../../dango-shop'
 
 const dangoShop = useDangoShop()
 

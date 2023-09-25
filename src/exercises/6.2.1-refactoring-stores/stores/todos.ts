@@ -23,6 +23,13 @@ export const useTodosStore = defineStore('todo', () => {
     })
   }
 
+  function updateTodo(updatedTodo: TodoItem) {
+    const index = todos.value.findIndex(todo => todo.id === updatedTodo.id)
+    if (index > -1) {
+      todos.value.splice(index, 1, updatedTodo)
+    }
+  }
+
   function removeTodo(todoId: string) {
     const index = todos.value.findIndex(todo => todo.id === todoId)
     if (index > -1) {
@@ -34,6 +41,7 @@ export const useTodosStore = defineStore('todo', () => {
     finishedTodos,
     unfinishedTodos,
     addTodo,
+    updateTodo,
     removeTodo,
   }
 })
