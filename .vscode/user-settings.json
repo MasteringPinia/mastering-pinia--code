@@ -4,6 +4,9 @@
     "coverage": true,
     "dist": true,
     "LICENSE.md": true,
+    "LICENSE": true,
+    "index.html": true,
+    "postcss.config.js": true,
     "src/**/.internal": true,
     "src/utils": true,
     "src/layouts": true,
@@ -11,6 +14,8 @@
     "src/views": true,
     "src/*.ts": true,
     "src/*.css": true,
-    "src/*.vue": true
+    "src/*.vue": true,
+    "tests": true,
+    "server.mjs": true
   }
 }
