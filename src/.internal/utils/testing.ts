@@ -249,7 +249,7 @@ export function useTestStatus() {
           },
           ...currentFailingTests.value.map(test => '- ' + test.name),
           `You can inspect the error at http://localhost:51205/__vitest__/` +
-            (failingTest.file ? `#file=${failingTest.file.id}` : ''),
+            (failingTest.file ? `?file=${failingTest.file.id}` : ''),
         )
         currentFailingTests.value.flatMap(t => t.logs || []).forEach(handleTestConsoleLogs)
       }
