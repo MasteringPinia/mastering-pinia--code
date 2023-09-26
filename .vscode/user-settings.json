@@ -4,6 +4,13 @@
     "coverage": true,
     "dist": true,
     "LICENSE.md": true,
-    "src/**/.internal": true
+    "src/**/.internal": true,
+    "src/utils": true,
+    "src/layouts": true,
+    "src/components/Layout.vue": true,
+    "src/views": true,
+    "src/*.ts": true,
+    "src/*.css": true,
+    "src/*.vue": true
   }
 }
