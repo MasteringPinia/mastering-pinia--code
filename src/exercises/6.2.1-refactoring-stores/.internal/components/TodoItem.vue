@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { TodoItem } from '../../stores/todos'
 
 const props = defineProps<{
