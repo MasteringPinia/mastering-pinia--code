@@ -51,6 +51,7 @@ export default defineConfig({
               filepath,
               dirname: index.replace(/^.*\/(.*?)\/index\.vue$/, '$1'),
               instructions: index.replace('index.vue', 'instructions.md'),
+              // @ts-expect-error: passing a string to the list of route names
               index: isIndex
                 ? null
                 : index

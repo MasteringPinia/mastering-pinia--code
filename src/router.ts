@@ -1,4 +1,5 @@
 import { createRouter as _createRouter, createWebHistory, useRouter, createMemoryHistory } from 'vue-router/auto'
+import { RouteNamedMap } from 'vue-router/auto/routes'
 import { Component, TransitionProps } from 'vue'
 import { RouteRecordOverride } from './utils'
 
@@ -82,9 +83,9 @@ declare module 'vue-router' {
       instructions: string
 
       /**
-       * Filepath to the index file of the exercise. Null if this is the index file.
+       * Filepath to the index path of the exercise without the extension. Null if this is the index file.
        */
-      index: string | null
+      index: keyof RouteNamedMap | null
     }
   }
 }
