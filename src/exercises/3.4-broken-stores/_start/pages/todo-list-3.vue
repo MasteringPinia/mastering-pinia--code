@@ -1,22 +1,10 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref, toRef, toRefs, watch } from 'vue'
 import { useTodosStore } from '../stores/todos'
 import { storeToRefs } from 'pinia'
+import { useTimeAgo } from '@vueuse/core'
 
 const todos = useTodosStore()
-
-// NOTE: failing cases to keep in starter
-// const { list } = toRefs(todos)
-// const { finished } = storeToRefs(todos)
-// const { add } = toRefs(todos)
-// const update = toRef(todos, 'update')
-
-// const text = ref('')
-// function addTodo() {
-//   if (!text.value) return
-//   useTodosStore().add(text.value)
-//   text.value = ''
-// }
 
 const { list, finished } = storeToRefs(todos)
 const { add, update } = todos
@@ -27,6 +15,29 @@ function addTodo() {
   add(text.value)
   text.value = ''
 }
+
+const lastAdded = useTimeAgo(
+  computed(
+    () =>
+      toRef(todos, 'mostRecent').value?.createdAt ||
+      // this is just to avoid an undefined value
+      Date.now(),
+  ),
+  {
+    showSecond: true,
+    rounding: 'floor',
+    updateInterval: 1000,
+  },
+)
+
+const todoListChanges = ref(0)
+watch(
+  todos,
+  () => {
+    todoListChanges.value++
+  },
+  { deep: false },
+)
 </script>
 
 <template>
@@ -34,7 +45,14 @@ function addTodo() {
 
   <ClientOnly>
     <main>
-      <h2>Destructuring stores (2)</h2>
+      <h2>Performance (1)</h2>
+
+      <p>
+        The list of todos have been changed {{ todoListChanges }} time(s). Try marking the same todo as finished
+        multiple times...
+      </p>
+
+      <p v-if="list.length">The most recent todo was added {{ lastAdded }}.</p>
 
       <form class="space-x-2" @submit.prevent="addTodo()">
         <input v-model="text" type="text" />
@@ -42,6 +60,11 @@ function addTodo() {
       </form>
 
       <p>You have {{ list.length }} todos. {{ finished.length }} are finished.</p>
+
+      <div v-if="list.length > 20">
+        <p>That's a lot of todos... {{ list.length }} to be precise. Do you want to remove them all?</p>
+        <button @click="list = []">Clear the todo list</button>
+      </div>
 
       <ul>
         <li v-for="todo in list">

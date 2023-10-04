@@ -1,5 +1,3 @@
-<script lang="ts" setup></script>
-
 <template>
   <h2>Fix she store usage in the following pages</h2>
 

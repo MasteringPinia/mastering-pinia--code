@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, toRefs } from 'vue'
+import { ref } from 'vue'
 import { useTodosStore } from '../stores/todos'
 import { storeToRefs } from 'pinia'
 

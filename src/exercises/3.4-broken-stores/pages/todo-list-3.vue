@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, toRef, toRefs, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useTodosStore } from '../stores/todos'
 import { storeToRefs } from 'pinia'
 import { useTimeAgo } from '@vueuse/core'
