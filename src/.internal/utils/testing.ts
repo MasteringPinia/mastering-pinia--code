@@ -248,7 +248,7 @@ export function useTestStatus() {
             title: `${failedCount} test${failedCount === 1 ? ' is' : 's are'} still failing`,
           },
           ...currentFailingTests.value.map(test => '- ' + test.name),
-          `You can inspect the error at http://localhost:51205/__vitest__/` +
+          `You can inspect the error at http://localhost:51205/__vitest__/#/` +
             (failingTest.file ? `?file=${failingTest.file.id}` : ''),
         )
         currentFailingTests.value.flatMap(t => t.logs || []).forEach(handleTestConsoleLogs)
