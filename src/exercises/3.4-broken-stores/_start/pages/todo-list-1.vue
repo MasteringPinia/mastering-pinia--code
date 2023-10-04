@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { useTodosStore } from '../stores/todos'
 
-// NOTE: failing cases to keep in starter
 const { list, finished, add, update } = useTodosStore()
 
 const text = ref('')

@@ -5,7 +5,6 @@ import { storeToRefs } from 'pinia'
 
 const todos = useTodosStore()
 
-// NOTE: failing cases to keep in starter
 const { list } = toRefs(todos)
 const { finished } = storeToRefs(todos)
 const { add } = toRefs(todos)
