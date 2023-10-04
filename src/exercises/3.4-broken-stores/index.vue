@@ -15,6 +15,9 @@
     <li>
       <RouterLink to="/3/4-broken-stores/todo-list-2">Destructuring stores (2)</RouterLink>
     </li>
+    <li>
+      <RouterLink to="/3/4-broken-stores/todo-list-3">Performance (1)</RouterLink>
+    </li>
   </ol>
 </template>
 

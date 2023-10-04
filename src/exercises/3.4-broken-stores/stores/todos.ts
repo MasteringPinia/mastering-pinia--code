@@ -1,5 +1,6 @@
-import { defineStore, acceptHMRUpdate } from 'pinia'
-import { computed, ref } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
+import { defineStore, acceptHMRUpdate, skipHydrate } from 'pinia'
+import { computed } from 'vue'
 
 export interface TodoItem {
   id: string
@@ -9,10 +10,17 @@ export interface TodoItem {
 }
 
 export const useTodosStore = defineStore('todos', () => {
-  const list = ref<TodoItem[]>([])
+  const list = skipHydrate(useLocalStorage<TodoItem[]>('mastering-pinia-3.4 todolist', []))
 
   const finished = computed<TodoItem[]>(() => list.value.filter(todo => todo.finished))
   const unfinished = computed<TodoItem[]>(() => list.value.filter(todo => !todo.finished))
+
+  const mostRecent = computed<TodoItem | undefined>(() => {
+    return list.value
+      .slice()
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .at(0)
+  })
 
   function add(text: string) {
     list.value.push({
@@ -41,6 +49,7 @@ export const useTodosStore = defineStore('todos', () => {
     list,
     finished,
     unfinished,
+    mostRecent,
 
     add,
     update,

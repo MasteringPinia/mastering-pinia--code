@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import TestComponent from '../pages/todo-list-2.vue'
 import { describe, it, expect, vi, beforeEach, afterEach, SpyInstance } from 'vitest'
 import { isRef, toRef, toRefs, toRaw } from 'vue'
-import { storeToRefs } from 'pinia'
+import { setActivePinia, storeToRefs } from 'pinia'
 import { tipOnFail } from '@tests/utils'
 
 vi.mock('vue', async importOriginal => {
@@ -52,5 +52,19 @@ describe.sequential('Destructing two', () => {
       expect(!('add' in internalInstance) || !isRef(internalInstance.add)).toBe(true)
       expect(!('update' in internalInstance) || !isRef(internalInstance.update)).toBe(true)
     }, 'Make sure to **not** use `toRef()`, `toRefs()`, or `storeToRefs()` on actions. You can simply destructure them from the store or use them directly.')
+  })
+
+  it('(2) should not call useStore within component actions', async () => {
+    const wrapper = mount(TestComponent)
+
+    // using vi.mock didn't work
+    setActivePinia(undefined)
+
+    tipOnFail(() => {
+      // @ts-expect-error: not typed
+      wrapper.vm.text = 'hello'
+      // @ts-expect-error: not typed
+      wrapper.vm.addTodo()
+    }, 'You are not supposed to call `useStore()` within a component method. You can simply call it within `setup` and use it everywhere.')
   })
 })
