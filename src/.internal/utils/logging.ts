@@ -31,6 +31,42 @@ const TITLES_FOR_TYPE: Record<LogeMessageType, string> = {
   [LogMessageTypeEnum.error]: 'error',
 }
 
+const MD_BOLD_RE = /\*\*(.*?)\*\*/g
+const MD_ITALIC_RE = /_(.*?)_/g
+const MD_CODE_RE = /`(.*?)`/g
+
+/**
+ * Applies italic and bold style to markdown text.
+ * @param text - The text to apply styles to
+ */
+function applyTextStyles(text: string) {
+  const styles: Array<{ pos: number; style: [string, string] }> = []
+
+  const newText = text
+    .replace(MD_BOLD_RE, (_m, text, pos) => {
+      styles.push({
+        pos,
+        style: ['font-weight: bold;', 'font-weight: normal;'],
+      })
+      return `%c${text}%c`
+    })
+    .replace(MD_ITALIC_RE, (_m, text, pos) => {
+      styles.push({
+        pos,
+        style: ['font-style: italic;', 'font-style: normal;'],
+      })
+      return `%c${text}%c`
+    })
+    .replace(MD_CODE_RE, (_m, text, pos) => {
+      styles.push({
+        pos,
+        style: ['font-family: monospace;', 'font-family: inherit;'],
+      })
+      return `%c\`${text}\`%c`
+    })
+  return [newText, ...styles.sort((a, b) => a.pos - b.pos).flatMap(s => s.style)]
+}
+
 export function showMessage<M extends LogMessageTypeEnum>(
   type: M | keyof typeof LogMessageTypeEnum,
   {
@@ -76,18 +112,21 @@ export function showMessage<M extends LogMessageTypeEnum>(
 
   messages.forEach(m => {
     let tempStyle = ''
+    let mdStyles: string[] = []
     if (m instanceof Error) {
       console.error(m)
     } else if (m !== undefined) {
       if (m.startsWith('```')) {
         activeStyle = `font-family: monospace;`
         tempStyle += `color: gray; padding: 1px; border-radius: ${m === '```' ? '0 0 3px 3px' : '3px 3px 0 0'};`
+      } else if (typeof m === 'string' && !m.includes('http')) {
+        ;[m, ...mdStyles] = applyTextStyles(m)
       }
 
       if (activeStyle || tempStyle) {
-        console.log(`%c${m}`, activeStyle + tempStyle)
+        console.log(`%c${m}`, activeStyle + tempStyle, ...mdStyles)
       } else {
-        console.log(m)
+        console.log(m, ...mdStyles)
       }
       if (m === '```') {
         activeStyle = ''
