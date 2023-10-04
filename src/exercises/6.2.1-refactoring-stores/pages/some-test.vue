@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { Meme, getMemes, captionImage } from '@/api/memes'
-import { ref } from 'vue'
-import { shallowRef } from 'vue'
+import { ref , shallowRef } from 'vue'
 import { useFuse } from '@vueuse/integrations/useFuse'
 import FuseTextMatch from '@/components/.internal/FuseTextMatch.vue'
 
@@ -45,7 +44,7 @@ async function generateMeme() {
       <li v-for="i in selectedMeme.box_count">
         <label>
           Text {{ i }}
-          <input type="text" v-model="texts[i - 1]" />
+          <input v-model="texts[i - 1]" type="text" />
         </label>
       </li>
     </ol>
@@ -58,17 +57,17 @@ async function generateMeme() {
   <div>
     <label>
       Search:
-      <input type="text" v-model="searchText" />
+      <input v-model="searchText" type="text" />
     </label>
   </div>
 
   <section class="masonry">
     <figure
       v-for="{ item: meme, matches } in results"
-      class="item"
       :id="`${meme.name}_${meme.id}`"
-      :title="meme.name"
       :key="meme.id"
+      class="item"
+      :title="meme.name"
       @click="selectedMeme = meme"
     >
       <img class="item__content" :src="meme.url" :alt="meme.name" />

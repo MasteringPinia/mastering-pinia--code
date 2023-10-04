@@ -59,8 +59,12 @@ export function captionImage({
 
   formData.append('username', import.meta.env.VITE_IMGFLIP_USERNAME)
   formData.append('password', import.meta.env.VITE_IMGFLIP_PASSWORD)
-  // formData.append('text0', texts[0])
-  // formData.append('text1', texts[1])
+  if (font) {
+    formData.append('font', font)
+  }
+  if (maxFontSize) {
+    formData.append('max_font_size', maxFontSize.toString())
+  }
   texts.forEach((text, i) => {
     formData.set(`boxes[${i}][text]`, text)
   })
