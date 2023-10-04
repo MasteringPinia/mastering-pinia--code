@@ -8,7 +8,6 @@ const props = defineProps<{
 
 const matchedText = computed<Array<{ text: string; highlight: boolean }>>(() => {
   let current = 0
-  console.time('matchedText')
   if (!props.match.value) return []
   const text = props.match.value
   const result = props.match.indices.reduce((res, [start, end]) => {
@@ -32,8 +31,6 @@ const matchedText = computed<Array<{ text: string; highlight: boolean }>>(() => 
       highlight: false,
     })
   }
-
-  console.timeEnd('matchedText')
 
   return result
 })
