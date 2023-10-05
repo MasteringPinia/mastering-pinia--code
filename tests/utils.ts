@@ -1,4 +1,5 @@
 import { LogeMessageType } from '@/.internal/utils/logging'
+import { ComputedRef, isRef } from 'vue'
 
 /**
  * Run a function and show a tip on fail: if throws, rejects, or returns falsy
@@ -67,3 +68,8 @@ export function showTip(...messages: unknown[]) {
 }
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
+export function isComputed<T>(value: ComputedRef<T> | unknown): value is ComputedRef<T>
+export function isComputed(o: any): o is ComputedRef {
+  return !!(isRef(o) && (o as any).effect)
+}

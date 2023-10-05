@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, inject, toValue } from 'vue'
 import type { TransitionProps } from 'vue'
-import { useRoute } from 'vue-router/auto'
+import { useRoute, viewDepthKey } from 'vue-router/auto'
 import AppFooter from '@/components/.internal/AppFooter.vue'
 import AppHeader from '@/components/.internal/AppHeader.vue'
 
@@ -12,15 +12,17 @@ const transitionProps = computed<TransitionProps | undefined>(() => {
   if (!transition) return { name: 'fade-down', mode: 'default' }
   return typeof transition === 'string' ? { name: transition } : transition
 })
+
+const depth = inject(viewDepthKey, 0)
 </script>
 
 <template>
   <AppHeader />
 
   <div class="relative grow">
-    <RouterView v-slot="{ Component }">
+    <RouterView v-slot="{ Component, route }">
       <Transition v-bind="transitionProps">
-        <div :key="$route.path" class="grow">
+        <div :key="route.matched[toValue(depth)].path || route.path" class="grow">
           <component :is="Component" />
         </div>
       </Transition>

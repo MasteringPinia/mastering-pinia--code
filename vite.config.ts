@@ -23,13 +23,14 @@ export default defineConfig({
         },
         {
           src: './src/exercises',
-          filePatterns: ['*/pages/**', '*/.internal/pages/**'],
+          filePatterns: ['*/pages/**/*', '*/.internal/pages/**/*'],
           path: file => {
             const prefix = 'src/exercises/'
             return file
               .slice(file.lastIndexOf(prefix) + prefix.length)
               .replace('/.internal', '')
               .replace('/pages', '')
+              .replace('//', '/')
           },
         },
         {
