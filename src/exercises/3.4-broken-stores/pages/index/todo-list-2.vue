@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useTodosStore } from '../stores/todos'
+import { useTodosStore } from '../../stores/todos'
 import { storeToRefs } from 'pinia'
 
 const todos = useTodosStore()
@@ -34,7 +34,7 @@ function addTodo() {
 
   <ClientOnly>
     <main>
-      <h2>Destructuring stores (2)</h2>
+      <h3>Destructuring stores (2)</h3>
 
       <form class="space-x-2" @submit.prevent="addTodo()">
         <input v-model="text" type="text" />

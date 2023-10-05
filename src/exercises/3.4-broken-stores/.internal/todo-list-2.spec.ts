@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import TestComponent from '../pages/todo-list-2.vue'
+import TestComponent from '../pages/index/todo-list-2.vue'
 import { describe, it, expect, vi, beforeEach, afterEach, SpyInstance } from 'vitest'
 import { isRef, toRef, toRefs, toRaw } from 'vue'
 import { setActivePinia, storeToRefs } from 'pinia'

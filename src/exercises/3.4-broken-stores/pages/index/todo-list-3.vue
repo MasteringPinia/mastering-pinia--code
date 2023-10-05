@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { useTodosStore } from '../stores/todos'
+import { useTodosStore } from '../../stores/todos'
 import { storeToRefs } from 'pinia'
 import { useTimeAgo } from '@vueuse/core'
 
@@ -67,7 +67,7 @@ watch(
 
   <ClientOnly>
     <main>
-      <h2>Performance (1)</h2>
+      <h3>Performance (1)</h3>
 
       <p>
         The list of todos have been changed {{ todoListChanges }} time(s). Try marking the same todo as finished

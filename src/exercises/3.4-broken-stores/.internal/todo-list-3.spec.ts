@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import TestComponent from '../pages/todo-list-3.vue'
+import TestComponent from '../pages/index/todo-list-3.vue'
 import { describe, it, expect, vi, beforeEach, afterEach, SpyInstance } from 'vitest'
 import { isRef, toRef, toRefs, toRaw, watch, isReactive } from 'vue'
 import { isComputed, showMessage, tipOnFail } from '@tests/utils'
@@ -45,10 +45,7 @@ describe.sequential('Performance', () => {
       expect(isComputed((useTimeAgo as unknown as SpyInstance).mock.lastCall!.at(0))).toBe(false)
       expect(useTimeAgo).toHaveBeenCalledWith(expect.any(Function), expect.objectContaining({}))
     }, 'You can avoid passing a `computed()` to `useTimeAgo()` by passing a simple getter function.')
-  })
 
-  it('(3) does not use unnecessary toRef with useTimeAgo()', async () => {
-    mount(TestComponent)
     tipOnFail(() => {
       expect(toRef).not.toHaveBeenCalled()
       expect(toRef).not.toHaveBeenCalledWith(expect.anything(), 'mostRecent')

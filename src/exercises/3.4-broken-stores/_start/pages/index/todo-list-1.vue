@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useTodosStore } from '../stores/todos'
+import { useTodosStore } from '../../stores/todos'
 
 const { list, finished, add, update } = useTodosStore()
 

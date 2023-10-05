@@ -17,6 +17,10 @@
       <RouterLink to="/3/4-broken-stores/todo-list-3">Performance (1)</RouterLink>
     </li>
   </ol>
+
+  <hr />
+
+  <RouterView />
 </template>
 
 <style scoped>

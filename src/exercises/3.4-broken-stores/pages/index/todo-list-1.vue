@@ -1,19 +1,20 @@
 <script lang="ts" setup>
-import { ref, toRef, toRefs } from 'vue'
-import { useTodosStore } from '../stores/todos'
+import { ref } from 'vue'
+import { useTodosStore } from '../../stores/todos'
 import { storeToRefs } from 'pinia'
 
-const todos = useTodosStore()
+// NOTE: failing cases to keep in starter
+// const { list, finished, add, update } = useTodosStore()
+// const { list, finished, add, update } = toRefs(todos)
 
-const { list } = toRefs(todos)
-const { finished } = storeToRefs(todos)
-const { add } = toRefs(todos)
-const update = toRef(todos, 'update')
+const todos = useTodosStore()
+const { add, update } = todos
+const { list, finished } = storeToRefs(todos)
 
 const text = ref('')
 function addTodo() {
   if (!text.value) return
-  useTodosStore().add(text.value)
+  add(text.value)
   text.value = ''
 }
 </script>
@@ -23,13 +24,16 @@ function addTodo() {
 
   <ClientOnly>
     <main>
-      <h2>Destructuring stores (2)</h2>
+      <h3>Destructuring stores (1)</h3>
+
+      <p>Try adding some tasks.</p>
 
       <form class="space-x-2" @submit.prevent="addTodo()">
         <input v-model="text" type="text" />
         <button>Add</button>
       </form>
 
+      <!-- NOTE: the finished isn't updating -->
       <p>You have {{ list.length }} todos. {{ finished.length }} are finished.</p>
 
       <ul>
