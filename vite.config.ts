@@ -1,4 +1,4 @@
-// /// <reference types="vitest" />
+/// <reference types="vitest" />
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
@@ -111,13 +111,14 @@ export default defineConfig({
   },
 
   // config for vitest
-  // test: {
-  //   environment: 'happy-dom',
-  //   coverage: {
-  //     exclude: ['**/*.{spec,test}.*'],
-  //   },
-  //   // when set to true, it globally enables `describe`, `it`, and other globals
-  //   globals: false,
-  //   include: ['./src/exercises/*-testing-*/*.{spec,test}.{js,ts}'],
-  // },
+  test: {
+    environment: 'happy-dom',
+    coverage: {
+      exclude: ['**/*.{spec,test}.*'],
+    },
+    // when set to true, it globally enables `describe`, `it`, and other globals
+    globals: false,
+    include: ['./src/exercises/**/*.{spec,test}.{js,ts}'],
+    exclude: ['**/.internal/**/*.{spec,test}.{js,ts}'],
+  },
 })

@@ -1,3 +1,4 @@
+// @ts-check
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -23,9 +24,9 @@ export async function createServer(
   const app = express()
 
   /**
-   * @type {import('vite').ViteDevServer}
+   * @type {import('vite').ViteDevServer | null}
    */
-  let vite
+  let vite = null
   if (!isProd) {
     vite = await (
       await import('vite')
@@ -60,7 +61,8 @@ export async function createServer(
       const url = req.originalUrl
 
       let template, render
-      if (!isProd) {
+      // vite is always there in dev
+      if (!isProd && vite) {
         // always read fresh template in dev
         template = fs.readFileSync(resolve('index.html'), 'utf-8')
         template = await vite.transformIndexHtml(url, template)
