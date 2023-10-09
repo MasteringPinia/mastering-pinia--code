@@ -93,6 +93,8 @@ export default defineConfig({
     alias: {
       // allows import ... from '@/components/...'
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      // nuxt style
+      '~': fileURLToPath(new URL('./src', import.meta.url)),
       '@ex': fileURLToPath(new URL('./src/exercises', import.meta.url)),
       '@tests': fileURLToPath(new URL('./tests', import.meta.url)),
     },
