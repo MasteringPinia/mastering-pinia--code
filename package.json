@@ -13,12 +13,8 @@
     "dev:vite": "node server.mjs --open",
     "dev:test-server": "vitest -c tests/vitest.config.ts --ui",
     "dev:api": "json-server -p 7777 -w db.json",
-    "build": "pnpm run build:client && pnpm run build:server",
-    "build:client": "vite build --ssrManifest --outDir dist/client",
-    "build:server": "vite build --ssr src/entry-server.ts --outDir dist/server",
-    "serve": "NODE_ENV=production node server.mjs",
     "lint": "eslint --ext=.ts,.vue src tests",
-    "dev:test": "vitest",
+    "test": "vitest",
     "internal:test": "IS_TEST_RUN=yes vitest run -c tests/vitest.config.ts --no-api",
     "internal:test:types": "vue-tsc --noEmit --skipLibCheck"
   },
