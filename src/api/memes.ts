@@ -1,3 +1,4 @@
+import { showMessage } from '@/.internal/utils/logging'
 import { mande } from 'mande'
 
 export const imgflip = mande('https://api.imgflip.com', {
@@ -53,11 +54,15 @@ export function captionImage({
 }) {
   const formData = new FormData()
   formData.append('template_id', id)
-  if (!import.meta.env.VITE_IMGFLIP_USERNAME || !import.meta.env.VITE_IMGFLIP_PASSWORD) {
-    console.error('Set the VITE_IMGFLIP_USERNAME and VITE_IMGFLIP_PASSWORD in your .env file in order to use this API.')
+  if (!import.meta.env.VITE_IMGFLIP_USER || !import.meta.env.VITE_IMGFLIP_PASSWORD) {
+    showMessage(
+      'warn',
+      { title: 'imgflip credentials' },
+      'You should set the "VITE_IMGFLIP_USER" and "VITE_IMGFLIP_PASSWORD" in your `.env` file in order to use this API with less limitations.',
+    )
   }
 
-  formData.append('username', import.meta.env.VITE_IMGFLIP_USERNAME)
+  formData.append('username', import.meta.env.VITE_IMGFLIP_USER)
   formData.append('password', import.meta.env.VITE_IMGFLIP_PASSWORD)
   if (font) {
     formData.append('font', font)
