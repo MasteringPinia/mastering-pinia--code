@@ -32,7 +32,8 @@ const TITLES_FOR_TYPE: Record<LogeMessageType, string> = {
 }
 
 const MD_BOLD_RE = /\*\*(.*?)\*\*/g
-const MD_ITALIC_RE = /_(.*?)_/g
+// Underscores appear to often to deal with them with just a regexp
+// const MD_ITALIC_RE = /_(.*?)_/g
 const MD_CODE_RE = /`(.*?)`/g
 
 /**
@@ -50,13 +51,13 @@ function applyTextStyles(text: string) {
       })
       return `%c${text}%c`
     })
-    .replace(MD_ITALIC_RE, (_m, text, pos) => {
-      styles.push({
-        pos,
-        style: ['font-style: italic;', 'font-style: normal;'],
-      })
-      return `%c${text}%c`
-    })
+    // .replace(MD_ITALIC_RE, (_m, text, pos) => {
+    //   styles.push({
+    //     pos,
+    //     style: ['font-style: italic;', 'font-style: normal;'],
+    //   })
+    //   return `%c${text}%c`
+    // })
     .replace(MD_CODE_RE, (_m, text, pos) => {
       styles.push({
         pos,
