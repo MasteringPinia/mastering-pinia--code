@@ -6,7 +6,7 @@ import { useRouter, Router, NavigationHookAfter } from 'vue-router/auto'
  * The `install` function is called with application globals.
  */
 export interface ExerciseInstall {
-  (options: { router: Router; pinia: Pinia; app: App }): void
+  (options: { router: Router; pinia: Pinia; app: App }): void | Promise<unknown>
 }
 
 /**
