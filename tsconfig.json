@@ -39,6 +39,7 @@
     "*.ts",
     "./typed-router.d.ts",
     "./components.d.ts",
+    "./env.d.ts",
     "src/*.ts",
     "tests/**/*.ts",
     "src/**/*.ts",
