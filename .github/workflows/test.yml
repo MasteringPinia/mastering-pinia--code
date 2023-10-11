@@ -20,6 +20,6 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm run lint
-      - run: pnpm run build # generates the types
+      - run: pnpm run internal:build # generates the types
       - run: pnpm run internal:test:types
       - run: pnpm run internal:test

@@ -15,6 +15,9 @@
     "dev:api": "json-server -p 7777 -w db.json",
     "lint": "eslint --ext=.ts,.vue src tests",
     "test": "vitest",
+    "internal:build": "pnpm run internal:build:client && pnpm run internal:build:server",
+    "internal:build:client": "vite build --ssrManifest --outDir dist/client",
+    "internal:build:server": "vite build --ssr src/entry-server.ts --outDir dist/server",
     "internal:test": "IS_TEST_RUN=yes vitest run -c tests/vitest.config.ts --no-api",
     "internal:test:types": "vue-tsc --noEmit --skipLibCheck"
   },
