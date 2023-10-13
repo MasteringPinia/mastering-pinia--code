@@ -5,13 +5,24 @@ export const usePrivateStore = definePrivateStore(
   '6.5-private-store-counter',
 
   () => {
-    const n = ref(0)
-    return { n }
+    const n = ref(1000)
+
+    const double = computed(() => n.value * 2)
+
+    function increment(amount = 1) {
+      n.value += amount
+    }
+
+    return { n, double, increment }
   },
 
   priv => {
-    const double = computed(() => priv.n * 2)
+    const doublePlusOne = computed(() => priv.double + 1)
 
-    return { double }
+    function decrement(amount = 1) {
+      priv.increment(-amount)
+    }
+
+    return { doublePlusOne, decrement }
   },
 )
