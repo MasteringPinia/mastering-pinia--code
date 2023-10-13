@@ -161,8 +161,18 @@ function useTestClient() {
   }
 }
 
-const testStatusIconMap: Record<TaskState, string> = {
+const testGroupStatusIconMap: Record<TaskState, string> = {
   fail: '🔴',
+  pass: '🟢',
+  run: '⌛️',
+  skip: '⏭',
+  // idle: '🏝',
+  todo: '📝',
+  only: '🔵',
+}
+
+const testStatusIconMap: Record<TaskState, string> = {
+  fail: '❌',
   pass: '✅',
   run: '⌛️',
   skip: '⏭',
@@ -172,7 +182,45 @@ const testStatusIconMap: Record<TaskState, string> = {
 }
 
 export function getStatusIcon(test: Test | TaskCustom) {
+  return testGroupStatusIconMap[test.result?.state || test.mode] || '❓'
+}
+
+export function getTestStatusIcon(test: Test | TaskCustom) {
   return testStatusIconMap[test.result?.state || test.mode] || '❓'
+}
+
+export interface TestSuiteInfo {
+  name: string
+  tests: Array<Test | TaskCustom>
+  state: string
+}
+
+/**
+ * Groups tests per suite. Only takes into account nested suites.
+ * @param tests - The tests to group
+ */
+function groupTestPerSuite(tests: Array<Test | TaskCustom>) {
+  return tests.reduce((acc, test) => {
+    // they have multiple levels of nesting describe > describe
+    if (test.suite?.suite?.name) {
+      if (!acc.has(test.suite.name)) {
+        acc.set(test.suite.name, {
+          name: test.suite.name,
+          tests: [],
+          state: getStatusIcon(test),
+        })
+      }
+      const group = acc.get(test.suite.name)!
+      group.tests.push(test)
+      if (test.result?.state === 'fail') {
+        group.state = getStatusIcon(test)
+      } else if (test.result?.state === 'run' && group.state !== 'fail') {
+        group.state = getStatusIcon(test)
+      }
+    }
+
+    return acc
+  }, new Map<string, TestSuiteInfo>())
 }
 
 export function useTestStatus() {
@@ -191,6 +239,9 @@ export function useTestStatus() {
     currentTests.value.filter(test => test.result?.state === 'pass' || test.mode === 'skip' || test.mode === 'todo'),
   )
 
+  const currentTestsPerSuite = computed(() => groupTestPerSuite(currentTests.value))
+  const hasNestedSuites = computed(() => currentTestsPerSuite.value.size > 1)
+
   const currentLogs = computed(() => currentTests.value.flatMap(t => t.logs || []))
 
   const currentResult = computed(() => {
@@ -198,9 +249,9 @@ export function useTestStatus() {
       return '🔄 '
     }
     if (currentFailingTests.value.length > 0) {
-      return testStatusIconMap.fail
+      return testGroupStatusIconMap.fail
     } else if (currentPassingTests.value.length > 0) {
-      return testStatusIconMap.pass
+      return testGroupStatusIconMap.pass
     }
 
     return '❓ '
@@ -282,6 +333,9 @@ export function useTestStatus() {
     currentRunningTests,
     currentPassingTests,
     currentFailingTests,
+
+    currentTestsPerSuite,
+    hasNestedSuites,
 
     title,
 
