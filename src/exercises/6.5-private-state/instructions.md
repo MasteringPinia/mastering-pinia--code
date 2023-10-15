@@ -22,7 +22,31 @@ especially **the return types** of the functions we are going to write. If you f
 **Note**: The tests cannot cover TypeScript errors, they only cover the runtime behavior. If you are interested in
 working on your Typing skills, keep an eye on your editor's TypeScript errors.
 
-- it oue
+- In `private-state.ts`, implement `definePrivateState()` so it can be used in `stores/store-private-state.ts`:
+
+  ```ts
+  export const usePrivateCounter = definePrivateState(
+    'my-id',
+    // a function that returns the initial state
+    // just like in option stores
+    () => ({ n: 0 }),
+    // this is a setup store **with an argument**
+    // it should give access to the private state defined above
+    privateState => {
+      const double = computed(() => privateState.n * 2)
+
+      function increment(amount = 1) {
+        privateState.n += amount
+      }
+
+      return {
+        double,
+        increment,
+      }
+    },
+  )
+  ```
+
   <details>
   <summary>💡 Tip <i>if you are blocked only</i></summary>
 
