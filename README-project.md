@@ -15,11 +15,17 @@
 
 ## 🔄 Updating
 
-You can update the platform (fetch new exercises and code updates) any time by running the same command you used to
-setup the exercises platform:
+You can update the platform (fetch new exercises and code updates) any time by running **the same command you used to
+setup the exercises platform**:
 
 ```bash
 npx zx@7.2 https://esm.is/mastering-pinia
+```
+
+Or if you specified a folder name:
+
+```bash
+npx zx@7.2 https://esm.is/mastering-pinia my-folder
 ```
 
 After updating remember to install the dependencies again with `pnpm i`.
