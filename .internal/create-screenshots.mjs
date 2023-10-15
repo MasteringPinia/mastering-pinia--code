@@ -8,7 +8,8 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 ;(async () => {
   const argv = minimist(process.argv.slice(2), {})
 
-  const waitTime = Number(argv.wait || argv.w) || 0
+  const waitTime = Number(argv.wait || argv.w) || 100
+  const headless = (argv.headless ?? argv.h ?? true) !== 'false'
 
   // Retrieve the folders from command line arguments
   const folders = argv._
@@ -39,7 +40,7 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
   // Launch Puppeteer
   const browser = await puppeteer.launch({
-    headless: waitTime ? false : 'new',
+    headless: headless || 'new',
   })
   const page = await browser.newPage()
 
