@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onAfterEach } from '@/.internal/utils'
-import { getStatusIcon, useTestStatus, getTestStatusIcon } from '@/.internal/utils/testing'
+import { getStatusIcon, useTestStatus, getTestStatusIcon, getTestStatusText } from '@/.internal/utils/testing'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -48,7 +48,7 @@ function enlarge() {
 </script>
 
 <template>
-  <transition name="slide" mode="out-in">
+  <transition name="slide">
     <section
       v-if="hasTests && !isHidden"
       id="test-runner"
@@ -97,13 +97,13 @@ function enlarge() {
         <template v-if="hasNestedSuites">
           <details v-for="[name, group] in currentTestsPerSuite" :key="name" class="p-0 pb-1">
             <summary class="sticky top-0 z-20 px-2 bg-gray-50/30 backdrop-blur dark:bg-gray-900/30">
-              <span class="mr-2">{{ group.state }}</span>
+              <span class="mr-2" :title="group.stateText">{{ group.state }}</span>
               {{ group.name }} ({{ group.tests.length }})
             </summary>
 
             <ul class="w-full p-0 pl-5 pr-3 overflow-x-auto text-xs">
               <li v-for="test in group.tests" class="flex space-x-2">
-                <span>{{ getTestStatusIcon(test) }}</span>
+                <span :title="getTestStatusText(test)">{{ getTestStatusIcon(test) }}</span>
                 <span>{{ test.name }}</span>
               </li>
             </ul>
@@ -115,11 +115,13 @@ function enlarge() {
             <span
               class="sticky top-0 z-20 block px-2 mt-1 bg-gray-50/30 dark:bg-gray-900/30"
               :class="[isEnlarged ? '' : 'backdrop-blur']"
-              >Failing tests</span
+            >
+              <span class="mr-2" :title="`Failed ${currentFailingTests.length} tests`">🔴</span>
+              Failing tests</span
             >
             <ul class="w-full p-0 px-3 mb-0 overflow-x-auto">
               <li v-for="test in currentFailingTests" class="flex space-x-2">
-                <span>{{ getStatusIcon(test) }}</span>
+                <span :title="getTestStatusText(test)">{{ getTestStatusIcon(test) }}</span>
                 <span>{{ test.name }}</span>
               </li>
             </ul>
@@ -131,11 +133,12 @@ function enlarge() {
             <span
               class="sticky top-0 z-20 block px-2 mt-1 bg-gray-50/30 dark:bg-gray-900/30"
               :class="[isEnlarged ? '' : 'backdrop-blur']"
-              >Still running...</span
+            >
+              Still running...</span
             >
             <ul class="w-full p-0 px-3 mb-0">
               <li v-for="test in currentRunningTests" class="flex space-x-2">
-                <span>{{ getStatusIcon(test) }}</span>
+                <span :title="getTestStatusText(test)">{{ getTestStatusIcon(test) }}</span>
                 <span>{{ test.name }}</span>
               </li>
             </ul>
@@ -145,13 +148,13 @@ function enlarge() {
 
           <details v-if="currentPassingTests.length" key="pass" class="p-0 pb-[0.75rem]">
             <summary class="sticky top-0 z-20 px-2 bg-gray-50/30 backdrop-blur dark:bg-gray-900/30">
-              <span class="mr-2">🟢</span>
+              <span class="mr-2" :title="`Passed ${currentPassingTests.length} tests`">🟢</span>
               {{ currentPassingTests.length }} tests passing
             </summary>
 
             <ul class="w-full p-0 pl-5 pr-3 overflow-x-auto text-xs">
               <li v-for="test in currentPassingTests" class="flex space-x-2">
-                <span>{{ getStatusIcon(test) }}</span>
+                <span :title="getTestStatusText(test)">{{ getTestStatusIcon(test) }}</span>
                 <span>{{ test.name }}</span>
               </li>
             </ul>
