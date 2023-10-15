@@ -181,6 +181,15 @@ const testStatusIconMap: Record<TaskState, string> = {
   only: '🔵',
 }
 
+const testStatusTextMap: Record<TaskState, string> = {
+  fail: 'Failed',
+  pass: 'Passed',
+  run: 'Running...',
+  skip: 'Skipped',
+  only: 'Only this test run',
+  todo: 'Has yet to be implemented',
+}
+
 export function getStatusIcon(test: Test | TaskCustom) {
   return testGroupStatusIconMap[test.result?.state || test.mode] || '❓'
 }
@@ -189,10 +198,15 @@ export function getTestStatusIcon(test: Test | TaskCustom) {
   return testStatusIconMap[test.result?.state || test.mode] || '❓'
 }
 
+export function getTestStatusText(test: Test | TaskCustom) {
+  return testStatusTextMap[test.result?.state || test.mode] || 'Idle'
+}
+
 export interface TestSuiteInfo {
   name: string
   tests: Array<Test | TaskCustom>
   state: string
+  stateText: string
 }
 
 /**
@@ -208,6 +222,7 @@ function groupTestPerSuite(tests: Array<Test | TaskCustom>) {
           name: test.suite.name,
           tests: [],
           state: getStatusIcon(test),
+          stateText: getTestStatusText(test),
         })
       }
       const group = acc.get(test.suite.name)!
@@ -268,6 +283,18 @@ export function useTestStatus() {
     }
     return 'idle'
   })
+  const testResultAsText = computed(() => {
+    if (testRunState.value === 'running') {
+      return 'Running...'
+    }
+    if (currentFailingTests.value.length > 0) {
+      return 'Failed'
+    }
+    if (currentPassingTests.value.length > 0) {
+      return 'Passed'
+    }
+    return 'Idle'
+  })
 
   const hasTests = computed(() => _hasTests(currentSpecFiles.value))
 
@@ -326,6 +353,7 @@ export function useTestStatus() {
     runId,
     hasTests,
     testResult,
+    testResultAsText,
     currentResult,
     currentSpecFiles,
     currentLogs,
