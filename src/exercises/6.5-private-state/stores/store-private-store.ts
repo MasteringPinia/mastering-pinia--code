@@ -1,5 +1,10 @@
 import { ref, computed } from 'vue'
 import { definePrivateStore } from '../private-store'
+import { acceptHMRUpdate } from 'pinia'
+
+// ❌ You won't need to modify this file to complete the exercise
+// NOTE: If you are working on the Type Safety part, this file should have no
+// errors.
 
 export const usePrivateStore = definePrivateStore(
   '6.5-private-store-counter',
@@ -26,3 +31,7 @@ export const usePrivateStore = definePrivateStore(
     return { doublePlusOne, decrement }
   },
 )
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePrivateStore, import.meta.hot))
+}

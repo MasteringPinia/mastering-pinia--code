@@ -1,9 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
+import { createPinia, getActivePinia, setActivePinia } from 'pinia'
 import { definePrivateState } from '../private-state'
 import { computed, ref } from 'vue'
 import { defineReadonlyState } from '../readonly-state'
 import { definePrivateStore } from '../private-store'
+import { tipOnFail } from '@tests/utils'
 
 describe('Private state', () => {
   beforeEach(() => {
@@ -22,6 +23,23 @@ describe('Private state', () => {
 
       expect(store).not.toHaveProperty('count')
       expect(store.$state).not.toHaveProperty('count')
+    })
+
+    it('creates two stores to implement the private state', async () => {
+      const store = definePrivateState(
+        'id',
+        () => ({ count: 0 }),
+        () => {
+          return {}
+        },
+      )()
+
+      const pinia = getActivePinia()!
+
+      expect(Object.keys(pinia.state.value)).toHaveLength(2)
+      tipOnFail(() => {
+        expect(store.$id).toBe('id')
+      }, 'The store should preserve the "id" passed to your custom "defineStore" function')
     })
 
     it('passes the private state as the first argument', async () => {
@@ -58,6 +76,23 @@ describe('Private state', () => {
   })
 
   describe('defineReadonlyState', () => {
+    it('creates two stores to implement the readonly state', async () => {
+      const store = defineReadonlyState(
+        'id',
+        () => ({ count: 0 }),
+        () => {
+          return {}
+        },
+      )()
+
+      const pinia = getActivePinia()!
+
+      expect(Object.keys(pinia.state.value)).toHaveLength(2)
+      tipOnFail(() => {
+        expect(store.$id).toBe('id')
+      }, 'The store should preserve the "id" passed to your custom "defineStore" function')
+    })
+
     it('exposes the state', async () => {
       const store = defineReadonlyState(
         'id',
@@ -121,6 +156,23 @@ describe('Private state', () => {
   })
 
   describe('definePrivateStore', () => {
+    it('creates two stores to implement the private state', async () => {
+      const store = definePrivateStore(
+        'id',
+        () => ({ count: ref(0) }),
+        () => {
+          return {}
+        },
+      )()
+
+      const pinia = getActivePinia()!
+
+      expect(Object.keys(pinia.state.value)).toHaveLength(2)
+      tipOnFail(() => {
+        expect(store.$id).toBe('id')
+      }, 'The store should preserve the "id" passed to your custom "defineStore" function')
+    })
+
     it('does not expose the state', async () => {
       const store = definePrivateStore(
         'id',
