@@ -8,6 +8,13 @@ Welcome to **Mastering Pinia**! To get started, run the following command:
 npx zx@7.2 https://esm.is/mastering-pinia
 ```
 
+This will create a `mastering-pinia` folder with all the exercises in your Home folder. You can pass a different path as
+`--dir` or as the last argument to the command to change the location of the folder.
+
+```bash
+npx zx@7.2 https://esm.is/mastering-pinia --dir my-folder
+```
+
 > **Note**
 >
 > This also allows to update the exercises to the latest version by running the same command!
@@ -24,3 +31,4 @@ npx zx@7.2 https://esm.is/mastering-pinia
   In that case, press <kbd>Enter</kbd> to continue.
 
 - [install script cant find node, pnpm, npx zx](https://github.com/MasteringPinia/mastering-pinia--code/issues/14)
+- Run with the `-v` flag to get more information about what is happening
