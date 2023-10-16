@@ -8,8 +8,8 @@ Welcome to **Mastering Pinia**! To get started, run the following command:
 npx zx@7.2 https://esm.is/mastering-pinia
 ```
 
-This will create a `mastering-pinia` folder with all the exercises in your Home folder. You can pass a different path as
-`--dir` or as the last argument to the command to change the location of the folder.
+This will create a `mastering-pinia-exercises` folder with all the exercises in your Home folder. You can pass a
+different path as `--dir` or as the last argument to the command to change the location of the folder.
 
 ```bash
 npx zx@7.2 https://esm.is/mastering-pinia --dir my-folder
