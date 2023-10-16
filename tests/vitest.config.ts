@@ -30,6 +30,12 @@ export default mergeConfig(
         port: 51205,
         strictPort: true,
       },
+      typecheck: {
+        ignoreSourceErrors: true,
+        exclude: ['src/main.ts', 'src/exercises/**/*.vue'],
+        include: ['src/exercises/*/.internal/**/*.spec-d.ts'],
+        tsconfig: './typecheck/tsconfig.json',
+      },
     },
   }),
 )

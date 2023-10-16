@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "files": [
+    "../src/exercises/*/.internal/**/*.spec-d.ts"
+  ],
+  "include": [
+    "../src/exercises/*/.internal/**/*.spec-d.ts"
+  ],
+  "compilerOptions": {
+    "skipLibCheck": true
+  }
+}
