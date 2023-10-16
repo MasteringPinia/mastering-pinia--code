@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { usePrivateCounter } from './stores/store-private-state'
-import { useReadonlyCounter } from './stores/store-readonly-state'
+import { usePrivateStore } from './stores/store-private-store'
 
 const privateCounter = usePrivateCounter()
-const readonlyCounter = useReadonlyCounter()
+const privateStoreCounter = usePrivateStore()
 </script>
 
 <template>
@@ -21,31 +21,23 @@ const readonlyCounter = useReadonlyCounter()
 
   <hr />
 
-  <h2>Readonly Counter</h2>
+  <h2>Private Store counter</h2>
 
   <div class="space-x-2 mb-2">
-    <button @click="readonlyCounter.increment()">Increment by 1</button>
-    <button @click="readonlyCounter.increment(10)">Increment by 10</button>
-    <button
-      @click="
-        /* @ts-expect-error: this shouldn't be allowed */
-        readonlyCounter.n++
-      "
-    >
-      Direct increment (fails)
-    </button>
+    <button @click="privateStoreCounter.decrement()">Decrement by 1</button>
+    <button @click="privateStoreCounter.decrement(10)">Decrement by 10</button>
   </div>
 
-  <p>N: {{ readonlyCounter.n }}</p>
-  <p>Double: {{ readonlyCounter.double }}</p>
+  <p>Double plus one: {{ privateStoreCounter.doublePlusOne }}</p>
 
   <p>Counter store state (should be empty):</p>
-  <pre><code>{{ readonlyCounter.$state }}</code></pre>
-
+  <pre><code>{{ privateStoreCounter.$state }}</code></pre>
+  <pre><code>'double' in privateStoreCounter: {{ 'double' in privateStoreCounter }}</code></pre>
+  <pre><code>'increment' in privateStoreCounter: {{ 'increment' in privateStoreCounter }}</code></pre>
   <hr />
 
   <p>
     If you are done with these, you can try the harder version
-    <RouterLink to="/6/5-private-state/private-store">Private Stores</RouterLink> 👹.
+    <RouterLink to="/6/5-private-state/readonly-state">Readonly State</RouterLink> 👹.
   </p>
 </template>
