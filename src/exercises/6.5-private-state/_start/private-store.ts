@@ -4,6 +4,6 @@
 
 import { defineStore } from 'pinia'
 
-export function definePrivateStore(id: any, privateStateFn: any, setup: any) {
+export function definePrivateStore(id: any, privateStoreSetup: any, setup: any) {
   return defineStore(id, setup)
 }
