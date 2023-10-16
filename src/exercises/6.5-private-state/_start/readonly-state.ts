@@ -6,6 +6,3 @@ import { defineStore } from 'pinia'
 export function defineReadonlyState(id: any, privateStateFn: any, setup: any) {
   return defineStore(id, () => setup)
 }
-
-// TIP: if uses toRefs, toRef
-// TIP: if not using computed
