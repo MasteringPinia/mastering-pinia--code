@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onAfterEach } from '@/.internal/utils'
-import { getStatusIcon, useTestStatus, getTestStatusIcon, getTestStatusText } from '@/.internal/utils/testing'
+import { useTestStatus, getTestStatusIcon, getTestStatusText } from '@/.internal/utils/testing'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
