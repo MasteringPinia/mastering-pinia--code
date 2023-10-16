@@ -52,7 +52,7 @@ just meant to be there to help you understand what we are trying to achieve and 
   ```
 
   - Use the 2nd argument `privateState` to define a store that **holds the private state**, just like we saw in the
-    lesson. Make sure **not to have duplicated idss** for stores.
+    lesson. Make sure **not to have duplicated ids** for stores.
   - Define another store that will _use_ the one we just defined. This store will be the **public store** that will be
     returned by `definePrivateState()`.
 
@@ -149,31 +149,124 @@ just meant to be there to help you understand what we are trying to achieve and 
 
   </details>
 
+- Let's do a more advanced version: In `private-store.ts`, implement `definePrivateStore()` so it can be used in
+  `stores/store-private-store.ts` like this:
+
+  ```ts
+  export const usePrivateCounter = definePrivateStore(
+    'my-id',
+    // a function that defines a private store
+    () => {
+      const n = ref(0)
+
+      function increment(amount = 1) {
+        privateStore.n += amount
+      }
+
+      return { n, increment }
+    }
+    // this is a setup store **with an argument**
+    // it should give access to the private state defined above
+    privateStore => {
+      const double = computed(() => privateStore.n * 2)
+
+      return {
+        double,
+        // we can decide to expose increment if we want to
+        increment: privateStore.increment,
+      }
+    },
+  )
+  ```
+
+  - Use the 2nd argument `privateStoreSetup` to _define a store_ that holds private state **and any private getters or
+    actions**.
+  - Define another store that will be the **public store** that will be returned by `definePrivateStore()`.
+  - This version of the store should be fairly similar to the one we just did, **it mostly differs in Types**.
+
+  <details>
+  <summary>💡 <img class="tip-logo" src="/logo-ts.svg" alt="TypeScript"> Tip: <i>Pinia type Helpers</i></summary>
+
+  Pinia exposes some type helpers to work with Store types. In this scenario, we need a way to extract the type of a
+  _Store instance_ from the `privateStoreSetup` function. We can use `SetupStoreDefinition` for that:
+
+  ```ts
+  import { SetupStoreDefinition, defineStore } from 'pinia'
+
+  export function definePrivateStore<
+    Id extends string,
+    // 👇 no extends constraint this time, like with StoreSetup
+    PrivateStore,
+    StoreSetup,
+  >(
+    id: Id,
+    // 👇 same as before
+    privateStoreSetup: () => PrivateStore,
+    setup: (
+      // 👇 We need to get a bit more complex here
+      privateState: ReturnType<SetupStoreDefinition<string, PrivateStore>>,
+    ) => StoreSetup,
+  ) {
+    // ...
+  }
+  ```
+
+  </details>
+
 ## 💪 Extra goals
 
 _Extra goals might not have any tests and can be done later or skipped._
 
-- Create a custom `definePrivateStore()` that accepts a function of a **setup store** instead of just returning a state
-  object:
+- Create a custom `defineReadonlyState()`, with the **same arguments as** the first `definePrivateState()` but that
+  returns a store that exposes all of the private state properties **as getters**.
 
   ```ts
-  const export = definePrivateStore('counter', () => {
-    const n = ref(0)
-    const double = () => {
-      n.value *= 2
-    }
+  export const useReadonlyCounter = defineReadonlyState(
+    '6.5-readonly-state-counter',
+    () => ({
+      n: 0,
+    }),
+    priv => {
+      const double = computed(() => priv.n * 2)
 
-    return { n, double }
-  },
-   (privateStore) => {
-    const message = computed(() => `${privateStore.n} x 2 = ${privateStore.double}`)
-    function increment {
-      privateStore.n++
-    }
+      function increment(amount = 1) {
+        priv.n += amount
+      }
 
-    return {
-      message,
-      increment,
-    }
-  })
+      return {
+        // note how we are not exposing n
+        double,
+        increment,
+      }
+    },
+  )
   ```
+
+  - Create an object that holds a `computed` property (a _getter_) for each `privateStore.$state` property.
+  - Merge and return the object with the `setup()` return value.
+  - **Note**: It's okay if you need to use 1 `as any` cast on this one for TypeScript to be happy.
+
+  <details>
+  <summary>💡 <img class="tip-logo" src="/logo-ts.svg" alt="TypeScript"> Tip: <i>getters from another store state</i></summary>
+
+  You can type the object that holds the getters be using a `K in keyof PrivateState` and the `ComputedRef` type from
+  Vue:
+
+  ```ts
+  const privateStateAsGetters: {
+    [K in keyof PrivateState]: ComputedRef<PrivateState[K]>
+    // NOTE: this one is a bit harder to get typed correctly as we fill the object afterwards
+  } = {} as any
+
+  for (const key in privateStore.$state) {
+    // ...
+  }
+  ```
+
+  This should let TypeScript to infer the correct type if you return it with
+
+  ```ts
+  return { ...privateStateAsGetters, ...setupReturn }
+  ```
+
+  </details>

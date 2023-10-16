@@ -4,12 +4,12 @@
 
 import { SetupStoreDefinition, defineStore } from 'pinia'
 
-export function definePrivateStore<Id extends string, PrivateStore, SS>(
+export function definePrivateStore<Id extends string, PrivateStore, StoreSetup>(
   id: Id,
-  privateStateFn: () => PrivateStore,
-  setup: (privateState: ReturnType<SetupStoreDefinition<string, PrivateStore>>) => SS,
+  privateStoreSetup: () => PrivateStore,
+  setup: (privateState: ReturnType<SetupStoreDefinition<string, PrivateStore>>) => StoreSetup,
 ) {
-  const usePrivateStore = defineStore(id + '_private', privateStateFn)
+  const usePrivateStore = defineStore(id + '_private', privateStoreSetup)
 
   return defineStore(id, () => {
     const privateStore = usePrivateStore()
