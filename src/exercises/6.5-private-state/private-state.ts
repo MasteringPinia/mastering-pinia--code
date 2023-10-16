@@ -6,14 +6,14 @@ import { StateTree, defineStore } from 'pinia'
 export function definePrivateState<
   Id extends string,
   PrivateState extends StateTree, // TODO: add tip about this
-  SS, // TODO: tip
->(id: Id, privateStateFn: () => PrivateState, setup: (privateSTate: PrivateState) => SS) {
+  SetupReturn, // TODO: tip
+>(id: Id, privateStateFn: () => PrivateState, setup: (privateSTate: PrivateState) => SetupReturn) {
   const usePrivateStore = defineStore(id + '_private', {
     state: privateStateFn,
   })
 
   return defineStore(id, () => {
     const privateStore = usePrivateStore()
-    return setup(privateStore)
+    return setup(privateStore.$state)
   })
 }
