@@ -1,6 +1,6 @@
 {
   "name": "code",
-  "type": "commonjs",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@8.6.4",
