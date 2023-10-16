@@ -174,6 +174,16 @@ function closeIfOutside(event: MouseEvent) {
   max-width: 800px;
 }
 
+#instructions :deep(img.tip-logo) {
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0%;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+}
+
 #instructions-modal::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);

@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Markdown from 'unplugin-vue-markdown/vite'
+import { getHighlighter } from 'shikiji'
 import VueRouter from 'unplugin-vue-router/vite'
 import Components from 'unplugin-vue-components/vite'
 
@@ -78,6 +79,25 @@ export default defineConfig({
     Markdown({
       markdownItOptions: {
         typographer: false,
+      },
+      async markdownItSetup(md) {
+        const shiki = await getHighlighter({
+          themes: ['vitesse-light', 'dracula-soft'],
+          langs: ['javascript', 'typescript', 'bash', 'json', 'html', 'css', 'vue', 'vue-html'],
+        })
+
+        md.use(markdown => {
+          markdown.options.highlight = (code, lang) => {
+            return shiki.codeToHtml(code, {
+              lang,
+              defaultColor: 'dark',
+              themes: {
+                light: 'vitesse-light',
+                dark: 'dracula-soft',
+              },
+            })
+          }
+        })
       },
     }),
   ],
