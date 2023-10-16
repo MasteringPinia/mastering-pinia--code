@@ -65,6 +65,7 @@
     "open": "^9.1.0",
     "postcss": "^8.4.31",
     "serve-static": "^1.15.0",
+    "shikiji": "^0.6.10",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.2.2",
     "unplugin-vue-components": "^0.25.2",
