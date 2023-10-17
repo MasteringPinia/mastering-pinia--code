@@ -2,6 +2,12 @@
 
 ![Hero Image](./public/hero-image.svg)
 
+## Requirements
+
+- Recent Node version. Recommended the latest LTS version (>=18)
+- pnpm >=8.6 **required** to install the dependencies in this project
+- git > 2.13 **required** to run the installation script
+
 Welcome to **Mastering Pinia**! To get started, run the following command:
 
 ```bash
@@ -29,6 +35,12 @@ npx zx@7.2 https://esm.is/mastering-pinia --dir my-folder
   ![Stuck on fetch](https://github.com/MasteringPinia/mastering-pinia--code/assets/664177/d6399ed2-fe7a-4650-ae46-7bf7ec031491)
 
   In that case, press <kbd>Enter</kbd> to continue.
+
+- You can skip the version checks by passing `--skipChecks` to the script:
+
+  ```bash
+  npx zx@7.2 https://esm.is/mastering-pinia --skipChecks
+  ```
 
 - [install script cant find node, pnpm, npx zx](https://github.com/MasteringPinia/mastering-pinia--code/issues/14)
 - Run with the `-v` flag to get more information about what is happening
