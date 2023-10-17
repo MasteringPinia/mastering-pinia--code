@@ -8,6 +8,8 @@
 - pnpm >=8.6 **required** to install the dependencies in this project
 - git > 2.13 **required** to run the installation script
 
+## Setup
+
 Welcome to **Mastering Pinia**! To get started, run the following command:
 
 ```bash
