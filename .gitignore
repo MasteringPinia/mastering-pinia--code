@@ -12,6 +12,8 @@ pnpm-debug.log
 # This is usually tracked but it's easier for the project to be this way
 typed-router.d.ts
 components.d.ts
+auto-imports.d.ts
+.eslintrc-auto-imports.json
 
 # downloaded bootstrap file
 mastering-pinia-*.mjs

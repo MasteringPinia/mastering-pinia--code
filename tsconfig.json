@@ -37,9 +37,7 @@
   },
   "include": [
     "*.ts",
-    "./typed-router.d.ts",
-    "./components.d.ts",
-    "./env.d.ts",
+    "./*.d.ts",
     "src/*.ts",
     "tests/**/*.ts",
     "src/**/*.ts",
@@ -49,5 +47,8 @@
     "src/**/.internal/**/*.ts",
     "src/**/.internal/**/*.vue",
     "server.mjs"
+  ],
+  "exclude": [
+    "src/exercises/*/_start"
   ]
 }
