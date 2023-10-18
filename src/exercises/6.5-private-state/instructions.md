@@ -17,6 +17,10 @@ Write your notes or questions here.
 
 ## 🎯 Goals
 
+### 1. Add private state to a store
+
+### 2. Implement our own `definePrivateState()` methods
+
 If you decide to go the difficult route and make everything type safe, try to let TS infer as much as possible,
 especially **the return types** of the functions we are going to write. If you feel blocked, unveil the _Tips_ below.
 
