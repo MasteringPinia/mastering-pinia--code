@@ -6,6 +6,7 @@ import Markdown from 'unplugin-vue-markdown/vite'
 import { getHighlighter } from 'shikiji'
 import VueRouter from 'unplugin-vue-router/vite'
 import Components from 'unplugin-vue-components/vite'
+import AutoImport from 'unplugin-auto-import/vite'
 
 export default defineConfig({
   plugins: [
@@ -73,6 +74,13 @@ export default defineConfig({
         },
       ],
       globs: ['src/exercises/*/.internal/components/*.vue'],
+    }),
+    AutoImport({
+      dirs: ['./src/.internal/composables'],
+      eslintrc: {
+        enabled: true,
+        filepath: './.eslintrc-auto-imports.json',
+      },
     }),
     Vue({ include: [/\.vue$/, /\.md$/] }),
     // could be used to display instructions within the page
