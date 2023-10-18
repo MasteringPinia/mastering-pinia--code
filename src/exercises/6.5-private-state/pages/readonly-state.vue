@@ -2,12 +2,21 @@
 import { useReadonlyCounter } from '../stores/store-readonly-state'
 
 const readonlyCounter = useReadonlyCounter()
+
+const openFile = useOpenFile()
 </script>
 
 <template>
   <h2>Readonly Counter</h2>
 
-  <div class="space-x-2 mb-2">
+  <p class="my-6 leading-relaxed">
+    This section covers the store defined in <code>./stores/store-readonly-state.ts</code>, which uses
+    <code>defineReadonlyState()</code> from
+    <a role="button" href="#" @click.prevent="openFile('./readonly-state.ts')"><code>./readonly-state.ts</code></a
+    >. Make sure to check <b>the instructions in the navbar</b> for tips 💡.
+  </p>
+
+  <div class="mb-2 space-x-2">
     <button @click="readonlyCounter.increment()">Increment by 1</button>
     <button @click="readonlyCounter.increment(10)">Increment by 10</button>
     <button
