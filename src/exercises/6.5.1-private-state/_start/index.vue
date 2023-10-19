@@ -51,7 +51,7 @@ async function login() {
 const isFailingAsExpected = ref<boolean>()
 function shouldFail() {
   try {
-    // @ts-expect-error: this shouldn't be allowed
+    // @ts-ignore: this shouldn't be allowed, replace it with "@ts-expect-error"
     auth.currentUser = {
       displayName: 'John Doe',
       email: 'john@gmail.com',
