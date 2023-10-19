@@ -48,7 +48,4 @@
     "src/**/.internal/**/*.vue",
     "server.mjs"
   ],
-  "exclude": [
-    "src/exercises/*/_start"
-  ]
 }
