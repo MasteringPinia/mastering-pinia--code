@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useReadonlyCounter } from '../stores/store-readonly-state'
+import { useReadonlyCounter } from '../../stores/store-readonly-state'
 
 const readonlyCounter = useReadonlyCounter()
 
