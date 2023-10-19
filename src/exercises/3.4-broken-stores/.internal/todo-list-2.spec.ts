@@ -33,7 +33,7 @@ describe('broken stores', () => {
       vi.restoreAllMocks()
     })
 
-    it('(2) do we need that many toRef(s)/storeToRefs?', async () => {
+    it('do we need that many toRef(s)/storeToRefs?', async () => {
       mount(TestComponent)
       const totalCalls =
         (toRef as unknown as SpyInstance).mock.calls.length +
@@ -44,7 +44,7 @@ describe('broken stores', () => {
       }, "You don't need more than one of these functions to destructure the store. You can use `toRef()`, `toRefs()`, or `storeToRefs()`.")
     })
 
-    it('(2) actions should not be refs', async () => {
+    it('actions should not be refs', async () => {
       const wrapper = mount(TestComponent)
       // @ts-expect-error: internal
       const internalInstance: any = toRaw(wrapper.vm.$.devtoolsRawSetupState)
@@ -55,7 +55,7 @@ describe('broken stores', () => {
       }, 'Make sure to **not** use `toRef()`, `toRefs()`, or `storeToRefs()` on actions. You can simply destructure them from the store or use them directly.')
     })
 
-    it('(2) should not call useStore within component actions', async () => {
+    it('should not call useStore within component actions', async () => {
       const wrapper = mount(TestComponent)
 
       // using vi.mock didn't work

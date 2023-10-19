@@ -14,7 +14,7 @@ describe('broken stores', () => {
       vi.spyOn(console, 'warn').mockRestore()
     })
 
-    it('(1) destructs state correctly from the store', async () => {
+    it('destructs state correctly from the store', async () => {
       const wrapper = mount(TestComponent)
 
       expect(wrapper.vm).toHaveProperty('list')
@@ -25,7 +25,7 @@ describe('broken stores', () => {
       }, 'Make sure to use `toRef()`, `toRefs()`, or `storeToRefs()` to destructure the store.')
     })
 
-    it('(1) destructs getters correctly from the store', async () => {
+    it('destructs getters correctly from the store', async () => {
       const wrapper = mount(TestComponent)
 
       expect(wrapper.vm).toHaveProperty('finished')
@@ -34,7 +34,7 @@ describe('broken stores', () => {
       expect(isRef(internalInstance.finished)).toBe(true)
     })
 
-    it('(1) destructs actions correctly from the store', async () => {
+    it('destructs actions correctly from the store', async () => {
       const wrapper = mount(TestComponent)
 
       expect(wrapper.vm).toHaveProperty('add')

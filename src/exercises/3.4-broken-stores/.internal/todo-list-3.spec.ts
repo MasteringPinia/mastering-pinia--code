@@ -35,7 +35,7 @@ describe('broken stores', () => {
       vi.restoreAllMocks()
     })
 
-    it('(3) do we really need computed here?', async () => {
+    it('do we really need computed here?', async () => {
       mount(TestComponent)
 
       tipOnFail(() => {
@@ -54,7 +54,7 @@ describe('broken stores', () => {
       }, "`useTimeAgo()` doesn't need to use `toRef()` or `toRefs()`, it can also be passed a simple getter function.")
     })
 
-    it('(3) watching the whole store seems a bit too much', async () => {
+    it('watching the whole store seems a bit too much', async () => {
       const wrapper = mount(TestComponent)
       // @ts-expect-error: internal
       const internalInstance: any = toRaw(wrapper.vm.$.devtoolsRawSetupState)
