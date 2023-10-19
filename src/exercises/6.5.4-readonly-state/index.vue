@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import { useReadonlyCounter } from '../../stores/store-readonly-state'
+// ⛔️ Feel free to play around with the code below, but you won't need to change this file
+// to make the tests pass.
+import { useReadonlyCounter } from './stores/store-readonly-state'
 
 const readonlyCounter = useReadonlyCounter()
 
