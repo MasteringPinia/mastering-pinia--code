@@ -19,7 +19,11 @@ Write your notes or questions here.
 
 ### 1. Add private state to a store
 
-Let's first practice what we just watched by
+Let's first practice what we just watched by adding a private state to a store. The store is already created in
+`stores/auth.ts`.
+
+- Ensure the store's `currentUser` is defined as _private state_, like we saw in the lesson
+- Expose the `currentUser` as a getter in the auth store so it can be used in the template
 
 ### 2. Implement our own `definePrivateState()` methods
 
