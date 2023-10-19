@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { onAfterEach } from '@/.internal/utils'
 import { useTestStatus, getTestStatusIcon, getTestStatusText } from '@/.internal/utils/testing'
-import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useLocalStorage } from '@vueuse/core'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router/auto'
 
 const {
-  //
   rerun,
   currentRunningTests,
   currentTestsPerSuite,
@@ -19,12 +19,20 @@ const {
   testResult,
 } = useTestStatus()
 
-const isEnlarged = ref(false)
+// details can be made fullscreen
+const isEnlarged = useLocalStorage('_test-runner:isEnlarged', false)
+// details can be expanded by default
+const isPassingExpanded = useLocalStorage('_test-runner:isPassingExpanded', false)
+
+function saveExpandSetting(event: Event & { target: HTMLDetailsElement }) {
+  isPassingExpanded.value = event.target.open
+}
 
 const route = useRoute()
 const isForcefullyHidden = computed(() => 'hideTests' in route.query)
 const isHidden = computed(() => isForcefullyHidden.value || isMinimized.value)
-const isMinimized = ref(false)
+// mini version of the test runner
+const isMinimized = useLocalStorage('_test-runner:isMinimized', false)
 
 const isRunFinished = computed(() => testResult.value === 'fail' || testResult.value === 'pass')
 
@@ -53,7 +61,7 @@ function enlarge() {
       v-if="hasTests && !isHidden"
       id="test-runner"
       :key="title"
-      class="fixed bottom-10 left-4 z-50 m-0 border border-gray-800 rounded-lg dark:border-gray-300 bg-gray-50 dark:bg-gray-900"
+      class="fixed z-50 m-0 border border-gray-800 rounded-lg bottom-10 left-4 dark:border-gray-300 bg-gray-50 dark:bg-gray-900"
       :class="[isEnlarged ? 'right-4 top-10 bg-opacity-75 dark:bg-opacity-70' : 'w-72']"
     >
       <h3
@@ -95,7 +103,13 @@ function enlarge() {
 
       <div v-if="!isMinimized" class="relative overflow-y-auto text-xs" :class="[isEnlarged ? '' : 'max-h-72']">
         <template v-if="hasNestedSuites">
-          <details v-for="[name, group] in currentTestsPerSuite" :key="name" class="p-0 pb-1">
+          <details
+            v-for="[name, group] in currentTestsPerSuite"
+            :key="name"
+            class="p-0 pb-1"
+            :open="isPassingExpanded"
+            @toggle="saveExpandSetting"
+          >
             <summary class="sticky top-0 z-20 px-2 bg-gray-50/30 backdrop-blur dark:bg-gray-900/30">
               <span class="mr-2" :title="group.stateText">{{ group.state }}</span>
               {{ group.name }} ({{ group.tests.length }})
@@ -146,7 +160,13 @@ function enlarge() {
             <hr class="m-1" />
           </div>
 
-          <details v-if="currentPassingTests.length" key="pass" class="p-0 pb-[0.75rem]">
+          <details
+            v-if="currentPassingTests.length"
+            key="pass"
+            class="p-0 pb-[0.75rem]"
+            :open="isPassingExpanded"
+            @toggle="saveExpandSetting"
+          >
             <summary class="sticky top-0 z-20 px-2 bg-gray-50/30 backdrop-blur dark:bg-gray-900/30">
               <span class="mr-2" :title="`Passed ${currentPassingTests.length} tests`">🟢</span>
               {{ currentPassingTests.length }} tests passing
@@ -163,10 +183,10 @@ function enlarge() {
       </div>
     </section>
 
-    <div v-else-if="!isForcefullyHidden && hasTests" class="fixed bottom-10 left-4 z-50">
+    <div v-else-if="!isForcefullyHidden && hasTests" class="fixed z-50 bottom-10 left-4">
       <button
         data-test="btn-show-tests"
-        class="px-3 py-1 text-sm border border-dashed border-gray-500 bg-gray-50 dark:bg-gray-900 group space-x-2"
+        class="px-3 py-1 space-x-2 text-sm border border-gray-500 border-dashed bg-gray-50 dark:bg-gray-900 group"
         @click="isMinimized = false"
       >
         <span id="test-runner-status" :key="runId" :class="isRunFinished && 'animate__animated animate__bounce'">{{
