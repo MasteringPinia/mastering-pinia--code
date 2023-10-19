@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+// ⛔️ Feel free to play around with the code below, but you won't need to change this file
+// to make the tests pass.
 import { usePrivateCounter } from './stores/store-private-state'
 import { usePrivateStore } from './stores/store-private-store'
 
@@ -9,7 +11,7 @@ const privateStoreCounter = usePrivateStore()
 <template>
   <h2>Private counter</h2>
 
-  <div class="space-x-2 mb-2">
+  <div class="mb-2 space-x-2">
     <button @click="privateCounter.increment()">Increment by 1</button>
     <button @click="privateCounter.increment(10)">Increment by 10</button>
   </div>
@@ -23,7 +25,7 @@ const privateStoreCounter = usePrivateStore()
 
   <h2>Private Store counter</h2>
 
-  <div class="space-x-2 mb-2">
+  <div class="mb-2 space-x-2">
     <button @click="privateStoreCounter.decrement()">Decrement by 1</button>
     <button @click="privateStoreCounter.decrement(10)">Decrement by 10</button>
   </div>
