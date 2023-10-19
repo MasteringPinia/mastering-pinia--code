@@ -40,7 +40,7 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
   // Launch Puppeteer
   const browser = await puppeteer.launch({
-    headless: headless || 'new',
+    headless: headless === true ? 'new' : false,
   })
   const page = await browser.newPage()
 
@@ -97,7 +97,7 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
   console.log('Stopping local server...')
   server.kill('SIGINT')
 
-  if (screenshots.length < 4) {
+  if (screenshots.length < 12) {
     console.log('Optimizing screenshots...')
 
     spawnSync('open', ['-a', 'ImageOptim', ...screenshots], {
