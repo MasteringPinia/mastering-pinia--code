@@ -12,7 +12,7 @@ interface UserAuth {
   password: string
 }
 
-interface UserRegister extends Pick<User, 'email' | 'displayName'>, UserAuth {
+export interface UserRegister extends Pick<User, 'email' | 'displayName'>, UserAuth {
   photoURL?: string
 }
 
@@ -33,4 +33,19 @@ export async function registerUser(user: UserRegister) {
     photoURL: `https://i.pravatar.cc/150?u=${user.email}`,
     ...user,
   })
+}
+
+export async function login(user: UserAuth) {
+  const userList = await users.get<User[]>('/', {
+    query: {
+      email: user.email,
+      password: user.password,
+    },
+  })
+
+  if (!userList.length) {
+    throw new Error('Invalid credentials')
+  }
+
+  return userList[0]
 }

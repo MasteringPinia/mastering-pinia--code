@@ -19,6 +19,8 @@ Write your notes or questions here.
 
 ### 1. Add private state to a store
 
+Let's first practice what we just watched by
+
 ### 2. Implement our own `definePrivateState()` methods
 
 If you decide to go the difficult route and make everything type safe, try to let TS infer as much as possible,
