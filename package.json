@@ -62,7 +62,6 @@
     "msw": "^1.3.2",
     "node-fetch": "^3.3.2",
     "npm-run-all": "^4.1.5",
-    "open": "^9.1.0",
     "postcss": "^8.4.31",
     "serve-static": "^1.15.0",
     "shikiji": "^0.6.10",

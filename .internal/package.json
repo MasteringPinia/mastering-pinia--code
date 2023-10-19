@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "minimist": "^1.2.8",
+    "open": "^9.1.0",
     "puppeteer": "^21.3.3"
   }
 }
