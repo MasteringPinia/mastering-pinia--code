@@ -1,10 +1,14 @@
 import { useRoute } from 'vue-router/auto'
 import { openFile } from '../utils/files'
 
+/**
+ * Returns a function to be used to open a file in the editor. Can only be called within an exercise component. The
+ * `relativePath` is relative to the exercise directory **not the current file**.
+ */
 export function useOpenFile() {
   const route = useRoute()
 
-  return function open(relativePath: string, line?: number, column?: number) {
+  return async function open(relativePath: string, line?: number, column?: number) {
     const filePath = route.meta.exerciseData?.filepath
     if (!filePath) {
       console.log('Cannot open file', relativePath, 'with base path', filePath)

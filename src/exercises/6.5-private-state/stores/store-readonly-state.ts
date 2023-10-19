@@ -25,9 +25,6 @@ export const useReadonlyCounter = defineReadonlyState(
   },
 )
 
-// TIP: if uses toRefs, toRef
-// TIP: if not using computed
-
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useReadonlyCounter, import.meta.hot))
 }

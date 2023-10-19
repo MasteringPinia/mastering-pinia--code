@@ -7,7 +7,7 @@ const openFile = useOpenFile()
 </script>
 
 <template>
-  <h2><code>definePrivateState()</code></h2>
+  <h2>definePrivateState()</h2>
 
   <p class="my-6 leading-relaxed">
     This section covers the store defined in <code>./stores/store-private-state.ts</code>, which uses

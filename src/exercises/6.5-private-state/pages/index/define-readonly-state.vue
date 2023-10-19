@@ -7,7 +7,7 @@ const openFile = useOpenFile()
 </script>
 
 <template>
-  <h2>Readonly Counter</h2>
+  <h2>defineReadonlyState</h2>
 
   <p class="my-6 leading-relaxed">
     This section covers the store defined in <code>./stores/store-readonly-state.ts</code>, which uses
