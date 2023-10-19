@@ -16,6 +16,10 @@
     "src/*.css": true,
     "src/*.vue": true,
     "tests": true,
-    "server.mjs": true
+    "server.mjs": true,
+    "auto-imports.d.ts": true,
+    "components.d.ts": true,
+    "typed-router.d.ts": true,
+    ".eslintrc-auto-imports.json": true
   }
 }
