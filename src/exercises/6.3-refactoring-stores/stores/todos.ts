@@ -1,5 +1,6 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
+import { acceptHMRUpdate, defineStore, skipHydrate } from 'pinia'
+import { computed } from 'vue'
 
 export interface TodoItem {
   id: string
@@ -9,13 +10,13 @@ export interface TodoItem {
 }
 
 export const useTodosStore = defineStore('todo', () => {
-  const todos = ref<TodoItem[]>([])
+  const list = skipHydrate(useLocalStorage<TodoItem[]>('6.3-todos', []))
 
-  const finishedTodos = computed(() => todos.value.filter(todo => todo.finished))
-  const unfinishedTodos = computed(() => todos.value.filter(todo => !todo.finished))
+  const finishedList = computed(() => list.value.filter(todo => todo.finished))
+  const unfinishedList = computed(() => list.value.filter(todo => !todo.finished))
 
-  function addTodo(text: string) {
-    todos.value.push({
+  function add(text: string) {
+    list.value.push({
       id: crypto.randomUUID(),
       text,
       finished: false,
@@ -23,26 +24,26 @@ export const useTodosStore = defineStore('todo', () => {
     })
   }
 
-  function updateTodo(updatedTodo: TodoItem) {
-    const index = todos.value.findIndex(todo => todo.id === updatedTodo.id)
+  function update(updatedTodo: TodoItem) {
+    const index = list.value.findIndex(todo => todo.id === updatedTodo.id)
     if (index > -1) {
-      todos.value.splice(index, 1, updatedTodo)
+      list.value.splice(index, 1, updatedTodo)
     }
   }
 
-  function removeTodo(todoId: string) {
-    const index = todos.value.findIndex(todo => todo.id === todoId)
+  function remove(todoId: string) {
+    const index = list.value.findIndex(todo => todo.id === todoId)
     if (index > -1) {
-      todos.value.splice(index, 1)
+      list.value.splice(index, 1)
     }
   }
   return {
-    todos,
-    finishedTodos,
-    unfinishedTodos,
-    addTodo,
-    updateTodo,
-    removeTodo,
+    list,
+    finishedList,
+    unfinishedList,
+    add,
+    update,
+    remove,
   }
 })
 

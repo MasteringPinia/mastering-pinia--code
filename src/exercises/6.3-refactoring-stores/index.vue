@@ -1,14 +1,15 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
+import TodoItem from './components/TodoItem.vue'
 import { useTasksStore } from './stores/tasks'
 import { useTodosStore } from './stores/todos'
 
-const todosStore = useTodosStore()
+const todos = useTodosStore()
 const tasksStore = useTasksStore()
 
 const todoText = ref('')
 function addTodo() {
-  todosStore.addTodo(todoText.value)
+  todos.add(todoText.value)
   todoText.value = ''
 }
 </script>
@@ -25,12 +26,19 @@ function addTodo() {
     <button>Add Todo</button>
   </form>
 
-  <ul>
-    <li v-for="todo in todosStore.todos" :key="todo.id">
-      <TodoItem :todo="todo" @update="todosStore.updateTodo" @delete="todosStore.removeTodo($event.id)" />
-    </li>
-  </ul>
+  <ClientOnly>
+    <ul>
+      <li v-for="todo in todos.list" :key="todo.id">
+        <TodoItem
+          :todo="todo"
+          @update="todos.update"
+          @delete="todos.remove($event.id)"
+          @start="tasksStore.startTodo($event.id)"
+        />
+      </li>
+    </ul>
 
-  <pre>{{ todosStore.$state }}</pre>
-  <pre>{{ tasksStore.$state }}</pre>
+    <pre>{{ todos.$state }}</pre>
+    <pre>{{ tasksStore.$state }}</pre>
+  </ClientOnly>
 </template>
