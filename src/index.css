@@ -17,4 +17,8 @@ ul {
     font-weight: var(--shiki-light-font-weight) !important;
     text-decoration: var(--shiki-light-text-decoration) !important;
   }
+  button code {
+    /* otherwise it's white because of the button */
+    color: var(--nc-tx-2);
+  }
 }
