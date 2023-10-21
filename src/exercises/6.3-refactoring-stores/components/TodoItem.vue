@@ -28,6 +28,7 @@ function saveTodo() {
 const tasks = useTasksStore()
 
 const isTaskStarted = computed(() => tasks.isTodoStarted(props.todo.id))
+const isTaskFinished = computed(() => tasks.finishedTasks.some(t => t.id === props.todo.id))
 </script>
 
 <template>
@@ -39,13 +40,18 @@ const isTaskStarted = computed(() => tasks.isTodoStarted(props.todo.id))
     </form>
     <div v-else class="mb-0 space-x-2">
       <span :class="{ 'line-through': todo.finished, 'text-gray': todo.finished }">{{ todo.text }}</span>
-      <template v-if="isTaskStarted">
-        <button @click="emit('pause', todo)">Pause Task</button>
+      <template v-if="tasks.activeTask?.id === todo.id">
+        <button @click="tasks.pauseCurrentTodo()">Pause Task</button>
+        <button @click="tasks.finishCurrentTodo()">Finish Task</button>
       </template>
       <template v-else>
-        <button @click="startEdit">Edit</button>
-        <button @click="emit('delete', todo)">Delete</button>
-        <button @click="emit('start', todo)">Start Task</button>
+        <template v-if="!isTaskFinished">
+          <button @click="startEdit">Edit</button>
+          <button v-if="!isTaskStarted" @click="emit('delete', todo)">Delete</button>
+          <button v-if="isTaskStarted" @click="tasks.startTodo(todo.id)">Resume Task</button>
+          <button v-else @click="tasks.startTodo(todo.id)">Start Task</button>
+        </template>
+        <span v-else><i>Finished.</i></span>
       </template>
     </div>
   </div>
