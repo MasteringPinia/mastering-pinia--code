@@ -29,15 +29,15 @@ npx zx@7.2 https://esm.is/mastering-pinia --dir my-folder
 
 ## Troubleshooting
 
-### Windows
-
-- Prefer using Git Bash to run the commands
-- On Windows, you might get stuck on the `$ fetch` step:
+- Sometimes you might get stuck on the `$ fetch` step:
 
   ![Stuck on fetch](https://github.com/MasteringPinia/mastering-pinia--code/assets/664177/d6399ed2-fe7a-4650-ae46-7bf7ec031491)
 
   In that case, press <kbd>Enter</kbd> to continue.
 
+### Windows
+
+- Prefer using Git Bash to run the commands
 - You can skip the version checks by passing `--skipChecks` to the script:
 
   ```bash
