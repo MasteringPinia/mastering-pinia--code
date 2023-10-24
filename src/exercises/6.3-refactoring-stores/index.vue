@@ -16,33 +16,30 @@ function addTodo() {
 </script>
 
 <template>
-  <h1>Task Management</h1>
+  <h2>Todo Manager</h2>
 
+  <!--
+    NOTE: we need to wrap this in a ClientOnly component because we are using local storage
+    and without it, it creates a hydration mismatch error.
+  -->
   <ClientOnly>
     <section>
       <h3>Current Task</h3>
 
-      <template v-if="tasks.activeTask">
-        <TaskActive :task="tasks.activeTask" />
-      </template>
+      <TaskActive v-if="tasks.activeTask" :task="tasks.activeTask" />
     </section>
 
-    <nav>
-      <RouterLink to="/6/3-refactoring-stores/some-test">Some Test</RouterLink>
-    </nav>
-
-    <form class="space-x-2" @submit.prevent="addTodo()">
+    <form class="space-x-2" data-test="add-todo" @submit.prevent="addTodo()">
       <input v-model="todoText" type="text" />
       <button>Add Todo</button>
     </form>
 
-    <ul>
+    <h3>Todo List</h3>
+
+    <ul data-test="todo-list">
       <li v-for="todo in todos.list" :key="todo.id">
         <TodoItem :todo="todo" @update="todos.update" @delete="todos.remove($event.id)" />
       </li>
     </ul>
-
-    <pre>{{ todos.$state }}</pre>
-    <pre>{{ tasks.$state }}</pre>
   </ClientOnly>
 </template>

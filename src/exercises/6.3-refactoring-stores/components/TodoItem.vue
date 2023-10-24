@@ -32,26 +32,30 @@ const finishedTask = computed(() => tasks.finishedTasks.find(t => t.id === props
 
 <template>
   <div>
-    <form v-if="todoCopy" class="mb-0 space-x-2" @submit.prevent="saveTodo">
+    <form v-if="todoCopy" class="mb-0 space-x-2" data-test="todo-edit" @submit.prevent="saveTodo">
       <input v-model="todoCopy.text" type="text" />
       <button @click="saveTodo">Save</button>
       <button type="button" @click="todoCopy = null">Cancel</button>
     </form>
     <div v-else class="mb-0 space-x-2">
-      <span :class="{ 'line-through': todo.finished, 'text-gray': todo.finished }">{{ todo.text }}</span>
+      <span data-test="todo-text" :class="{ 'line-through': todo.finished, 'text-gray': todo.finished }">{{
+        todo.text
+      }}</span>
       <template v-if="tasks.activeTask?.id === todo.id">
-        <button @click="tasks.pauseCurrentTodo()">Pause Task</button>
-        <button @click="tasks.finishCurrentTodo()">Finish Task</button>
+        <button data-test="todo-btn-pause" @click="tasks.pauseCurrentTodo()">Pause Task</button>
+        <button data-test="todo-btn-finish" @click="tasks.finishCurrentTodo()">Finish Task</button>
       </template>
       <template v-else>
         <template v-if="!finishedTask">
-          <button @click="startEdit">Edit</button>
-          <button v-if="!isTaskStarted" @click="emit('delete', todo)">Delete</button>
-          <button v-if="isTaskStarted" @click="tasks.startTodo(todo.id)">Resume Task</button>
-          <button v-else @click="tasks.startTodo(todo.id)">Start Task</button>
+          <button data-test="todo-btn-start-edit" @click="startEdit">Edit</button>
+          <button v-if="!isTaskStarted" data-test="todo-btn-delete" @click="emit('delete', todo)">Delete</button>
+          <button v-if="isTaskStarted" data-test="todo-btn-resume-task" @click="tasks.startTodo(todo.id)">
+            Resume Task
+          </button>
+          <button v-else data-test="todo-btn-start-todo" @click="tasks.startTodo(todo.id)">Start Task</button>
         </template>
         <span v-else
-          ><i
+          ><i data-test="todo-finished-info"
             >Finished
             <time :datetime="new Date(finishedTask.end).toISOString()">{{
               new Date(finishedTask.end).toDateString()
