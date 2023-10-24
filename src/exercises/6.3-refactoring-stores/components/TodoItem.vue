@@ -11,8 +11,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update', todo: TodoItem): void
   (e: 'delete', todo: TodoItem): void
-  (e: 'start', todo: TodoItem): void
-  (e: 'pause', todo: TodoItem): void
 }>()
 
 // null when not editing, otherwise a copy of the todo
