@@ -21,9 +21,13 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
   // Start local server
   console.log('Starting local server...')
-  const PORT = 5173
-  const server = spawn('pnpm', ['exec', 'vite', '--port', PORT], {
+  const PORT = 5174
+  const server = spawn('pnpm', ['run', 'dev:vite'], {
     cwd: path.join(path.dirname(new URL(import.meta.url).pathname), '..'),
+    env: {
+      ...process.env,
+      PORT,
+    },
   })
 
   // let the server start
