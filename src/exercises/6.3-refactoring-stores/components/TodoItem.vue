@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { TodoItem } from '../stores/todos'
 import { useTasksStore } from '../stores/tasks'
+import { TodoItem } from '@/api/todos'
+import { formatTime } from '@/utils'
 
 const props = defineProps<{
   todo: TodoItem
@@ -28,7 +29,7 @@ function saveTodo() {
 const tasks = useTasksStore()
 
 const isTaskStarted = computed(() => tasks.isTodoStarted(props.todo.id))
-const isTaskFinished = computed(() => tasks.finishedTasks.some(t => t.id === props.todo.id))
+const finishedTask = computed(() => tasks.finishedTasks.find(t => t.id === props.todo.id))
 </script>
 
 <template>
@@ -45,13 +46,21 @@ const isTaskFinished = computed(() => tasks.finishedTasks.some(t => t.id === pro
         <button @click="tasks.finishCurrentTodo()">Finish Task</button>
       </template>
       <template v-else>
-        <template v-if="!isTaskFinished">
+        <template v-if="!finishedTask">
           <button @click="startEdit">Edit</button>
           <button v-if="!isTaskStarted" @click="emit('delete', todo)">Delete</button>
           <button v-if="isTaskStarted" @click="tasks.startTodo(todo.id)">Resume Task</button>
           <button v-else @click="tasks.startTodo(todo.id)">Start Task</button>
         </template>
-        <span v-else><i>Finished.</i></span>
+        <span v-else
+          ><i
+            >Finished
+            <time :datetime="new Date(finishedTask.end).toISOString()">{{
+              new Date(finishedTask.end).toDateString()
+            }}</time>
+            in {{ formatTime(finishedTask.totalTime) }}.</i
+          ></span
+        >
       </template>
     </div>
   </div>

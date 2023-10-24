@@ -1,13 +1,7 @@
+import { TodoItem } from '@/api/todos'
 import { useLocalStorage } from '@vueuse/core'
 import { acceptHMRUpdate, defineStore, skipHydrate } from 'pinia'
 import { computed } from 'vue'
-
-export interface TodoItem {
-  id: string
-  text: string
-  finished: boolean
-  createdAt: number
-}
 
 export const useTodosStore = defineStore('todo', () => {
   const list = skipHydrate(useLocalStorage<TodoItem[]>('6.3-todos', []))
@@ -16,11 +10,15 @@ export const useTodosStore = defineStore('todo', () => {
   const unfinishedList = computed(() => list.value.filter(todo => !todo.finished))
 
   function add(text: string) {
+    if (!text) return
+
     list.value.push({
       id: crypto.randomUUID(),
       text,
       finished: false,
       createdAt: Date.now(),
+      // anonymous user
+      createdBy: null,
     })
   }
 
