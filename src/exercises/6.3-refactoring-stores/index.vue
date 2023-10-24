@@ -28,7 +28,7 @@ function addTodo() {
     </section>
 
     <nav>
-      <RouterLink to="/6/2/1-refactoring-stores/some-test">Some Test</RouterLink>
+      <RouterLink to="/6/3-refactoring-stores/some-test">Some Test</RouterLink>
     </nav>
 
     <form class="space-x-2" @submit.prevent="addTodo()">
