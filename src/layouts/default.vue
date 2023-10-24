@@ -20,9 +20,9 @@ const depth = inject(viewDepthKey, 0)
   <AppHeader />
 
   <div class="relative grow">
-    <RouterView v-slot="{ Component, route }">
+    <RouterView v-slot="{ Component, route: resolvedRoute }">
       <Transition v-bind="transitionProps">
-        <div :key="route.matched[toValue(depth)].path || route.path" class="grow">
+        <div :key="resolvedRoute.matched[toValue(depth)].path || resolvedRoute.path" class="grow">
           <component :is="Component" />
         </div>
       </Transition>
