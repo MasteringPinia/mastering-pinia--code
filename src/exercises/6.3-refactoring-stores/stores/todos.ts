@@ -3,7 +3,7 @@ import { useLocalStorage } from '@vueuse/core'
 import { acceptHMRUpdate, defineStore, skipHydrate } from 'pinia'
 import { computed } from 'vue'
 
-export const useTodosStore = defineStore('todo', () => {
+export const useTodosStore = defineStore('6.3-todos', () => {
   const list = skipHydrate(useLocalStorage<TodoItem[]>('6.3-todos', []))
 
   const finishedList = computed(() => list.value.filter(todo => todo.finished))

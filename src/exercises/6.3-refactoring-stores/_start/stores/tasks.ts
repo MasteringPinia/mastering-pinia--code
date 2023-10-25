@@ -1,6 +1,8 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-export const useTasksStore = defineStore('tasks', () => {
+// 🚨 Do not change the name of the store or the exported variables
+
+export const useTasksStore = defineStore('6.3-tasks', () => {
   // we should move some of the logic of the todo store here
 
   return {}
