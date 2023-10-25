@@ -8,34 +8,6 @@ export const useTodosStore = defineStore('todo', () => {
 
   const finishedList = computed(() => list.value.filter(todo => todo.finished))
   const unfinishedList = computed(() => list.value.filter(todo => !todo.finished))
-
-  function add(text: string) {
-    if (!text) return
-
-    list.value.push({
-      id: crypto.randomUUID(),
-      text,
-      finished: false,
-      createdAt: Date.now(),
-      // anonymous user
-      createdBy: null,
-    })
-  }
-
-  function update(updatedTodo: TodoItem) {
-    const index = list.value.findIndex(todo => todo.id === updatedTodo.id)
-    if (index > -1) {
-      list.value.splice(index, 1, updatedTodo)
-    }
-  }
-
-  function remove(todoId: string) {
-    const index = list.value.findIndex(todo => todo.id === todoId)
-    if (index > -1) {
-      list.value.splice(index, 1)
-    }
-  }
-
   const finishedTasks = skipHydrate(useLocalStorage<TodoTask[]>('6.3-finishedTasks', []))
   const startedTasks = skipHydrate(
     useLocalStorage<Map<string, TodoTask>>('6.3-startedTasks', new Map(), {
@@ -80,6 +52,19 @@ export const useTodosStore = defineStore('todo', () => {
   )
 
   const hasActiveTodo = computed<boolean>(() => !!activeTask.value)
+
+  function add(text: string) {
+    if (!text) return
+
+    list.value.push({
+      id: crypto.randomUUID(),
+      text,
+      finished: false,
+      createdAt: Date.now(),
+      // anonymous user
+      createdBy: null,
+    })
+  }
 
   function startTodo(todoId: string) {
     const existingTodo = list.value.find(todo => todo.id === todoId)
@@ -133,6 +118,20 @@ export const useTodosStore = defineStore('todo', () => {
     }
   }
 
+  function update(updatedTodo: TodoItem) {
+    const index = list.value.findIndex(todo => todo.id === updatedTodo.id)
+    if (index > -1) {
+      list.value.splice(index, 1, updatedTodo)
+    }
+  }
+
+  function remove(todoId: string) {
+    const index = list.value.findIndex(todo => todo.id === todoId)
+    if (index > -1) {
+      list.value.splice(index, 1)
+    }
+  }
+
   function isTodoStarted(todoId: string) {
     return startedTasks.value.has(todoId) || (activeTask.value && activeTask.value.id === todoId)
   }
@@ -152,21 +151,19 @@ export const useTodosStore = defineStore('todo', () => {
 
   return {
     list,
-    finishedList,
-    unfinishedList,
-    add,
-    update,
-    remove,
-
     finishedTasks,
     activeTask,
     startedTasks,
-
+    finishedList,
+    unfinishedList,
+    add,
     hasActiveTodo,
     startTodo,
     pauseCurrentTodo,
     finishCurrentTodo,
     isTodoStarted,
+    update,
+    remove,
   }
 })
 
