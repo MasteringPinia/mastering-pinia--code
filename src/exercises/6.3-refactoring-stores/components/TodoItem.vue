@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { useTasksStore } from '../stores/tasks'
-import { TodoItem } from '@/api/todos'
+import { type TodoItem } from '@/api/todos'
 import { formatTime } from '@/utils'
 
 const props = defineProps<{
