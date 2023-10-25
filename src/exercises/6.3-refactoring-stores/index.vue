@@ -26,7 +26,7 @@ function addTodo() {
     <section>
       <h3>Current Task</h3>
 
-      <TaskActive v-if="tasks.activeTask" :task="tasks.activeTask" />
+      <TaskActive v-if="tasks.activeTaskWithTodo" :task="tasks.activeTaskWithTodo" />
     </section>
 
     <form class="space-x-2" data-test="add-todo" @submit.prevent="addTodo()">
