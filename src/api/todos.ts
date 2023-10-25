@@ -96,6 +96,13 @@ export interface TodoTask {
   end: number | null
 }
 
+export interface TodoTaskWithTodo extends TodoTask {
+  /**
+   * The todo this task is attached to.
+   */
+  todo: TodoItem
+}
+
 export async function getTaskList() {
   const createdBy = Cookies.get('mp_user') || null
   const query = createdBy ? { createdBy } : {}

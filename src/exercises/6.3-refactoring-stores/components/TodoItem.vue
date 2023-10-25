@@ -27,7 +27,7 @@ function saveTodo() {
 const tasks = useTasksStore()
 
 const isTaskStarted = computed(() => tasks.isTodoStarted(props.todo.id))
-const finishedTask = computed(() => tasks.finishedTasks.find(t => t.id === props.todo.id))
+const finishedTask = computed(() => tasks.finishedTasks.find(t => t.todoId === props.todo.id))
 </script>
 
 <template>
@@ -41,7 +41,7 @@ const finishedTask = computed(() => tasks.finishedTasks.find(t => t.id === props
       <span data-test="todo-text" :class="{ 'line-through': todo.finished, 'text-gray': todo.finished }">{{
         todo.text
       }}</span>
-      <template v-if="tasks.activeTask?.id === todo.id">
+      <template v-if="tasks.activeTask?.todoId === todo.id">
         <button data-test="todo-btn-pause" @click="tasks.pauseCurrentTodo()">Pause Task</button>
         <button data-test="todo-btn-finish" @click="tasks.finishCurrentTodo()">Finish Task</button>
       </template>
@@ -54,7 +54,7 @@ const finishedTask = computed(() => tasks.finishedTasks.find(t => t.id === props
           </button>
           <button v-else data-test="todo-btn-start-todo" @click="tasks.startTodo(todo.id)">Start Task</button>
         </template>
-        <span v-else
+        <span v-else-if="finishedTask.end"
           ><i data-test="todo-finished-info"
             >Finished
             <time :datetime="new Date(finishedTask.end).toISOString()">{{

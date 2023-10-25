@@ -2,46 +2,11 @@ import { acceptHMRUpdate, defineStore, skipHydrate } from 'pinia'
 import { computed } from 'vue'
 import { useTodosStore } from './todos'
 import { useLocalStorage } from '@vueuse/core'
+import { TodoTask, TodoTaskWithTodo } from '@/api/todos'
 
-export interface TodoTaskActive {
-  id: string
-  start: number
-  totalTime: number
-}
-
-export interface TodoTask extends TodoTaskActive {
-  end: number
-}
-
-export interface TodoTaskStarted extends Omit<TodoTask, 'end'> {}
-
-export const useTasksStore = defineStore('tasks', () => {
-  const todos = useTodosStore()
-
-  const finishedTasks = skipHydrate(useLocalStorage<TodoTask[]>('6.3-finishedTasks', []))
-  const startedTasks = skipHydrate(
-    useLocalStorage<Map<string, TodoTaskStarted>>('6.3-startedTasks', new Map(), {
-      deep: true,
-      serializer: {
-        read: v => {
-          try {
-            return new Map(JSON.parse(v))
-          } catch (_err) {
-            return new Map()
-          }
-        },
-        write: v => {
-          try {
-            return JSON.stringify(Array.from(v.entries()))
-          } catch (_err) {
-            return '[]'
-          }
-        },
-      },
-    }),
-  )
+const useTasksPrivate = defineStore('tasks-private', () => {
   const activeTask = skipHydrate(
-    useLocalStorage<TodoTaskActive | null>('6.3-activeTask', null, {
+    useLocalStorage<TodoTask | null>('6.3-activeTask', null, {
       serializer: {
         read: v => {
           try {
@@ -61,7 +26,39 @@ export const useTasksStore = defineStore('tasks', () => {
     }),
   )
 
-  const hasActiveTodo = computed<boolean>(() => !!activeTask.value)
+  return {
+    activeTask,
+  }
+})
+
+export const useTasksStore = defineStore('tasks', () => {
+  const todos = useTodosStore()
+  const privState = useTasksPrivate()
+
+  const finishedTasks = skipHydrate(useLocalStorage<TodoTask[]>('6.3-finishedTasks', []))
+  const startedTasks = skipHydrate(
+    useLocalStorage<Map<string, TodoTask>>('6.3-startedTasks', new Map(), {
+      deep: true,
+      serializer: {
+        read: v => {
+          try {
+            return new Map(JSON.parse(v))
+          } catch (_err) {
+            return new Map()
+          }
+        },
+        write: v => {
+          try {
+            return JSON.stringify(Array.from(v.entries()))
+          } catch (_err) {
+            return '[]'
+          }
+        },
+      },
+    }),
+  )
+
+  const hasActiveTodo = computed<boolean>(() => !!privState.activeTask)
 
   function startTodo(todoId: string) {
     const existingTodo = todos.list.find(todo => todo.id === todoId)
@@ -74,65 +71,77 @@ export const useTasksStore = defineStore('tasks', () => {
       return
     }
 
-    if (activeTask.value) {
+    if (privState.activeTask) {
       pauseCurrentTodo()
     }
 
     if (startedTasks.value.has(todoId)) {
-      activeTask.value = startedTasks.value.get(todoId)!
-      activeTask.value.start = Date.now()
+      privState.activeTask = startedTasks.value.get(todoId)!
+      privState.activeTask.createdAt = Date.now()
     } else {
-      activeTask.value = {
-        id: todoId,
-        start: Date.now(),
+      privState.activeTask = {
+        id: crypto.randomUUID(),
+        createdAt: Date.now(),
+        end: null,
+        todoId,
         totalTime: 0,
       }
 
       startedTasks.value.set(todoId, {
-        ...activeTask.value,
+        ...privState.activeTask,
       })
     }
   }
 
   function finishCurrentTodo() {
-    if (!activeTask.value) {
+    if (!privState.activeTask) {
       return
     }
 
-    startedTasks.value.delete(activeTask.value.id)
-    const todo = todos.list.find(todo => todo.id === activeTask.value!.id)
+    startedTasks.value.delete(privState.activeTask.id)
+    const todo = todos.list.find(todo => todo.id === privState.activeTask!.todoId)
     if (todo) {
       todo.finished = true
       const end = Date.now()
       finishedTasks.value.push({
-        ...activeTask.value,
+        ...privState.activeTask,
         end,
-        totalTime: end - activeTask.value.start,
+        totalTime: end - privState.activeTask.createdAt,
       })
-      activeTask.value = null
+      privState.activeTask = null
     }
   }
 
   function isTodoStarted(todoId: string) {
-    return startedTasks.value.has(todoId) || (activeTask.value && activeTask.value.id === todoId)
+    return startedTasks.value.has(todoId) || (privState.activeTask && privState.activeTask.todoId === todoId)
   }
 
   function pauseCurrentTodo() {
-    if (!activeTask.value) {
+    if (!privState.activeTask) {
       return
     }
 
-    const existingTask = startedTasks.value.get(activeTask.value.id)
-    startedTasks.value.set(activeTask.value.id, {
-      ...activeTask.value,
-      totalTime: (existingTask?.totalTime ?? 0) + Date.now() - activeTask.value.start,
+    const existingTask = startedTasks.value.get(privState.activeTask.todoId)
+    startedTasks.value.set(privState.activeTask.todoId, {
+      ...privState.activeTask,
+      totalTime: (existingTask?.totalTime ?? 0) + Date.now() - privState.activeTask.createdAt,
     })
-    activeTask.value = null
+    privState.activeTask = null
   }
+
+  const activeTaskWithTodo = computed<TodoTaskWithTodo | null>(() => {
+    const task = privState.activeTask
+    return task
+      ? {
+          ...task,
+          todo: todos.list.find(todo => todo.id === task.todoId)!,
+        }
+      : null
+  })
 
   return {
     finishedTasks,
-    activeTask,
+    activeTask: activeTaskWithTodo,
     startedTasks,
 
     hasActiveTodo,
