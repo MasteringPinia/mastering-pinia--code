@@ -15,6 +15,8 @@ Write your notes or questions here.
 
 - It should...
 
+- Augment the active task with the todo to avoid having to use the store in `<TaskActive>`
+
 ## 💪 Extra goals
 
 _Extra goals might not have any tests and can be done later or skipped._
