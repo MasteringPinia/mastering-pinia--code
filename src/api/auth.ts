@@ -73,19 +73,22 @@ export async function login({ email, password }: UserAuth) {
   const user = matchedUsers.at(0)!
 
   Cookie.set(USER_KEY, user.email)
-  localStorage.set(USER_KEY, {
-    id: user.id,
-    email: user.email,
-    displayName: user.displayName,
-    photoURL: user.photoURL,
-  })
+  window.localStorage.setItem(
+    USER_KEY,
+    JSON.stringify({
+      id: user.id,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+    }),
+  )
 
   return user
 }
 
 export function logout() {
   Cookie.remove(USER_KEY)
-  localStorage.removeItem(USER_KEY)
+  window.localStorage.removeItem(USER_KEY)
 }
 
 /**
