@@ -11,7 +11,7 @@ const totalTimeSpent = useElapsedTime(() => props.task.createdAt - props.task.to
 </script>
 
 <template>
-  <p>Your current task is "{{ task.todo.text }}"</p>
+  <p data-test="task-active">Your current task is "{{ task.todo.text }}"</p>
   <p>
     You have spent a total of <b>{{ totalTimeSpent }}</b> on this task.
     <br />

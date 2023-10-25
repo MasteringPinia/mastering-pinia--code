@@ -4,7 +4,7 @@ import { useTodosStore } from './todos'
 import { useLocalStorage } from '@vueuse/core'
 import { TodoTask, TodoTaskWithTodo } from '@/api/todos'
 
-export const useTasksStore = defineStore('tasks', () => {
+export const useTasksStore = defineStore('6.3-tasks', () => {
   const todos = useTodosStore()
 
   const finishedTasks = skipHydrate(useLocalStorage<TodoTask[]>('6.3-finishedTasks', []))

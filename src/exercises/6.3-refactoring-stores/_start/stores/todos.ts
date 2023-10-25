@@ -3,6 +3,8 @@ import { useLocalStorage } from '@vueuse/core'
 import { acceptHMRUpdate, defineStore, skipHydrate } from 'pinia'
 import { type TodoItem, type TodoTask } from '@/api/todos'
 
+// 🚨 Do not change the name of the store or the exported variables
+
 export const useTodosStore = defineStore('todo', () => {
   const list = skipHydrate(useLocalStorage<TodoItem[]>('6.3-todos', []))
 

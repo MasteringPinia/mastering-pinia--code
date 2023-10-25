@@ -49,7 +49,7 @@ const finishedTask = computed(() => tasks.finishedTasks.find(t => t.todoId === p
         <template v-if="!finishedTask">
           <button data-test="todo-btn-start-edit" @click="startEdit">Edit</button>
           <button v-if="!isTaskStarted" data-test="todo-btn-delete" @click="emit('delete', todo)">Delete</button>
-          <button v-if="isTaskStarted" data-test="todo-btn-resume-task" @click="tasks.startTodo(todo.id)">
+          <button v-if="isTaskStarted" data-test="todo-btn-resume-todo" @click="tasks.startTodo(todo.id)">
             Resume Task
           </button>
           <button v-else data-test="todo-btn-start-todo" @click="tasks.startTodo(todo.id)">Start Task</button>
