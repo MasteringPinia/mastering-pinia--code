@@ -8,6 +8,9 @@ const props = defineProps<{
   task: TodoTask
 }>()
 
+// 💪 Extra Goals
+// --------------
+// NOTE: it would be nice **not** to use the store here jut rather get the information directly in our prop
 const todos = useTodosStore()
 const taskTodo = computed(() => todos.list.find(todo => todo.id === props.task.id))
 
