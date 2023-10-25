@@ -1,22 +1,17 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { type TodoTaskActive } from '../stores/tasks'
-import { useTodosStore } from '../stores/todos'
 import { useElapsedTime } from '@/utils'
+import { type TodoTaskWithTodo } from '@/api/todos'
 
 const props = defineProps<{
-  task: TodoTaskActive
+  task: TodoTaskWithTodo
 }>()
 
-const todos = useTodosStore()
-const taskTodo = computed(() => todos.list.find(todo => todo.id === props.task.id))
-
-const currentTimeSpent = useElapsedTime(() => props.task.start)
-const totalTimeSpent = useElapsedTime(() => props.task.start - props.task.totalTime)
+const currentTimeSpent = useElapsedTime(() => props.task.createdAt)
+const totalTimeSpent = useElapsedTime(() => props.task.createdAt - props.task.totalTime)
 </script>
 
 <template>
-  <p>Your current task is "{{ taskTodo?.text }}"</p>
+  <p>Your current task is "{{ task.todo.text }}"</p>
   <p>
     You have spent a total of <b>{{ totalTimeSpent }}</b> on this task.
     <br />
