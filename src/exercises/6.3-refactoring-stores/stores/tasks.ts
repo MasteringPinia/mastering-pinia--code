@@ -148,5 +148,5 @@ export const useTasksStore = defineStore('tasks', () => {
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useTodosStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useTasksStore, import.meta.hot))
 }
