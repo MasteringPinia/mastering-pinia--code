@@ -56,7 +56,7 @@ Time to refactor:
 
 _Extra goals might not have any tests and can be done later or skipped._
 
-- Take a look `components/TaskActive.vue`. Notice how it uses the todos store. While this is not a problem itself, if we can remove the store usage from the component, it will make it simpler to test and maintain
+- Take a look at `components/TaskActive.vue`. Notice how it uses the todos store. While this is not a problem itself, if we can remove the store usage from the component, it will make it simpler to test and maintain
 - Augment the _active task_ with its associated todo to avoid having to use the store in `<TaskActive>`
   - This will require you to use the type `TodoTaskWithTodo` instead of `TodoTask` in the `<TaskActive>` component
   - You will also need to update the `tasks` store to expose an active task with its associated todo
