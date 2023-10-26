@@ -24,7 +24,7 @@ const MESSAGE_MARKER = '__MESSAGE'
 
 export type RunState = 'idle' | 'running'
 
-function handleTestConsoleLogs(log: UserConsoleLog) {
+function handleTestConsoleLogs(log: UserConsoleLog, task?: Task | Test) {
   if (log.type === 'stdout' && log.content.startsWith(MESSAGE_MARKER)) {
     // one log content can contain multiple messages
     const messages = log.content
@@ -40,8 +40,20 @@ function handleTestConsoleLogs(log: UserConsoleLog) {
       const match = MESSAGE_TYPE_RE.exec(message)
       if (match) {
         const [, logType, messages] = match
-        // split by line to apply the custom formatting
-        showMessage(logType as LogMessageTypeEnum, {}, ...messages.split('\n'))
+        // special format for the error tips
+        if (logType === 'tip' && task) {
+          const testName = task.suite?.suite?.name ? `${task.suite.name} > ${task.name}` : task.name
+          showMessage(
+            logType as LogMessageTypeEnum,
+            {
+              title: testName,
+              subtitle: '💡 Unfold this only if you are blocked',
+            },
+            ...messages.split('\n'),
+          )
+        } else {
+          showMessage(logType as LogMessageTypeEnum, {}, ...messages.split('\n'))
+        }
       }
     }
   } else if (log.type === 'stderr') {
@@ -329,7 +341,13 @@ export function useTestStatus() {
           `You can inspect the error at http://localhost:51205/__vitest__/#/` +
             (failingTest.file ? `?file=${failingTest.file.id}` : ''),
         )
-        currentFailingTests.value.flatMap(t => t.logs || []).forEach(handleTestConsoleLogs)
+        for (const test of currentFailingTests.value) {
+          if (!test.logs) continue
+          for (const logs of test.logs) {
+            handleTestConsoleLogs(logs, test)
+          }
+        }
+        // currentFailingTests.value.flatMap(t => t.logs || []).forEach(handleTestConsoleLogs)
       }
     } else if (state === 'running') {
       const now = new Date()

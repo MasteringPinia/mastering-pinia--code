@@ -73,6 +73,7 @@ export function showMessage<M extends LogMessageTypeEnum>(
   {
     label = LABELS_FOR_TYPE[type],
     title = TITLES_FOR_TYPE[type],
+    subtitle,
     color = '#e2e8f0',
     bgColor = '#171717',
     titleFontSize = '1em',
@@ -83,6 +84,7 @@ export function showMessage<M extends LogMessageTypeEnum>(
   }: {
     label?: string
     title?: string
+    subtitle?: string
     color?: string
     bgColor?: string
     labelStyle?: string
@@ -103,10 +105,11 @@ export function showMessage<M extends LogMessageTypeEnum>(
   // const logMethod = type === LogMessageType.error ? 'error' : type === LogMessageType.warn ? 'warn' : 'log'
 
   console[method](
-    `%c ${label} %c ${title} %c `,
+    `%c ${label} %c ${title} %c ${subtitle ? '\n' + subtitle : ''}`,
     `${labelStyle}; padding: 1px; border-radius: 0.3em 0 0 0.3em; font-size: ${titleFontSize}; ${extraStyle}`,
     `background:${bgColor}; color: ${color}; padding: 1px; border-radius: 0 0.3em 0.3em 0; font-size: ${titleFontSize}; ${extraStyle}`,
-    'background:transparent',
+    // reset styles
+    'background: transparent; color: inherit; font-weight: normal; font-size: 1em;',
   )
 
   let activeStyle = ''
