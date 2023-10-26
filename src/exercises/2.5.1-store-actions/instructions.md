@@ -15,7 +15,7 @@ Write your notes or questions here.
 ## 🎯 Goals
 
 - Create an action named `eatDango` that eats one dango ball.
-  - Decrement the number of `eatenBalls` by one
+  - Increment the number of `eatenBalls` by one
   - Decrement the number of sticks ( the `amount` state) every 3 balls since each dango stick has 3 balls
   - Make sure not to do anything if there are no dangos left
   - Don't reset the `eatenBalls` variable, use the module operator `%` to check if we have eaten 3 balls
