@@ -46,3 +46,10 @@ npx zx@7.2 https://esm.is/mastering-pinia --dir my-folder
 
 - [install script cant find node, pnpm, npx zx](https://github.com/MasteringPinia/mastering-pinia--code/issues/14)
 - Run with the `-v` flag to get more information about what is happening
+- If you get a _Did you accept the Github invitation?_ message, try to manually clone the repository:
+
+  ```bash
+  git clone https://github.com/MasteringPinia/mastering-pinia--code.git temporary-folder
+  ```
+
+  Once you can clone it, you should be able **to delete that `temporary-folder` and run the script again.
