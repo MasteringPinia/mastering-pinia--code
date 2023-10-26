@@ -53,7 +53,7 @@ export const useGradientGenerator = defineStore('gradient-generator', () => {
   const { copy } = useClipboard({})
 
   function copyToClipboard() {
-    return copy(`background-color: ${background.value};`)
+    return copy(`background-image: ${background.value};`)
   }
 
   function $reset() {

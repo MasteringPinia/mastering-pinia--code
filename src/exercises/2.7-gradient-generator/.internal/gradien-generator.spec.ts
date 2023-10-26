@@ -79,7 +79,7 @@ describe('Gradient Generator', () => {
 
     await wrapper.get('[data-test="btn-clipboard"]').trigger('click')
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-      expect.stringMatching(/background-color: linear-gradient\([^)]+\);/),
+      expect.stringMatching(/background-image: linear-gradient\([^)]+\);/),
     )
   })
 })
