@@ -5,7 +5,7 @@ import { isReactive, isRef, toRaw } from 'vue'
 import { tipOnFail } from '@tests/utils'
 
 describe('broken stores', () => {
-  describe('Destructing one', () => {
+  describe('Destructuring one', () => {
     beforeAll(() => {
       vi.spyOn(console, 'warn').mockImplementation(() => {})
     })
