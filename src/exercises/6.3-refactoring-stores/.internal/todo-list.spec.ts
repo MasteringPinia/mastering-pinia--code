@@ -129,7 +129,7 @@ describe('Refactoring Stores', () => {
 
   describe('Extra goals', () => {
     it('TaskActive does not use the store', async () => {
-      const wrapper = mount(TaskActiveVue, {
+      mount(TaskActiveVue, {
         props: {
           task: {
             createdAt: Date.now(),
