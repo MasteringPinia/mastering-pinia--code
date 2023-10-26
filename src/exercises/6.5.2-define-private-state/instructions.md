@@ -5,9 +5,9 @@
   <img src="./.internal/screenshot-light.png">
 </picture>
 
-In this exercise we are going to start by adding some private state to a store. Then, we are going to push the concept
-further: defining private state through extra stores is a bit verbose so let's create our own `definePrivateState()`,
-`definePrivateStore()`, and `defineReadonlyState()` functions. This exercise can feel **particularly challenging** if
+In the next few exercises, we are going to implement some custom _defineStore()_.
+We will start with `definePrivateState()`,
+then do `definePrivateStore()`, and `defineReadonlyState()` functions. These exercises can feel **particularly challenging** if
 done in TypeScript. Feel free to use some of the _forbidden_ `as any`, or `@ts-ignore` to make _the yellow/red lines go
 away_.
 
