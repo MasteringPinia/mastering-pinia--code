@@ -12,7 +12,7 @@ if (
   showMessage(
     LogMessageTypeEnum.tip,
     { label: '👋 Welcome!', title: `Let's get you started with the Exercise Platform, click here 👇`, endGroup: false },
-    'Tips should help you unblock your way through exercises.',
+    'Tips like this one should help you unblock your way through exercises.',
     '**Only unveil them after being blocked for at least a few minutes!**',
     'You can **completely** disable tips by executing the following snippet in the console:',
     '```js',
@@ -45,6 +45,12 @@ if (
     'Something unexpected happened, you might need to reach out to your instructor for help',
     'Pay extra attention to error messages',
     'These messages appear expanded by default',
+  )
+  showMessage(
+    LogMessageTypeEnum.tip,
+    { collapsed: true, title: 'This is a tip message' },
+    'Tips should help you unblock your way through exercises. They show the name of the test that is failing.',
+    '**Only unveil them after being blocked for at least a few minutes! ** ',
   )
 
   showMessage(
