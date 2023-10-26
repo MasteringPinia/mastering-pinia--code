@@ -5,7 +5,7 @@ import { type TodoItem, type TodoTask } from '@/api/todos'
 
 // 🚨 Do not change the name of the store or the exported variables
 
-export const useTodosStore = defineStore('todo', () => {
+export const useTodosStore = defineStore('6.3-todos', () => {
   const list = skipHydrate(useLocalStorage<TodoItem[]>('6.3-todos', []))
 
   const finishedList = computed(() => list.value.filter(todo => todo.finished))

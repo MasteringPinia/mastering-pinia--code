@@ -11,7 +11,6 @@ import TaskActiveVue from '../components/TaskActive.vue'
 const taskKeys = [
   'finishedTasks',
   'activeTask',
-  'activeTaskWithTodo',
   'startedTasks',
   'hasActiveTodo',
   'startTodo',

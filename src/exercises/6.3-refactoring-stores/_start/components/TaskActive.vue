@@ -12,7 +12,7 @@ const props = defineProps<{
 // --------------
 // NOTE: it would be nice **not** to use the store here jut rather get the information directly in our prop
 const todos = useTodosStore()
-const taskTodo = computed(() => todos.list.find(todo => todo.id === props.task.id))
+const taskTodo = computed(() => todos.list.find(todo => todo.id === props.task.todoId))
 
 const currentTimeSpent = useElapsedTime(() => props.task.createdAt)
 const totalTimeSpent = useElapsedTime(() => props.task.createdAt - props.task.totalTime)
