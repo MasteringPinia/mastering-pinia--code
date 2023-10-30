@@ -26,7 +26,7 @@ vi.mock('@vueuse/core', async importOriginal => {
 })
 
 describe('broken stores', () => {
-  describe.sequential('Performance', () => {
+  describe('Performance', () => {
     beforeEach(() => {
       vi.spyOn(console, 'warn').mockImplementation(() => {})
     })

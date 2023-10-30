@@ -24,7 +24,7 @@ vi.mock('pinia', async importOriginal => {
 })
 
 describe('broken stores', () => {
-  describe.sequential('Destructing two', () => {
+  describe('Destructing two', () => {
     beforeEach(() => {
       vi.spyOn(console, 'warn').mockImplementation(() => {})
     })
