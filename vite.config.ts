@@ -73,7 +73,7 @@ export default defineConfig({
           names: ['RouterLink', 'RouterView'],
         },
       ],
-      globs: ['src/exercises/*/.internal/components/*.vue'],
+      globs: ['src/exercises/*/.internal/components/*.vue', './src/components/.internal/*.vue'],
     }),
     AutoImport({
       dirs: ['./src/.internal/composables'],

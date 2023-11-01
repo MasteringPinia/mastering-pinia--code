@@ -80,6 +80,14 @@
         // this creates a bug when using multiple scripts
         "import/first": "off"
       }
+    },
+    {
+      "files": [
+        "**/pages/**/*.vue"
+      ],
+      "rules": {
+        "vue/multi-word-component-names": "off"
+      }
     }
   ]
 }
