@@ -4,6 +4,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import express from 'express'
 import open from 'open'
+import * as devalue from 'devalue'
 
 const isTest = process.env.VITEST
 
@@ -86,7 +87,7 @@ export async function createServer(
           `<!--pinia-state-->`,
           `<script>` +
             // add pinia state
-            `window.__PINIA_STATE__ = ${JSON.stringify(pinia.state.value)}` +
+            `window.__PINIA_STATE__ = ${devalue.uneval(pinia.state.value)}` +
             `</script>`,
         )
 
