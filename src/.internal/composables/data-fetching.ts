@@ -1,18 +1,30 @@
 import { useEventListener } from '@vueuse/core'
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { ComputedRef, Ref, computed, onMounted, onServerPrefetch, shallowReactive } from 'vue'
+import { ComputedRef, MaybeRefOrGetter, computed, onMounted, onServerPrefetch, shallowReactive, toValue } from 'vue'
 
 export interface UseQueryReturn<TResult = unknown, TError = Error> {
+  // data: () => TResult | undefined
+  // error: () => TError | null
+  // isFetching: () => boolean
+  // isPending: () => boolean
   data: ComputedRef<TResult | undefined>
   error: ComputedRef<TError | null>
-  isLoading: Ref<boolean>
+  isFetching: ComputedRef<boolean>
+  isPending: ComputedRef<boolean>
   refresh: () => Promise<void>
 }
 
-export interface UseDataFetchingQueryEntry<TResult = unknown, TError = Error> {
+export interface UseDataFetchingQueryEntry<TResult = unknown, TError = any> {
   data: () => TResult | undefined
   error: () => TError | null
-  isLoading: () => boolean
+  /**
+   * Returns whether the request is still pending its first call
+   */
+  isPending: () => boolean
+  /**
+   * Returns whether the request is currently fetching data
+   */
+  isFetching: () => boolean
 
   /**
    * Refreshes the data ignoring any cache but still decouples the refreshes (only one refresh at a time)
@@ -39,8 +51,7 @@ export interface UseDataFetchingQueryEntry<TResult = unknown, TError = Error> {
 export type UseQueryKey = string | symbol
 
 export interface UseQueryOptions<TResult = unknown> {
-  // TODO: simplify by making this necessary
-  key?: UseQueryKey
+  key: MaybeRefOrGetter<UseQueryKey>
   fetcher: () => Promise<TResult>
 
   cacheTime?: number
@@ -59,7 +70,7 @@ export const USE_QUERY_DEFAULTS = {
 type UseQueryOptionsWithDefaults<TResult> = typeof USE_QUERY_DEFAULTS & UseQueryOptions<TResult>
 
 export interface UseMutationsOptions<TResult = unknown> {
-  key?: UseQueryKey
+  key: MaybeRefOrGetter<UseQueryKey>
   mutator: () => Promise<TResult>
 
   cacheTime?: number
@@ -77,25 +88,21 @@ const useDataFetchingStore = defineStore('data-fetching', () => {
    */
   const dataRegistry = shallowReactive(new Map<UseQueryKey, unknown>())
   const errorRegistry = shallowReactive(new Map<UseQueryKey, any>())
-  const isLoadingRegistry = shallowReactive(new Map<UseQueryKey, boolean>())
+  const isFetchingRegistry = shallowReactive(new Map<UseQueryKey, boolean>())
 
   // no reactive on this one as it's only used internally and is not needed for hydration
   const queryEntriesRegistry = new Map<UseQueryKey, UseDataFetchingQueryEntry<unknown, unknown>>()
 
-  function ensureEntry<TResult = unknown, TError = Error>({
-    key,
-    initialValue,
-    cacheTime,
-    fetcher,
-  }: Omit<UseQueryOptionsWithDefaults<TResult>, 'key'> & { key: UseQueryKey }): UseDataFetchingQueryEntry<
-    TResult,
-    TError
-  > {
+  function ensureEntry<TResult = unknown, TError = Error>(
+    key: UseQueryKey,
+    { fetcher, initialValue, cacheTime }: UseQueryOptionsWithDefaults<TResult>,
+  ): UseDataFetchingQueryEntry<TResult, TError> {
     // ensure the data
+    console.log('⚙️ Ensuring entry', key)
     if (!dataRegistry.has(key)) {
       dataRegistry.set(key, initialValue?.() ?? undefined)
       errorRegistry.set(key, null)
-      isLoadingRegistry.set(key, false)
+      isFetchingRegistry.set(key, false)
     }
 
     // we need to repopulate the entry registry separately from data and errors
@@ -103,28 +110,34 @@ const useDataFetchingStore = defineStore('data-fetching', () => {
       const entry: UseDataFetchingQueryEntry<TResult, TError> = {
         data: () => dataRegistry.get(key) as TResult,
         error: () => errorRegistry.get(key) as TError,
-        isLoading: () => isLoadingRegistry.get(key)!,
+        isPending: () => !entry.previous,
+        isFetching: () => isFetchingRegistry.get(key)!,
         pending: null,
         previous: null,
         async fetch(): Promise<TResult> {
           if (!entry.previous || isExpired(entry.previous.when, cacheTime)) {
+            if (entry.previous) {
+              console.log(`⬇️ fetching "${String(key)}". expired ${entry.previous?.when} / ${cacheTime}`)
+            }
             await (entry.pending?.refreshCall ?? entry.refresh())
           }
 
           return entry.data()! as TResult
         },
         async refresh() {
+          console.log('🔄 refreshing', key)
           // when if there an ongoing request
           if (entry.pending) {
+            console.log('  -> skipped!')
             return entry.pending.refreshCall
           }
-          isLoadingRegistry.set(key, true)
+          isFetchingRegistry.set(key, true)
           errorRegistry.set(key, null)
-          const nextPrevious: UseDataFetchingQueryEntry['previous'] = {
+          const nextPrevious = {
             when: 0,
-            data: undefined,
-            error: null,
-          }
+            data: undefined as TResult | undefined,
+            error: null as TError | null,
+          } satisfies UseDataFetchingQueryEntry['previous']
 
           entry.pending = {
             refreshCall: fetcher()
@@ -140,7 +153,8 @@ const useDataFetchingStore = defineStore('data-fetching', () => {
               .finally(() => {
                 entry.pending = null
                 nextPrevious.when = Date.now()
-                isLoadingRegistry.set(key, false)
+                entry.previous = nextPrevious
+                isFetchingRegistry.set(key, false)
               }),
             when: Date.now(),
           }
@@ -151,7 +165,11 @@ const useDataFetchingStore = defineStore('data-fetching', () => {
       queryEntriesRegistry.set(key, entry)
     }
 
-    return queryEntriesRegistry.get(key)! as UseDataFetchingQueryEntry<TResult, TError>
+    const entry = queryEntriesRegistry.get(key)!
+    // automatically try to refresh the data if it's expired
+    entry.fetch()
+
+    return entry as UseDataFetchingQueryEntry<TResult, TError>
   }
 
   function invalidateEntry(key: string) {
@@ -161,7 +179,7 @@ const useDataFetchingStore = defineStore('data-fetching', () => {
   return {
     dataRegistry,
     errorRegistry,
-    isLoadingRegistry,
+    isLoadingRegistry: isFetchingRegistry,
 
     ensureEntry,
     invalidateEntry,
@@ -172,41 +190,52 @@ export function useQuery<TResult, TError = Error>(_options: UseQueryOptions<TRes
   const store = useDataFetchingStore()
 
   const options = {
-    key: Symbol('anonymous'),
     ...USE_QUERY_DEFAULTS,
     ..._options,
   } satisfies UseQueryOptionsWithDefaults<TResult>
 
-  const { data, error, isLoading, refresh } = store.ensureEntry<TResult, TError>(options)
+  const entry = computed(() => store.ensureEntry<TResult, TError>(toValue(options.key), options))
 
   // only happens on server, app awaits this
   onServerPrefetch(async () => {
-    // await new Promise(resolve => setTimeout(resolve, 100))
-    return refresh()
+    await entry.value.refresh()
+    // NOTE: workaround to https://github.com/vuejs/core/issues/5300
+    // eslint-disable-next-line
+    queryReturn.data.value, queryReturn.error.value, queryReturn.isFetching.value, queryReturn.isPending.value
   })
 
   // only happens on client
   // we could also call fetch instead but forcing a refresh is more interesting
-  onMounted(refresh)
+  onMounted(entry.value.refresh)
   // TODO: optimize so it doesn't refresh if we are hydrating
 
   if (IS_CLIENT) {
     if (options.refreshOnWindowFocus) {
-      useEventListener(window, 'focus', refresh)
+      useEventListener(window, 'focus', () => {
+        entry.value.refresh()
+      })
     }
 
     if (options.refreshOnReconnect) {
-      useEventListener(window, 'online', refresh)
+      useEventListener(window, 'online', () => {
+        entry.value.refresh()
+      })
     }
   }
 
-  return {
-    data: computed(data),
-    error: computed(error),
-    isLoading: computed(isLoading),
+  const queryReturn = {
+    data: computed(() => entry.value.data()),
+    error: computed(() => entry.value.error()),
+    isFetching: computed(() => entry.value.isFetching()),
+    isPending: computed(() => entry.value.isPending()),
+    // error: () => entry.value.error(),
+    // isFetching: () => entry.value.isFetching(),
+    // isPending: () => entry.value.isPending(),
 
-    refresh,
-  }
+    refresh: () => entry.value.refresh(),
+  } satisfies UseQueryReturn<TResult, TError>
+
+  return queryReturn
 }
 
 export function useMutation<TResult, TError = Error>({ key, mutator }: UseMutationsOptions<TResult, TError>) {}

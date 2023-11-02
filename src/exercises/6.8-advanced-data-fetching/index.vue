@@ -5,6 +5,6 @@
 
 <template>
   <main>
-    <RouterLink :to="{ name: '/0.0-advanced-data-fetching/contacts' }">Contact List</RouterLink>
+    <RouterLink :to="{ name: '/6.8-advanced-data-fetching/contacts' }">Contact List</RouterLink>
   </main>
 </template>

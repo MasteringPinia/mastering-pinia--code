@@ -13,7 +13,9 @@ export function createApp() {
   const app =
     // avoid a hydration error when doing no SSR
     !import.meta.env.SSR && new URLSearchParams(location.search).has('no-ssr') ? _createApp(App) : createSSRApp(App)
+
   app.component('ClientOnly', ClientOnly)
+
   const pinia = createPinia()
   // hydrate the state on client side
   if (!import.meta.env.SSR) {

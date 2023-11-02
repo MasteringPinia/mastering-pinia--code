@@ -21,6 +21,10 @@ function saveEdits() {
   isEditing.value = false
   copy.value = null
 }
+function cancelEdit() {
+  isEditing.value = false
+  copy.value = null
+}
 </script>
 
 <template>
@@ -49,7 +53,7 @@ function saveEdits() {
     <div class="mx-auto flex space-x-2 px-6 justify-end">
       <template v-if="isEditing">
         <button @click="saveEdits()">Save</button>
-        <button type="button" @click="isEditing = false">Cancel</button>
+        <button type="button" @click="cancelEdit()">Cancel</button>
       </template>
       <template v-else>
         <button @click="startEdit()">Edit</button>

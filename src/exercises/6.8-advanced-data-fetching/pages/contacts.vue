@@ -3,11 +3,7 @@ import { getAllContacts } from '@/api/contacts'
 import { useFuse } from '@vueuse/integrations/useFuse'
 import { ref } from 'vue'
 
-const {
-  data: contactList,
-  error,
-  isLoading,
-} = useQuery({
+const { data: contactList } = useQuery({
   key: 'contacts',
   fetcher: () => getAllContacts(),
 })
@@ -37,7 +33,7 @@ const { results } = useFuse(searchText, () => contactList.value || [], {
       <li v-for="{ item: contact } in results" :key="contact.id">
         <RouterLink
           :to="{
-            name: '/0.0-advanced-data-fetching/contacts/[id]',
+            name: '/6.8-advanced-data-fetching/contacts/[id]',
             params: {
               id: contact.id,
             },
