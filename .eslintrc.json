@@ -83,7 +83,8 @@
     },
     {
       "files": [
-        "**/pages/**/*.vue"
+        "./src/views/**/*.vue",
+        "./src/exercises/**/pages/**/*.vue"
       ],
       "rules": {
         "vue/multi-word-component-names": "off"
