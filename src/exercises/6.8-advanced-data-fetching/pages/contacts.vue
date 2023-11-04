@@ -2,6 +2,7 @@
 import { getAllContacts } from '@/api/contacts'
 import { useFuse } from '@vueuse/integrations/useFuse'
 import { ref } from 'vue'
+import { useQuery } from '../use-query'
 
 const { data: contactList } = useQuery({
   key: 'contacts',

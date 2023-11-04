@@ -1,12 +1,19 @@
 <script lang="ts" setup>
 import ContactCard from '../../ContactCard.vue'
-import { getContactById, updateContact } from '@/api/contacts'
+import { getContactById, updateContact as _updateContact } from '@/api/contacts'
 import { useRoute } from 'vue-router/auto'
+import { useQuery } from '../../use-query'
+import { useMutation } from '../../use-mutation'
 
 const route = useRoute('/6.8-advanced-data-fetching/contacts/[id]')
 const { data: contact } = useQuery({
   key: () => 'contact/' + route.params.id,
   fetcher: () => getContactById(route.params.id),
+})
+
+const { mutate: updateContact } = useMutation({
+  keys: ['contacts', ({ variables: [{ id }] }) => 'contact/' + id],
+  mutator: _updateContact,
 })
 </script>
 
