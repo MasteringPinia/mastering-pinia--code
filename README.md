@@ -34,6 +34,16 @@ npx zx@7.2 https://esm.is/mastering-pinia --dir my-folder
   ![Stuck on fetch](https://github.com/MasteringPinia/mastering-pinia--code/assets/664177/d6399ed2-fe7a-4650-ae46-7bf7ec031491)
 
   In that case, press <kbd>Enter</kbd> to continue.
+- Run with the `-v` flag to get more information about what is happening
+- If you get a _Did you accept the Github invitation?_ message, try to manually clone the repository:
+
+  ```bash
+  git clone https://github.com/MasteringPinia/mastering-pinia--code.git temporary-folder
+  ```
+
+  Once you can clone it, you should be able **to delete that `temporary-folder` and run the script again**.
+  - If this didn't work for you, maybe because you use different credentials on the same computer (work + personal), you can [use the credential options](https://stackoverflow.com/questions/13198143/how-do-i-disable-gits-credential-helper-for-a-single-repository/13203623#13203623)
+  - You can also [manually pass the URL **with your login information**](https://stackoverflow.com/questions/10054318/how-do-i-provide-a-username-and-password-when-running-git-clone-gitremote-git)
 
 ### Windows
 
@@ -45,13 +55,3 @@ npx zx@7.2 https://esm.is/mastering-pinia --dir my-folder
   ```
 
 - [install script cant find node, pnpm, npx zx](https://github.com/MasteringPinia/mastering-pinia--code/issues/14)
-- Run with the `-v` flag to get more information about what is happening
-- If you get a _Did you accept the Github invitation?_ message, try to manually clone the repository:
-
-  ```bash
-  git clone https://github.com/MasteringPinia/mastering-pinia--code.git temporary-folder
-  ```
-
-  Once you can clone it, you should be able **to delete that `temporary-folder` and run the script again**.
-  - If this didn't work for you, maybe because you use different credentials on the same computer (work + personal), you can [use the credential options](https://stackoverflow.com/questions/13198143/how-do-i-disable-gits-credential-helper-for-a-single-repository/13203623#13203623)
-  - You can also [manually pass the URL **with your login information**](https://stackoverflow.com/questions/10054318/how-do-i-provide-a-username-and-password-when-running-git-clone-gitremote-git)
