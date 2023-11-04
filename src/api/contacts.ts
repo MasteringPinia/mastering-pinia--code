@@ -43,7 +43,7 @@ export function createContact(contact: Omit<ContactInfo, 'photoURL'>) {
   })
 }
 
-export function updateContact(contact: Partial<ContactInfo>) {
+export function updateContact(contact: Partial<ContactInfo> & { id: number }) {
   return contacts.patch<Contact>(`/${contact.id}`, contact)
 }
 
