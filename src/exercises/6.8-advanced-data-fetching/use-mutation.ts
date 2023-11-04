@@ -1,4 +1,4 @@
-import { computed, type ComputedRef } from 'vue'
+import { computed, ref, type ComputedRef, shallowRef } from 'vue'
 import { useDataFetchingStore } from './data-fetching-store'
 
 type _MutatorKeys<TParams extends readonly any[], TResult> = readonly (
@@ -24,7 +24,7 @@ export interface UseMutationReturn<
   error: ComputedRef<TError | null>
   isPending: ComputedRef<boolean>
 
-  mutate: (...params: TParams) => Promise<void>
+  mutate: (...params: TParams) => Promise<TResult>
   reset: () => void
 }
 
@@ -33,8 +33,59 @@ export function useMutation<TResult, TParams extends readonly unknown[], TError 
 ): UseMutationReturn<TResult, TParams, TError> {
   console.log(options)
   const store = useDataFetchingStore()
-  // const mutationReturn = {} satisfies UseMutationReturn<TResult, TParams, TError>
-  // return mutationReturn
+
+  const isPending = ref(false)
+  const data = shallowRef<TResult>()
+  const error = shallowRef<TError | null>(null)
+
+  // a pending promise allows us to discard previous ongoing requests
+  let pendingPromise: Promise<TResult> | null = null
+  function mutate(...args: TParams) {
+    isPending.value = true
+    error.value = null
+
+    const promise = (pendingPromise = options
+      .mutator(...args)
+      .then(_data => {
+        if (pendingPromise === promise) {
+          data.value = _data
+          if (options.keys) {
+            for (const key of options.keys) {
+              store.invalidateEntry(typeof key === 'string' ? key : key({ variables: args, result: _data }), true)
+            }
+          }
+        }
+        return _data
+      })
+      .catch(_error => {
+        if (pendingPromise === promise) {
+          error.value = _error
+        }
+        throw _error
+      })
+      .finally(() => {
+        if (pendingPromise === promise) {
+          isPending.value = false
+        }
+      }))
+
+    return promise
+  }
+
+  function reset() {
+    data.value = undefined
+    error.value = null
+  }
+
+  const mutationReturn = {
+    data: computed(() => data.value),
+    isPending: computed(() => isPending.value),
+    error: computed(() => error.value),
+    mutate,
+    reset,
+  } satisfies UseMutationReturn<TResult, TParams, TError>
+
+  return mutationReturn
 }
 
 // useMutation({

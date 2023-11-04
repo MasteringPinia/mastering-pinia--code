@@ -95,8 +95,30 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
     return entry as UseDataFetchingQueryEntry<TResult, TError>
   }
 
-  function invalidateEntry(key: string) {
-    throw new Error('Not implemented: ' + key)
+  /**
+   * Invalidates a query entry, forcing a refetch of the data if `refresh` is true
+   *
+   * @param key - the key of the query to invalidate
+   * @param refresh - whether to force a refresh of the data
+   */
+  function invalidateEntry(key: string, refresh = false) {
+    if (!queryEntriesRegistry.has(key)) {
+      console.warn(`⚠️ trying to invalidate "${key}" but it's not in the registry`)
+      return
+    }
+    const entry = queryEntriesRegistry.get(key)!
+
+    if (entry.previous) {
+      // will force a fetch next time
+      entry.previous.when = 0
+    }
+
+    if (refresh) {
+      // reset any pending request
+      entry.pending = null
+      // force refresh
+      entry.refresh()
+    }
   }
 
   return {
