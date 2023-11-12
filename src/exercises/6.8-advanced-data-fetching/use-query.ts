@@ -3,10 +3,6 @@ import { type ComputedRef, computed, onMounted, onServerPrefetch, toValue } from
 import { useDataFetchingStore } from './data-fetching-store'
 
 export interface UseQueryReturn<TResult = unknown, TError = Error> {
-  // data: () => TResult | undefined
-  // error: () => TError | null
-  // isFetching: () => boolean
-  // isPending: () => boolean
   data: ComputedRef<TResult | undefined>
   error: ComputedRef<TError | null>
   isFetching: ComputedRef<boolean>
@@ -42,6 +38,9 @@ export interface UseDataFetchingQueryEntry<TResult = unknown, TError = any> {
     when: number
   }
   previous: null | {
+    /**
+     * When was this data fetched the last time in ms
+     */
     when: number
     data: TResult | undefined
     error: TError | null
@@ -111,9 +110,6 @@ export function useQuery<TResult, TError = Error>(_options: UseQueryOptions<TRes
     error: computed(() => entry.value.error()),
     isFetching: computed(() => entry.value.isFetching()),
     isPending: computed(() => entry.value.isPending()),
-    // error: () => entry.value.error(),
-    // isFetching: () => entry.value.isFetching(),
-    // isPending: () => entry.value.isPending(),
 
     refresh: () => entry.value.refresh(),
   } satisfies UseQueryReturn<TResult, TError>

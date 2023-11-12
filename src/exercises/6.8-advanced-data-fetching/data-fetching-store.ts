@@ -33,6 +33,7 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
       const entry: UseDataFetchingQueryEntry<TResult, TError> = {
         data: () => dataRegistry.get(key) as TResult,
         error: () => errorRegistry.get(key) as TError,
+        // FIXME: not reactive
         isPending: () => !entry.previous,
         isFetching: () => isFetchingRegistry.get(key)!,
         pending: null,
@@ -45,7 +46,7 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
             await (entry.pending?.refreshCall ?? entry.refresh())
           }
 
-          return entry.data()! as TResult
+          return entry.data()!
         },
         async refresh() {
           console.log('🔄 refreshing', key)
