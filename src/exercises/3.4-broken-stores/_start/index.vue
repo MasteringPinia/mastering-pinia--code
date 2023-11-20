@@ -1,5 +1,5 @@
 <template>
-  <h2>Fix she store usage in the following pages</h2>
+  <h2>Fix the store usage in the following pages</h2>
 
   <p>
     The following pages need to be fixed by changing how the store is consumed. Visit each page and click on
