@@ -18,7 +18,7 @@ const showReviewWarning = import.meta.env.VITE_GIT_CLONE_WARNING !== 'off'
 
     <p class="text-lg">You need to run this command instead:</p>
 
-    <pre><code>npx zx@7.2 https://esm.is/mastering-pinia</code></pre>
+    <pre><code>npx zx@7.2 https://gist.githubusercontent.com/posva/d19708c1da18d41d66ac7cec1a1e5557/raw/bootstrap.mjs</code></pre>
 
     <p>Delete this project and try again with that command! 🙌</p>
   </div>
