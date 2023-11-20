@@ -2,33 +2,12 @@
 
 ## 💻 System Requirements
 
-> **Note**
->
-> All these requirements were checked by the script that generated this project. If you are having issues, let un know.
-
 - Recent Node version. Recommended the latest LTS version
 - Recent npm version. Recommended the version installed with LTS node
 - pnpm (**required** to install the dependencies in this project)
 - (Recommended) `ni`/`nr` from [@antfu/ni](https://github.com/antfu/ni) to easily add packages and run commands
 - If you are using VSCode, make sure to **disable Vetur and install all recommended extensions** with
   `Shift + cmd + P` + `show recommended extensions`.
-
-## 🔄 Updating
-
-You can update the platform (fetch new exercises and code updates) any time by running **the same command you used to
-setup the exercises platform**:
-
-```bash
-npx zx@7.2 https://gist.githubusercontent.com/posva/d19708c1da18d41d66ac7cec1a1e5557/raw/bootstrap.mjs
-```
-
-Or if you specified a folder name:
-
-```bash
-npx zx@7.2 https://gist.githubusercontent.com/posva/d19708c1da18d41d66ac7cec1a1e5557/raw/bootstrap.mjs my-folder
-```
-
-After updating remember to install the dependencies again with `pnpm i`.
 
 ## 🎛️ Setup
 
@@ -51,8 +30,7 @@ If you want, you can also run the 3 commands separetly:
 
 ### 📂 Structure
 
-- All exercises can be found within the `src/exercises` folders. You **won't need to change files outside of that
-  folder**
+- All exercises can be found within the `src/exercises` folders. You **won't need to change files outside of that folder**
 - Most exercises run some automated tests to help you with the exercises, keep an eye on the console as some tests give
   you customized tips 😉
 
