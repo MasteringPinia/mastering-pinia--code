@@ -41,7 +41,7 @@ const finishedTask = computed(() => todos.finishedTasks.find(t => t.todoId === p
       <span data-test="todo-text" :class="{ 'line-through': todo.finished, 'text-gray': todo.finished }">{{
         todo.text
       }}</span>
-      <template v-if="todos.activeTask?.id === todo.id">
+      <template v-if="todos.activeTask?.todoId === todo.id">
         <button data-test="todo-btn-pause" @click="todos.pauseCurrentTodo()">Pause Task</button>
         <button data-test="todo-btn-finish" @click="todos.finishCurrentTodo()">Finish Task</button>
       </template>
