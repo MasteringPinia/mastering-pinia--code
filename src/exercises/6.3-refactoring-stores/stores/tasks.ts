@@ -1,8 +1,10 @@
 import { acceptHMRUpdate, defineStore, skipHydrate } from 'pinia'
 import { computed } from 'vue'
-import { useTodosStore } from './todos'
 import { useLocalStorage } from '@vueuse/core'
-import { TodoTask, TodoTaskWithTodo } from '@/api/todos'
+import { type TodoTask, type TodoTaskWithTodo } from '@/api/todos'
+import { useTodosStore } from './todos'
+
+// 🚨 Do not change the name of the store or the exported variables
 
 export const useTasksStore = defineStore('6.3-tasks', () => {
   const todos = useTodosStore()
@@ -29,7 +31,6 @@ export const useTasksStore = defineStore('6.3-tasks', () => {
       },
     }),
   )
-
   const activeTask = skipHydrate(
     useLocalStorage<TodoTask | null>('6.3-activeTask', null, {
       serializer: {

@@ -107,7 +107,7 @@ export const useTodosStore = defineStore('6.3-todos', () => {
     }
 
     startedTasks.value.delete(activeTask.value.id)
-    const todo = list.value.find(todo => todo.id === activeTask.value!.id)
+    const todo = list.value.find(todo => todo.id === activeTask.value!.todoId)
     if (todo) {
       todo.finished = true
       const end = Date.now()
@@ -135,7 +135,7 @@ export const useTodosStore = defineStore('6.3-todos', () => {
   }
 
   function isTodoStarted(todoId: string) {
-    return startedTasks.value.has(todoId) || (activeTask.value && activeTask.value.id === todoId)
+    return startedTasks.value.has(todoId) || (activeTask.value && activeTask.value.todoId === todoId)
   }
 
   function pauseCurrentTodo() {
