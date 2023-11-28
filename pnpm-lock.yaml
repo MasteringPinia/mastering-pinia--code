@@ -17,6 +17,9 @@ dependencies:
   animate.css:
     specifier: ^4.1.1
     version: 4.1.1
+  devalue:
+    specifier: ^4.3.2
+    version: 4.3.2
   fuse.js:
     specifier: ^6.6.2
     version: 6.6.2
@@ -159,7 +162,7 @@ devDependencies:
     version: 0.7.0(vue-router@4.2.5)(vue@3.3.4)
   vite:
     specifier: ^4.4.9
-    version: 4.4.9(@types/node@20.8.2)
+    version: 4.4.9(@types/node@20.5.9)
   vite-plugin-md:
     specifier: ^0.21.5
     version: 0.21.5(@vitejs/plugin-vue@4.4.0)(@vitest/ui@0.34.3)(happy-dom@12.6.0)(vite@4.4.9)
@@ -2192,6 +2195,10 @@ packages:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
     dev: true
+
+  /devalue@4.3.2:
+    resolution: {integrity: sha512-KqFl6pOgOW+Y6wJgu80rHpo2/3H07vr8ntR9rkkFIRETewbf5GaYYcakYfiKz89K+sLsuPkQIZaXDMjUObZwWg==}
+    dev: false
 
   /devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
