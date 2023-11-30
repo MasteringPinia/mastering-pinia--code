@@ -13,14 +13,14 @@
 Welcome to **Mastering Pinia**! To get started, run the following command:
 
 ```bash
-npx zx@7.2 https://gist.githubusercontent.com/posva/d19708c1da18d41d66ac7cec1a1e5557/raw/bootstrap.mjs
+npx zx@7.2 https://esm.is/mastering-pinia
 ```
 
 This will create a `mastering-pinia-exercises` folder with all the exercises in your Home folder. You can pass a
 different path as `--dir` or as the last argument to the command to change the location of the folder.
 
 ```bash
-npx zx@7.2 https://gist.githubusercontent.com/posva/d19708c1da18d41d66ac7cec1a1e5557/raw/bootstrap.mjs --dir my-folder
+npx zx@7.2 https://esm.is/mastering-pinia --dir my-folder
 ```
 
 > **Note**
@@ -51,7 +51,7 @@ npx zx@7.2 https://gist.githubusercontent.com/posva/d19708c1da18d41d66ac7cec1a1e
 - You can skip the version checks by passing `--skipChecks` to the script:
 
   ```bash
-  npx zx@7.2 https://gist.githubusercontent.com/posva/d19708c1da18d41d66ac7cec1a1e5557/raw/bootstrap.mjs --skipChecks
+  npx zx@7.2 https://esm.is/mastering-pinia --skipChecks
   ```
 
 - [install script cant find node, pnpm, npx zx](https://github.com/MasteringPinia/mastering-pinia--code/issues/14)
