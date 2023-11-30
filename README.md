@@ -42,8 +42,12 @@ npx zx@7.2 https://esm.is/mastering-pinia --dir my-folder
   ```
 
   Once you can clone it, you should be able **to delete that `temporary-folder` and run the script again**.
-  - If this didn't work for you, maybe because you use different credentials on the same computer (work + personal), you can [use the credential options](https://stackoverflow.com/questions/13198143/how-do-i-disable-gits-credential-helper-for-a-single-repository/13203623#13203623)
-  - You can also [manually pass the URL **with your login information**](https://stackoverflow.com/questions/10054318/how-do-i-provide-a-username-and-password-when-running-git-clone-gitremote-git)
+  - If this didn't work for you, maybe because you use different credentials on the same computer (work + personal), you can [use the credential options](https://stackoverflow.com/questions/13198143/how-do-i-disable-gits-credential-helper-for-a-single-repository/13203623#13203623) in your `.gitconfig`
+  - You can also [manually pass the URL **with your login information**](https://stackoverflow.com/questions/10054318/how-do-i-provide-a-username-and-password-when-running-git-clone-gitremote-git) to the script with the `--url` option:
+
+    ```bash
+    npx zx@7.2 https://esm.is/mastering-pinia --url https://username:password@github.com/username/repository.git
+    ```
 
 ### Windows
 
