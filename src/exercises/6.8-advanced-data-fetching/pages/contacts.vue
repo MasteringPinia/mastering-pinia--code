@@ -22,30 +22,33 @@ const { results } = useFuse(searchText, () => contactList.value || [], {
 </script>
 
 <template>
-  <main>
-    <h1>📇 My Contacts</h1>
+  <main class="big-layout">
+    <h1 class="mb-12">📇 My Contacts</h1>
 
-    <form class="space-x-2" @submit.prevent>
-      <input v-model="searchText" type="search" />
-      <button>Search</button>
-    </form>
+    <div class="contacts-search">
+      <div>
+        <form class="space-x-2" @submit.prevent>
+          <input v-model="searchText" type="search" />
+        </form>
 
-    <ul>
-      <li v-for="{ item: contact } in results" :key="contact.id">
-        <RouterLink
-          :to="{
-            name: '/6.8-advanced-data-fetching/contacts/[id]',
-            params: {
-              id: contact.id,
-            },
-          }"
-        >
-          <img v-if="contact.photoURL" :src="contact.photoURL" class="rounded-full inline-block w-8" />
-          {{ contact.firstName }} {{ contact.lastName }}
-        </RouterLink>
-      </li>
-    </ul>
+        <ul>
+          <li v-for="{ item: contact } in results" :key="contact.id">
+            <RouterLink
+              :to="{
+                name: '/6.8-advanced-data-fetching/contacts/[id]',
+                params: {
+                  id: contact.id,
+                },
+              }"
+            >
+              <img v-if="contact.photoURL" :src="contact.photoURL" class="rounded-full inline-block w-8" />
+              {{ contact.firstName }} {{ contact.lastName }}
+            </RouterLink>
+          </li>
+        </ul>
+      </div>
 
-    <RouterView />
+      <RouterView />
+    </div>
   </main>
 </template>

@@ -22,3 +22,16 @@ ul {
     color: var(--nc-tx-2);
   }
 }
+
+.big-layout {
+  --negative-margin: max(min(0px, calc((100vw - 750px) / -2)), -500px);
+  margin-left: var(--negative-margin);
+  margin-right: var(--negative-margin);
+}
+
+@media screen and (min-width: 768px) {
+  .contacts-search {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+  }
+}

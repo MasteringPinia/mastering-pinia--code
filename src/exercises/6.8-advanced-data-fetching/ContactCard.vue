@@ -25,11 +25,21 @@ function cancelEdit() {
   isEditing.value = false
   copy.value = null
 }
+
+function randomizeAvatar() {
+  if (!copy.value) return
+  copy.value.photoURL = `https://i.pravatar.cc/150?u=${Math.round(Math.random() * 1000)}`
+}
 </script>
 
 <template>
   <div class="space-y-6">
-    <img class="w-40 h-40 mx-auto rounded-full" :src="contact.photoURL" />
+    <div v-if="isEditing && copy" class="mx-auto flex flex-col items-center">
+      <img :key="copy.photoURL" class="w-40 h-40 mx-auto rounded-full" :src="copy.photoURL" />
+      <button @click="randomizeAvatar">Randomize photo</button>
+    </div>
+    <img v-else class="w-40 h-40 mx-auto rounded-full" :src="contact.photoURL" />
+
     <div class="space-y-2">
       <div class="space-y-1 font-medium leading-6 text-center">
         <div v-if="copy" class="flex flex-col max-w-md mx-auto">
@@ -50,6 +60,7 @@ function cancelEdit() {
     </div>
 
     <hr />
+
     <div class="mx-auto flex space-x-2 px-6 justify-end">
       <template v-if="isEditing">
         <button @click="saveEdits()">Save</button>
