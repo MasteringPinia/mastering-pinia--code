@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useExerciseLinks } from '../router'
 
-const exerciseLinks = useExerciseLinks()
+const exercises = useExerciseLinks()
 const showReviewWarning = import.meta.env.VITE_GIT_CLONE_WARNING !== 'off'
 </script>
 
@@ -24,8 +24,15 @@ const showReviewWarning = import.meta.env.VITE_GIT_CLONE_WARNING !== 'off'
   </div>
 
   <ul>
-    <li v-for="link in exerciseLinks" :key="link.name">
-      <RouterLink :to="link">{{ $router.resolve(link).path }}</RouterLink>
+    <li v-for="link in exercises" :key="link.name" :class="link.status === 'pass' ? `task-pass` : ''">
+      <RouterLink :to="link">{{ link.status === 'pass' ? '✅ ' : '' }}{{ link.path }}</RouterLink>
     </li>
   </ul>
 </template>
+
+<style scoped>
+li.task-pass {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+</style>
