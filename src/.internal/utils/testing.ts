@@ -1,4 +1,4 @@
-import { createClient, getTests, hasTests as _hasTests } from '@vitest/ws-client'
+import { createClient, getTests, hasTests as _hasTests, VitestClient } from '@vitest/ws-client'
 import { type WebSocketStatus } from '@vueuse/core'
 import { ResolvedConfig, TaskState, File as TestFile, Test, Task, Suite, UserConsoleLog } from 'vitest'
 import { computed, onScopeDispose, reactive, Ref, ref, shallowRef, watch } from 'vue'
@@ -61,7 +61,20 @@ function handleTestConsoleLogs(log: UserConsoleLog, task?: Task | Test) {
   }
 }
 
-function useTestClient() {
+interface UseTestClientReturn {
+  client: VitestClient
+  config: Ref<ResolvedConfig>
+  status: Ref<WebSocketStatus>
+  testRunState: Ref<RunState>
+  runId: Ref<number>
+  files: Ref<TestFile[]>
+}
+
+let memoizedClientReturn: UseTestClientReturn | undefined
+
+export function useTestClient() {
+  if (memoizedClientReturn) return memoizedClientReturn
+
   const runId = ref(0)
 
   const client = createClient(ENTRY_URL, {
@@ -163,14 +176,14 @@ function useTestClient() {
     client.ws.close()
   })
 
-  return {
+  return (memoizedClientReturn = {
     client,
     config,
     status,
     testRunState,
     runId,
     files,
-  }
+  })
 }
 
 const testGroupStatusIconMap: Record<TaskState, string> = {
