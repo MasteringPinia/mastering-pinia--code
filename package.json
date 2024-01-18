@@ -9,7 +9,8 @@
     "npm": ">=8"
   },
   "scripts": {
-    "dev": "run-p 'dev:vite --open' dev:test-server dev:api",
+    "dev": "run-p dev:vite:open dev:test-server dev:api",
+    "dev:vite:open": "node server.mjs --open",
     "dev:vite": "node server.mjs",
     "dev:test-server": "vitest -c tests/vitest.config.ts --ui",
     "dev:api": "json-server -p 7777 -w db.json",
