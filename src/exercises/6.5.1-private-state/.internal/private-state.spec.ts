@@ -6,10 +6,10 @@ import { useAuthStore } from '../stores/auth'
 import { mockHttpRequests } from '@tests/mocks/server'
 
 describe('Private state in stores', () => {
-  mockHttpRequests()
   beforeEach(() => {
     setActivePinia(createPinia())
   })
+  mockHttpRequests()
 
   it('hides the currentUser property from state', async () => {
     const auth = useAuthStore()
