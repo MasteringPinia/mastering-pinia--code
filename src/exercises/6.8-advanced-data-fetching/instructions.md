@@ -19,4 +19,4 @@ Write your notes or questions here.
 
 _Extra goals might not have any tests and can be done later or skipped._
 
-- do...
+- Connect the search text to the URL with a query string named `search`, e.g. `?search=Anna`
