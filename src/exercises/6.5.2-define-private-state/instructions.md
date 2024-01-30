@@ -68,7 +68,7 @@ what we are trying to achieve and to test out things in the browser.
     Id,
     PrivateState,
     SetupStore
-  >(id: Id, privateState: PrivateState, SetupStore) {
+  >(id: Id, privateState: PrivateState, setup: SetupStore) {
     // ...
   }
   ```
