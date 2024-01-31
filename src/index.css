@@ -35,3 +35,7 @@ ul {
     grid-template-columns: 1fr 4fr;
   }
 }
+
+.instructions-raw-img {
+  border: none;
+}

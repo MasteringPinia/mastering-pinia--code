@@ -33,8 +33,6 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
       const entry: UseDataFetchingQueryEntry<TResult, TError> = {
         data: () => dataRegistry.get(key) as TResult,
         error: () => errorRegistry.get(key) as TError,
-        // FIXME: not reactive
-        isPending: () => !entry.previous,
         isFetching: () => isFetchingRegistry.get(key)!,
         pending: null,
         previous: null,
@@ -125,7 +123,7 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
   return {
     dataRegistry,
     errorRegistry,
-    isLoadingRegistry: isFetchingRegistry,
+    isFetchingRegistry,
 
     ensureEntry,
     invalidateEntry,

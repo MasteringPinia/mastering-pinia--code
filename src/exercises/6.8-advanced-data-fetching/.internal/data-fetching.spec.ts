@@ -1,5 +1,5 @@
 import { mount, renderToString } from '@vue/test-utils'
-import ContactList from '../pages/contacts.vue'
+import ContactList from '../index.vue'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { FunctionalComponent, h, useSlots } from 'vue'
 import { type RouterLinkProps } from 'vue-router/auto'

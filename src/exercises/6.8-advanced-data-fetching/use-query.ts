@@ -6,17 +6,12 @@ export interface UseQueryReturn<TResult = unknown, TError = Error> {
   data: ComputedRef<TResult | undefined>
   error: ComputedRef<TError | null>
   isFetching: ComputedRef<boolean>
-  isPending: ComputedRef<boolean>
   refresh: () => Promise<void>
 }
 
 export interface UseDataFetchingQueryEntry<TResult = unknown, TError = any> {
   data: () => TResult | undefined
   error: () => TError | null
-  /**
-   * Returns whether the request is still pending its first call
-   */
-  isPending: () => boolean
   /**
    * Returns whether the request is currently fetching data
    */
@@ -83,7 +78,7 @@ export function useQuery<TResult, TError = Error>(_options: UseQueryOptions<TRes
     await entry.value.refresh()
     // NOTE: workaround to https://github.com/vuejs/core/issues/5300
     // eslint-disable-next-line
-    queryReturn.data.value, queryReturn.error.value, queryReturn.isFetching.value, queryReturn.isPending.value
+    queryReturn.data.value, queryReturn.error.value, queryReturn.isFetching.value
   })
 
   // only happens on client
@@ -109,7 +104,6 @@ export function useQuery<TResult, TError = Error>(_options: UseQueryOptions<TRes
     data: computed(() => entry.value.data()),
     error: computed(() => entry.value.error()),
     isFetching: computed(() => entry.value.isFetching()),
-    isPending: computed(() => entry.value.isPending()),
 
     refresh: () => entry.value.refresh(),
   } satisfies UseQueryReturn<TResult, TError>
