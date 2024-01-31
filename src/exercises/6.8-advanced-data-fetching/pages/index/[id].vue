@@ -7,12 +7,12 @@ import { useMutation } from '../../use-mutation'
 
 const route = useRoute('/6.8-advanced-data-fetching//[id]')
 const { data: contact } = useQuery({
-  key: () => 'contact/' + route.params.id,
+  key: () => 'contacts/' + route.params.id,
   fetcher: () => getContactById(route.params.id),
 })
 
 const { mutate: updateContact } = useMutation({
-  keys: ['contacts', ({ variables: [{ id }] }) => 'contact/' + id],
+  keys: ['contacts', ({ variables: [{ id }] }) => 'contacts/' + id],
   mutator: _updateContact,
 })
 </script>

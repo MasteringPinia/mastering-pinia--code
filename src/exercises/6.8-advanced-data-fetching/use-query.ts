@@ -62,7 +62,13 @@ export function useQuery<TResult, TError = Error>(_options: UseQueryOptions<TRes
   // only happens on client
   onMounted(() => {
     // ensures the entry is fetched when needed
-    watch(entry, entry.value.refresh, { immediate: true })
+    watch(
+      entry,
+      entry => {
+        entry.refresh()
+      },
+      { immediate: true },
+    )
   })
 
   if (IS_CLIENT) {
