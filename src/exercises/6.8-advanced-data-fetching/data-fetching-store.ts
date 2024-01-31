@@ -132,9 +132,8 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
 
           return entry.pending.refreshCall
         },
-        // this will refetch on client
-        // FIXME:
-        when: 0,
+        // Consider the data fresh. Using 0 will also work, it depends on how you want to handle the cache
+        when: Date.now(),
       }
       queryEntriesRegistry.set(key, entry)
     }

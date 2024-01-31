@@ -3,7 +3,13 @@ import { type ComputedRef, computed, onMounted, onServerPrefetch, toValue, Maybe
 import { useDataFetchingStore } from './data-fetching-store'
 
 export interface UseQueryReturn<TResult = unknown, TError = Error> {
+  /**
+   * Returns the data of the query if it resolved or the last known data
+   */
   data: ComputedRef<TResult | undefined>
+  /**
+   * Returns the error of the query rejected
+   */
   error: ComputedRef<TError | null>
   /**
    * Returns whether the request is currently fetching data
@@ -27,13 +33,24 @@ export interface UseQueryOptions<TResult = unknown> {
    * key to identify the query.
    */
   key: MaybeRefOrGetter<string>
+  /**
+   * Function that fetches the data.
+   */
   fetcher: () => Promise<TResult>
 
+  /**
+   * How long should the data be cached in milliseconds. Defaults to 5 seconds
+   */
   cacheTime?: number
+
+  /**
+   * Function to compute the initial value of the data. Otherwise, it's set to `undefined` until the first fetch is done
+   */
   initialValue?: () => TResult
   refetchOnWindowFocus?: boolean
   refetchOnReconnect?: boolean
 }
+
 /**
  * Default options for `useQuery()`. Modifying this object will affect all the queries that don't override these
  */
@@ -61,14 +78,12 @@ export function useQuery<TResult, TError = Error>(_options: UseQueryOptions<TRes
 
   // only happens on client
   onMounted(() => {
+    // force a refetch when the component is mounted to ensure the data is fresh
+    entry.value.refetch()
     // ensures the entry is fetched when needed
-    watch(
-      entry,
-      entry => {
-        entry.refresh()
-      },
-      { immediate: true },
-    )
+    watch(entry, entry => {
+      entry.refresh()
+    })
   })
 
   if (IS_CLIENT) {
