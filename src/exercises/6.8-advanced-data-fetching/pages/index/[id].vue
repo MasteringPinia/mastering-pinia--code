@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router/auto'
 import { useQuery } from '../../use-query'
 import { useMutation } from '../../use-mutation'
 
-const route = useRoute('/6.8-advanced-data-fetching/contacts/[id]')
+const route = useRoute('/6.8-advanced-data-fetching//[id]')
 const { data: contact } = useQuery({
   key: () => 'contact/' + route.params.id,
   fetcher: () => getContactById(route.params.id),
@@ -18,9 +18,7 @@ const { mutate: updateContact } = useMutation({
 </script>
 
 <template>
-  <!-- <AppModal id="contact-details" model-value @close="$router.push('./')"> -->
   <section class="pt-6">
     <ContactCard v-if="contact" :key="contact.id" :contact="contact" @update:contact="updateContact" />
   </section>
-  <!-- </AppModal> -->
 </template>

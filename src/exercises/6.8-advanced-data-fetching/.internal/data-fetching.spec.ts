@@ -1,14 +1,23 @@
 import { mount, renderToString } from '@vue/test-utils'
 import ContactList from '../index.vue'
-import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { FunctionalComponent, h, useSlots } from 'vue'
 import { type RouterLinkProps } from 'vue-router/auto'
 import { mockHttpRequests } from '@tests/mocks/server'
 import { createPinia, setActivePinia } from 'pinia'
 import { useQuery } from '../use-query'
 import { useMutation } from '../use-mutation'
+import { getRouter } from 'vue-router-mock'
 
 describe('Data fetching', () => {
+  beforeAll(() => {
+    // avoid errors when using named navigations
+    getRouter().addRoute({
+      path: '/6.8-advanced-data-fetching/[id]',
+      name: '/6.8-advanced-data-fetching//[id]',
+      component: () => 'Dummy Route',
+    })
+  })
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.useFakeTimers()

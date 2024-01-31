@@ -8,12 +8,15 @@ type _MutatorKeys<TParams extends readonly any[], TResult> = readonly (
 
 export interface UseMutationsOptions<TResult = unknown, TParams extends readonly unknown[] = readonly []> {
   /**
-   * The key of the mutation. If the mutation is successful, it will invalidate the query with the same key and refetch it
+   * Mutator function that will be called when `mutate()` is called
    */
   mutator: (...args: TParams) => Promise<TResult>
+  /**
+   * keys related to the data the mutation affects. If the mutation is successful, it will invalidate the query with the
+   * same key and refetch it
+   */
   keys?: _MutatorKeys<TParams, TResult>
 }
-// export const USE_MUTATIONS_DEFAULTS = {} satisfies Partial<UseMutationsOptions>
 
 export interface UseMutationReturn<
   TResult = unknown,
@@ -25,13 +28,11 @@ export interface UseMutationReturn<
   isPending: ComputedRef<boolean>
 
   mutate: (...params: TParams) => Promise<TResult>
-  reset: () => void
 }
 
 export function useMutation<TResult, TParams extends readonly unknown[], TError = Error>(
   options: UseMutationsOptions<TResult, TParams>,
 ): UseMutationReturn<TResult, TParams, TError> {
-  console.log(options)
   const store = useDataFetchingStore()
 
   const isPending = ref(false)
@@ -72,17 +73,11 @@ export function useMutation<TResult, TParams extends readonly unknown[], TError 
     return promise
   }
 
-  function reset() {
-    data.value = undefined
-    error.value = null
-  }
-
   const mutationReturn = {
     data: computed(() => data.value),
     isPending: computed(() => isPending.value),
     error: computed(() => error.value),
     mutate,
-    reset,
   } satisfies UseMutationReturn<TResult, TParams, TError>
 
   return mutationReturn

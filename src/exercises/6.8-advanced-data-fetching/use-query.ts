@@ -1,51 +1,32 @@
 import { useEventListener } from '@vueuse/core'
-import { type ComputedRef, computed, onMounted, onServerPrefetch, toValue } from 'vue'
+import { type ComputedRef, computed, onMounted, onServerPrefetch, toValue, MaybeRefOrGetter, watch } from 'vue'
 import { useDataFetchingStore } from './data-fetching-store'
 
 export interface UseQueryReturn<TResult = unknown, TError = Error> {
   data: ComputedRef<TResult | undefined>
   error: ComputedRef<TError | null>
-  isFetching: ComputedRef<boolean>
-  refresh: () => Promise<void>
-}
-
-export interface UseDataFetchingQueryEntry<TResult = unknown, TError = any> {
-  data: () => TResult | undefined
-  error: () => TError | null
   /**
    * Returns whether the request is currently fetching data
    */
-  isFetching: () => boolean
+  isFetching: ComputedRef<boolean>
 
   /**
-   * Refreshes the data ignoring any cache but still decouples the refreshes (only one refresh at a time)
-   * @returns a promise that resolves when the refresh is done
+   * Refreshes the data ignoring any cache but still decouples the fetch (only one fetch at a time)
+   * @returns a promise that resolves when the fetch is done
    */
-  refresh: () => Promise<void>
+  refetch: () => Promise<TResult>
   /**
-   * Fetches the data but only if it's not already fetching
+   * Refreshes the data only if the data isn't fresh.
    * @returns a promise that resolves when the refresh is done
    */
-  fetch: () => Promise<TResult>
-
-  pending: null | {
-    refreshCall: Promise<void>
-    when: number
-  }
-  previous: null | {
-    /**
-     * When was this data fetched the last time in ms
-     */
-    when: number
-    data: TResult | undefined
-    error: TError | null
-  }
+  refresh: () => Promise<TResult>
 }
 
-export type UseQueryKey = string | symbol
-
 export interface UseQueryOptions<TResult = unknown> {
-  key: UseQueryKey | (() => UseQueryKey)
+  /**
+   * key to identify the query.
+   */
+  key: MaybeRefOrGetter<string>
   fetcher: () => Promise<TResult>
 
   cacheTime?: number
@@ -75,37 +56,38 @@ export function useQuery<TResult, TError = Error>(_options: UseQueryOptions<TRes
 
   // only happens on server, app awaits this
   onServerPrefetch(async () => {
-    await entry.value.refresh()
-    // NOTE: workaround to https://github.com/vuejs/core/issues/5300
-    // eslint-disable-next-line
-    queryReturn.data.value, queryReturn.error.value, queryReturn.isFetching.value
+    await entry.value.refetch()
   })
 
   // only happens on client
-  // we could also call fetch instead but forcing a refresh is more interesting
-  onMounted(entry.value.refresh)
-  // TODO: optimize so it doesn't refresh if we are hydrating
+  onMounted(() => {
+    // ensures the entry is fetched when needed
+    watch(entry, entry.value.refresh, { immediate: true })
+  })
 
   if (IS_CLIENT) {
     if (options.refetchOnWindowFocus) {
-      useEventListener(window, 'focus', () => {
-        entry.value.refresh()
+      useEventListener(window, 'visibilitychange', () => {
+        entry.value.refetch()
       })
     }
 
     if (options.refetchOnReconnect) {
       useEventListener(window, 'online', () => {
-        entry.value.refresh()
+        entry.value.refetch()
       })
     }
   }
 
   const queryReturn = {
+    // we could optimize this by creating the computed properties only once per entry
+    // but that requires further refactoring 🤓
     data: computed(() => entry.value.data()),
     error: computed(() => entry.value.error()),
     isFetching: computed(() => entry.value.isFetching()),
 
     refresh: () => entry.value.refresh(),
+    refetch: () => entry.value.refetch(),
   } satisfies UseQueryReturn<TResult, TError>
 
   return queryReturn
