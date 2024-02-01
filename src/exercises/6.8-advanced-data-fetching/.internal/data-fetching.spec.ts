@@ -53,7 +53,7 @@ describe('Data fetching', () => {
       )
     })
 
-    it('fetches data', async () => {
+    it('fetches data automatically', async () => {
       const wrapper = mount({
         template: `<p>{{ data }}</p>`,
         setup() {
@@ -83,6 +83,33 @@ describe('Data fetching', () => {
       })
       expect(entry).toHaveProperty('refetch', expect.any(Function))
       await expect(entry.refetch()).resolves.toBe('hello')
+    })
+
+    it('useQuery: refetch returns a promise that resolves the value', async () => {
+      const wrapper = mount({
+        template: `<p>{{ data }}</p>`,
+        setup() {
+          let n = 0
+          const { data, refetch } = useQuery({
+            key: 'test',
+            fetcher: () => Promise.resolve(n++),
+          })
+
+          return {
+            refetch,
+            data,
+          }
+        },
+      })
+
+      await vi.runAllTimersAsync()
+      expect(wrapper.text()).toContain('0')
+      // @ts-expect-error: vue test utils bug
+      const promise = wrapper.vm.refetch()
+      expect(promise).toBeInstanceOf(Promise)
+      expect(wrapper.text()).toContain('0')
+      await expect(promise).resolves.toBe(1)
+      expect(wrapper.text()).toContain('1')
     })
 
     it('refetch reuses pending fetches', async () => {
@@ -154,6 +181,82 @@ describe('Data fetching', () => {
       tipOnFail(() => {
         expect(fetcher).toHaveBeenCalledTimes(2)
       }, 'Use the "toValue()" helper from vue to get the value of a ref/getter/plain value')
+    })
+
+    it('keeps the old data while fetching new data', async () => {
+      const wrapper = mount({
+        template: `<p>{{ data }}</p>`,
+        setup() {
+          let n = 0
+          const { data, refetch } = useQuery({
+            key: 'test',
+            fetcher: () => Promise.resolve(n++),
+          })
+
+          return {
+            refetch,
+            data,
+          }
+        },
+      })
+
+      await vi.runAllTimersAsync()
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.refetch()
+      expect(wrapper.text()).toContain('0')
+      await vi.runAllTimersAsync()
+      expect(wrapper.text()).toContain('1')
+    })
+
+    it('keeps the old data if the fetch fails', async () => {
+      const fetcher = vi.fn().mockResolvedValue('hello')
+      const wrapper = mount({
+        template: `<p>{{ data }}</p>`,
+        setup() {
+          const { data, refetch } = useQuery({
+            key: 'test',
+            fetcher,
+          })
+
+          return {
+            refetch,
+            data,
+          }
+        },
+      })
+
+      await vi.runAllTimersAsync()
+      fetcher.mockRejectedValueOnce(new Error('fail'))
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.refetch()
+      await vi.runAllTimersAsync()
+      expect(wrapper.text()).toContain('hello')
+    })
+
+    it('useQuery: has an isFetching property', async () => {
+      const wrapper = mount({
+        template: `<p>{{ isFetching }}</p>`,
+        setup() {
+          const { isFetching, refetch } = useQuery({
+            key: 'test',
+            fetcher: () => Promise.resolve('hello'),
+          })
+
+          return {
+            refetch,
+            isFetching,
+          }
+        },
+      })
+
+      await vi.runAllTimersAsync()
+      expect(wrapper.text()).toContain('false')
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.refetch()
+      await nextTick()
+      expect(wrapper.text()).toContain('true')
+      await vi.runAllTimersAsync()
+      expect(wrapper.text()).toContain('false')
     })
   })
 
