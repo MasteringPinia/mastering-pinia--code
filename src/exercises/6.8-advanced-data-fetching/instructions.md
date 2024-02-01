@@ -20,7 +20,35 @@ Write your notes or questions here.
 
 ## 🎯 Goals
 
-- It should...
+This exercise can be quite long and there are many ways to implement the same functionality. I will give you some steps
+to follow but feel free to do it your own way. During the correction, I will follow the steps below. The main goal of
+the exercise is to understand the benefits of combining a store with composables. While we will be adding features to
+`use-query.ts` and `use-mutation.ts`, we will also be writing part of the features into the `data-fetching-store.ts`
+store. You will find many types to guide you through this exercise, but feel free **not to use them**, and create your
+own instead. For example, you can change adapt the _interface_
+` UseDataFetchingQueryEntry<TResult = unknown, TError = any>` to your needs.ht
+
+- Implementing `useQuery()`
+  - Start by adding `data` to the returned object of `useQuery()`
+    - Implement the store action `ensureEntry()`
+    - I recommend you to implement the `refetch()` method first
+    - Ensure `refetch()` dedupes requests by using the `pending` property in the entry
+    - Ensure `useQuery()` uses the correct entry based on the `key` option, **especially with refs and getters**
+    - Ensure `data` is updated **only** when the query resolves. That way we can still display the old value while it's
+      loading
+  - Add the `isFetching` property
+    - Ensure it is `true` when the query is running and false otherwise
+  - Add the `error` property
+    - Ensure it is updated when the query rejects or resolves
+- Implementing `useMutation()`
+  - Handle `isFetching` state
+    - Should be `true` when the mutation is running and false otherwise
+  - Handle `data`
+    - Should be updated when the mutation resolves
+  - Handle `error`
+    - Should be updated when the mutation rejects or resolves
+  - Invalidating cached queries based on the `keys` option when the mutation settles
+  - Ensure only the latest mutation result is used
 
 ## 💪 Extra goals
 
