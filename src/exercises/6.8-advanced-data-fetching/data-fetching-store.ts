@@ -78,15 +78,19 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
   ): UseDataFetchingQueryEntry<TResult, TError> {
     // ensure the data
     console.log('⚙️ Ensuring entry', key)
-    // when is the last time we fetched the data
+    // Consider the data fresh by default. Using 0 will also work, it depends on how you want to handle the cache
+    let when = Date.now()
     if (!dataRegistry.has(key)) {
       dataRegistry.set(key, initialValue?.() ?? undefined)
       errorRegistry.set(key, null)
       isFetchingRegistry.set(key, false)
+      // if there is no data, we need to fetch it, so we expire it
+      when = 0 // will force a refetch
     }
 
     // we need to repopulate the entry registry separately from data and errors
     if (!queryEntriesRegistry.has(key)) {
+      console.log(`📝 Creating entry "${key} when: ${when}`)
       const entry: UseDataFetchingQueryEntry<TResult, TError> = {
         data: () => dataRegistry.get(key) as TResult,
         error: () => errorRegistry.get(key) as TError,
@@ -120,6 +124,7 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
               })
               .catch(error => {
                 errorRegistry.set(key, error)
+                // we could also always catch the data
                 throw error
               })
               .finally(() => {
@@ -132,8 +137,7 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
 
           return entry.pending.refreshCall
         },
-        // Consider the data fresh. Using 0 will also work, it depends on how you want to handle the cache
-        when: Date.now(),
+        when,
       }
       queryEntriesRegistry.set(key, entry)
     }

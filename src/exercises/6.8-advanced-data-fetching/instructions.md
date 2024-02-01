@@ -31,8 +31,8 @@ own instead. For example, you can change adapt the _interface_
 - Implementing `useQuery()`
   - Start by adding `data` to the returned object of `useQuery()`
     - Implement the store action `ensureEntry()`
-    - I recommend you to implement the `refetch()` method first
-    - Ensure `refetch()` dedupes requests by using the `pending` property in the entry
+    - I recommend you to implement the `refetch()` method first.
+    - `refetch()` calls return a pending promise if it's **still** fetching.
     - Ensure `useQuery()` uses the correct entry based on the `key` option, **especially with refs and getters**
     - Ensure `data` is updated **only** when the query resolves. That way we can still display the old value while it's
       loading
@@ -40,6 +40,7 @@ own instead. For example, you can change adapt the _interface_
     - Ensure it is `true` when the query is running and false otherwise
   - Add the `error` property
     - Ensure it is updated when the query rejects or resolves
+  - Implement `refresh()` that dedupes requests by using the `pending` property in the entry
 - Implementing `useMutation()`
   - Handle `isFetching` state
     - Should be `true` when the mutation is running and false otherwise
