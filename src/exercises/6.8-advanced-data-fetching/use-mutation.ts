@@ -25,7 +25,7 @@ export interface UseMutationReturn<
 > {
   data: ComputedRef<TResult | undefined>
   error: ComputedRef<TError | null>
-  isPending: ComputedRef<boolean>
+  isFetching: ComputedRef<boolean>
 
   mutate: (...params: TParams) => Promise<TResult>
 }
@@ -35,14 +35,14 @@ export function useMutation<TResult, TParams extends readonly unknown[], TError 
 ): UseMutationReturn<TResult, TParams, TError> {
   const store = useDataFetchingStore()
 
-  const isPending = ref(false)
+  const isFetching = ref(false)
   const data = shallowRef<TResult>()
   const error = shallowRef<TError | null>(null)
 
   // a pending promise allows us to discard previous ongoing requests
   let pendingPromise: Promise<TResult> | null = null
   function mutate(...args: TParams) {
-    isPending.value = true
+    isFetching.value = true
     error.value = null
 
     const promise = (pendingPromise = options
@@ -66,7 +66,7 @@ export function useMutation<TResult, TParams extends readonly unknown[], TError 
       })
       .finally(() => {
         if (pendingPromise === promise) {
-          isPending.value = false
+          isFetching.value = false
         }
       }))
 
@@ -75,7 +75,7 @@ export function useMutation<TResult, TParams extends readonly unknown[], TError 
 
   const mutationReturn = {
     data: computed(() => data.value),
-    isPending: computed(() => isPending.value),
+    isFetching: computed(() => isFetching.value),
     error: computed(() => error.value),
     mutate,
   } satisfies UseMutationReturn<TResult, TParams, TError>
