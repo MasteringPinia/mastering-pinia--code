@@ -312,6 +312,42 @@ describe('Data fetching', () => {
         expect(result).toBeInstanceOf(Error)
       }, 'Make sure "refresh()" and "refetch()" throw errors **only** when manually called. You should still **catch** the errors when calling these within the store and useQuery() since the user cannot catch them.')
     })
+
+    it('ensureQuery: refresh deduplicates calls', async () => {
+      const store = useDataFetchingStore()
+      const fetcher = vi.fn().mockResolvedValue('hello')
+      const entry = store.ensureEntry('test', {
+        key: 'test',
+        fetcher,
+        ...USE_QUERY_DEFAULTS,
+      })
+      entry.refresh()
+      entry.refresh()
+      await vi.runAllTimersAsync()
+      expect(fetcher).toHaveBeenCalledTimes(1)
+    })
+
+    it('ensureQuery: refresh() skips fetching only if cache is not expired', async () => {
+      const store = useDataFetchingStore()
+      const fetcher = vi.fn().mockResolvedValue('hello')
+      const entry = store.ensureEntry('test', {
+        key: 'test',
+        fetcher,
+        ...USE_QUERY_DEFAULTS,
+        cacheTime: 10,
+      })
+      await entry.refresh()
+      await vi.runAllTimersAsync()
+      expect(fetcher).toHaveBeenCalledTimes(1)
+      vi.advanceTimersByTime(5)
+      await entry.refresh()
+      await entry.refresh()
+      expect(fetcher).toHaveBeenCalledTimes(1)
+
+      vi.advanceTimersByTime(11)
+      await entry.refresh()
+      expect(fetcher).toHaveBeenCalledTimes(2)
+    })
   })
 
   describe('useMutation', () => {
@@ -319,14 +355,11 @@ describe('Data fetching', () => {
       const wrapper = mount({
         template: `<p>{{ isFetching }}</p>`,
         setup() {
-          const { mutate, isFetching } = useMutation({
-            keys: ['test'],
-            mutator: () => Promise.resolve('hello'),
-          })
-
           return {
-            mutate,
-            isFetching,
+            ...useMutation({
+              keys: ['test'],
+              mutator: () => Promise.resolve('hello'),
+            }),
           }
         },
       })
@@ -339,6 +372,45 @@ describe('Data fetching', () => {
       expect(wrapper.text()).toContain('true')
       await vi.runAllTimersAsync()
       expect(wrapper.text()).toContain('false')
+    })
+
+    it('changes data', async () => {
+      const wrapper = mount({
+        template: `<p>{{ data }}</p>`,
+        setup() {
+          return {
+            ...useMutation({
+              keys: ['test'],
+              mutator: () => Promise.resolve('hello'),
+            }),
+          }
+        },
+      })
+
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.mutate()
+      await vi.runAllTimersAsync()
+      expect(wrapper.text()).toContain('hello')
+    })
+
+    it('changes error', async () => {
+      const wrapper = mount({
+        template: `<p>{{ error }}</p>`,
+        setup() {
+          return {
+            ...useMutation({
+              keys: ['test'],
+              mutator: () => Promise.reject(new Error('fail')),
+            }),
+          }
+        },
+      })
+
+      expect(wrapper.vm.error).toBe(null)
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.mutate()
+      await vi.runAllTimersAsync()
+      expect(wrapper.vm.error).toBeInstanceOf(Error)
     })
   })
 
