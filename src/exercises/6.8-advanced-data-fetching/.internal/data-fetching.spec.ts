@@ -157,6 +157,34 @@ describe('Data fetching', () => {
     })
   })
 
+  describe('useMutation', () => {
+    it('changes isFetching', async () => {
+      const wrapper = mount({
+        template: `<p>{{ isFetching }}</p>`,
+        setup() {
+          const { mutate, isFetching } = useMutation({
+            keys: ['test'],
+            mutator: () => Promise.resolve('hello'),
+          })
+
+          return {
+            mutate,
+            isFetching,
+          }
+        },
+      })
+
+      await vi.runAllTimersAsync()
+      expect(wrapper.text()).toContain('false')
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.mutate()
+      await nextTick()
+      expect(wrapper.text()).toContain('true')
+      await vi.runAllTimersAsync()
+      expect(wrapper.text()).toContain('false')
+    })
+  })
+
   describe('Contact List features', () => {
     it('renders on the server', async () => {
       const html = await renderToString(ContactList, {
