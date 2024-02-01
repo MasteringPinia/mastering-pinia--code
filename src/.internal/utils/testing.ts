@@ -25,11 +25,13 @@ const MESSAGE_MARKER = '__MESSAGE'
 export type RunState = 'idle' | 'running'
 
 function handleTestConsoleLogs(log: UserConsoleLog, task?: Task | Test) {
-  if (log.type === 'stdout' && log.content.startsWith(MESSAGE_MARKER)) {
+  // there could be other logs from the user
+  const messageMarkerPos = log.content.indexOf(MESSAGE_MARKER)
+  if (log.type === 'stdout' && messageMarkerPos > -1) {
     // one log content can contain multiple messages
     const messages = log.content
       // remove the initial marker
-      .slice(MESSAGE_MARKER.length)
+      .slice(messageMarkerPos + MESSAGE_MARKER.length)
       // Remove the last empty line added by log
       .replace(/\n$/, '')
       // the newline removes empty lines between grouped logs
