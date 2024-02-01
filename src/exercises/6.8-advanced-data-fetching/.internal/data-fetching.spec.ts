@@ -1,7 +1,7 @@
 import { mount, renderToString } from '@vue/test-utils'
 import ContactList from '../index.vue'
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { FunctionalComponent, h, nextTick, ref, useSlots } from 'vue'
+import { FunctionalComponent, defineComponent, h, nextTick, ref, useSlots } from 'vue'
 import { type RouterLinkProps } from 'vue-router/auto'
 import { mockHttpRequests } from '@tests/mocks/server'
 import { createPinia, setActivePinia } from 'pinia'
@@ -17,7 +17,7 @@ describe('Data fetching', () => {
     getRouter().addRoute({
       path: '/6.8-advanced-data-fetching/:id',
       name: '/6.8-advanced-data-fetching//[id]',
-      component: () => 'Dummy Route',
+      component: defineComponent({ setup: () => 'Dummy Route' }),
     })
   })
   beforeEach(() => {
@@ -90,14 +90,11 @@ describe('Data fetching', () => {
         template: `<p>{{ data }}</p>`,
         setup() {
           let n = 0
-          const { data, refetch } = useQuery({
-            key: 'test',
-            fetcher: () => Promise.resolve(n++),
-          })
-
           return {
-            refetch,
-            data,
+            ...useQuery({
+              key: 'test',
+              fetcher: () => Promise.resolve(n++),
+            }),
           }
         },
       })
@@ -105,7 +102,7 @@ describe('Data fetching', () => {
       await vi.runAllTimersAsync()
       expect(wrapper.text()).toContain('0')
       // @ts-expect-error: vue test utils bug
-      const promise = wrapper.vm.refetch()
+      const promise = wrapper.vm.refetch().catch(() => {})
       expect(promise).toBeInstanceOf(Promise)
       expect(wrapper.text()).toContain('0')
       await expect(promise).resolves.toBe(1)
@@ -202,7 +199,7 @@ describe('Data fetching', () => {
 
       await vi.runAllTimersAsync()
       // @ts-expect-error: vue test utils bug
-      wrapper.vm.refetch()
+      wrapper.vm.refetch().catch(() => {})
       expect(wrapper.text()).toContain('0')
       await vi.runAllTimersAsync()
       expect(wrapper.text()).toContain('1')
@@ -228,7 +225,7 @@ describe('Data fetching', () => {
       await vi.runAllTimersAsync()
       fetcher.mockRejectedValueOnce(new Error('fail'))
       // @ts-expect-error: vue test utils bug
-      wrapper.vm.refetch()
+      wrapper.vm.refetch().catch(() => {})
       await vi.runAllTimersAsync()
       expect(wrapper.text()).toContain('hello')
     })
@@ -252,11 +249,68 @@ describe('Data fetching', () => {
       await vi.runAllTimersAsync()
       expect(wrapper.text()).toContain('false')
       // @ts-expect-error: vue test utils bug
-      wrapper.vm.refetch()
+      wrapper.vm.refetch().catch(() => {})
       await nextTick()
       expect(wrapper.text()).toContain('true')
       await vi.runAllTimersAsync()
       expect(wrapper.text()).toContain('false')
+    })
+
+    it('useQuery: has an error property', async () => {
+      const fetcher = vi.fn().mockResolvedValue('hello')
+      const wrapper = mount({
+        template: `<p>{{ error }}</p>`,
+        setup() {
+          const { error, refetch } = useQuery({
+            key: 'test',
+            fetcher,
+          })
+
+          return {
+            refetch,
+            error,
+          }
+        },
+      })
+
+      await vi.runAllTimersAsync()
+      expect(wrapper.vm.error).toBe(null)
+      fetcher.mockRejectedValueOnce(new Error('fail'))
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.refetch().catch(() => {})
+      await vi.runAllTimersAsync()
+      expect(wrapper.vm.error).toBeInstanceOf(Error)
+    })
+
+    it('useQuery: the error is null when the fetch succeeds', async () => {
+      const fetcher = vi.fn().mockRejectedValueOnce(new Error('fail'))
+      const wrapper = mount({
+        template: `<p>{{ error }}</p>`,
+        setup() {
+          return useQuery({ key: 'test', fetcher })
+        },
+      })
+
+      await vi.runAllTimersAsync()
+      fetcher.mockResolvedValueOnce('hello')
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.refetch().catch(() => {})
+      await vi.runAllTimersAsync()
+      expect(wrapper.vm.error).toBe(null)
+    })
+
+    it('useQuery: refetch() should throw errors only when manually called', async () => {
+      const store = useDataFetchingStore()
+      const entry = store.ensureEntry('test', {
+        key: 'test',
+        fetcher: () => Promise.reject(new Error('fail')),
+        ...USE_QUERY_DEFAULTS,
+      })
+      const result = await entry.refresh().catch(e => e)
+      console.log(result)
+      tipOnFail(() => {
+        expect(result).toBeInstanceOf(Error)
+      }, 'Make sure "refresh()" and "refetch()" throw errors **only** when manually called. You should still **catch** the errors when calling these within the store and useQuery() since the user cannot catch them.')
     })
   })
 

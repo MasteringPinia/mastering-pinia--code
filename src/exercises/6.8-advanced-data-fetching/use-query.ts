@@ -73,29 +73,29 @@ export function useQuery<TResult, TError = Error>(_options: UseQueryOptions<TRes
 
   // only happens on server, app awaits this
   onServerPrefetch(async () => {
-    await entry.value.refetch()
+    await entry.value.refetch().catch(() => {})
   })
 
   // only happens on client
   onMounted(() => {
     // force a refetch when the component is mounted to ensure the data is fresh
-    entry.value.refetch()
+    entry.value.refetch().catch(() => {})
     // ensures the entry is fetched when needed
     watch(entry, entry => {
-      entry.refresh()
+      entry.refresh().catch(() => {})
     })
   })
 
   if (IS_CLIENT) {
     if (options.refetchOnWindowFocus) {
       useEventListener(window, 'visibilitychange', () => {
-        entry.value.refetch()
+        entry.value.refetch().catch(() => {})
       })
     }
 
     if (options.refetchOnReconnect) {
       useEventListener(window, 'online', () => {
-        entry.value.refetch()
+        entry.value.refetch().catch(() => {})
       })
     }
   }
