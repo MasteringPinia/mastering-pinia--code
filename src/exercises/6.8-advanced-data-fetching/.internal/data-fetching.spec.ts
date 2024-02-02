@@ -367,7 +367,7 @@ describe('Data fetching', () => {
       await vi.runAllTimersAsync()
       expect(wrapper.text()).toContain('false')
       // @ts-expect-error: vue test utils bug
-      wrapper.vm.mutate()
+      wrapper.vm.mutate().catch(() => {})
       await nextTick()
       expect(wrapper.text()).toContain('true')
       await vi.runAllTimersAsync()
@@ -388,7 +388,7 @@ describe('Data fetching', () => {
       })
 
       // @ts-expect-error: vue test utils bug
-      wrapper.vm.mutate()
+      wrapper.vm.mutate().catch(() => {})
       await vi.runAllTimersAsync()
       expect(wrapper.text()).toContain('hello')
     })
@@ -408,7 +408,7 @@ describe('Data fetching', () => {
 
       expect(wrapper.vm.error).toBe(null)
       // @ts-expect-error: vue test utils bug
-      wrapper.vm.mutate()
+      wrapper.vm.mutate().catch(() => {})
       await vi.runAllTimersAsync()
       expect(wrapper.vm.error).toBeInstanceOf(Error)
     })
