@@ -1,6 +1,7 @@
 import { basename } from 'node:path'
 import { SSRContext, renderToString } from 'vue/server-renderer'
 import { createApp } from './main'
+import { serializePinia } from './pinia-state'
 
 export async function render(url: string, manifest: Record<string, string[]>) {
   const { app, router, pinia } = await createApp()
@@ -20,7 +21,7 @@ export async function render(url: string, manifest: Record<string, string[]>) {
   // which we can then use to determine what files need to be preloaded for this
   // request.
   const preloadLinks = renderPreloadLinks(ctx.modules, manifest)
-  return [html, preloadLinks, pinia]
+  return [html, preloadLinks, serializePinia(pinia.state.value)]
 }
 
 function renderPreloadLinks(modules: string[], manifest: Record<string, string[]>) {

@@ -77,7 +77,7 @@ export async function createServer(
         return res.status(200).set({ 'Content-Type': 'text/html' }).end(template)
       }
 
-      const [appHtml, preloadLinks, pinia] = await render(url, manifest)
+      const [appHtml, preloadLinks, state] = await render(url, manifest)
 
       const html = template
         .replace(`<!--preload-links-->`, preloadLinks)
@@ -86,7 +86,7 @@ export async function createServer(
           `<!--pinia-state-->`,
           `<script>` +
             // add pinia state
-            `window.__PINIA_STATE__ = ${JSON.stringify(pinia.state.value)}` +
+            `window.__PINIA_STATE__ = ${JSON.stringify(state)}` +
             `</script>`,
         )
 
