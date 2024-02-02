@@ -169,6 +169,7 @@ describe('Data fetching', () => {
       await vi.runAllTimersAsync()
       expect(wrapper.text()).toContain('v1')
       console.log(wrapper.vm.key)
+      // @ts-ignore: error with vue-tsc???
       wrapper.vm.key = 'v2'
       console.log(wrapper.vm.key)
       await nextTick()
