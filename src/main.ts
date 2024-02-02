@@ -5,6 +5,7 @@ import { createRouter } from './router'
 import type { ExerciseModule } from './.internal/utils'
 import './.internal/utils/welcome'
 import { ClientOnly } from './components/.internal/ClientOnly'
+import { reviveState } from './pinia-state'
 
 // SSR requires a fresh app instance per request, therefore we export a function
 // that creates a fresh app instance. If using Vuex, we'd also be creating a
@@ -19,7 +20,9 @@ export function createApp() {
   const pinia = createPinia()
   // hydrate the state on client side
   if (!import.meta.env.SSR) {
-    pinia.state.value = window.__PINIA_STATE__ || {}
+    if (window.__PINIA_STATE__) {
+      pinia.state.value = reviveState(window.__PINIA_STATE__)
+    }
   }
 
   const router = createRouter()
@@ -37,6 +40,6 @@ export function createApp() {
 
 declare global {
   interface Window {
-    __PINIA_STATE__: any
+    __PINIA_STATE__?: string
   }
 }
