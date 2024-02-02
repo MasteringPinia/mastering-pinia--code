@@ -374,7 +374,7 @@ describe('Data fetching', () => {
       expect(wrapper.text()).toContain('false')
     })
 
-    it('changes data', async () => {
+    it('sets data to the resolved value of the mutation', async () => {
       const wrapper = mount({
         template: `<p>{{ data }}</p>`,
         setup() {
@@ -393,7 +393,7 @@ describe('Data fetching', () => {
       expect(wrapper.text()).toContain('hello')
     })
 
-    it('changes error', async () => {
+    it('sets the error if the mutation fails', async () => {
       const wrapper = mount({
         template: `<p>{{ error }}</p>`,
         setup() {
@@ -411,6 +411,112 @@ describe('Data fetching', () => {
       wrapper.vm.mutate().catch(() => {})
       await vi.runAllTimersAsync()
       expect(wrapper.vm.error).toBeInstanceOf(Error)
+    })
+
+    it('invalidates the cache of the given keys', async () => {
+      const store = useDataFetchingStore()
+      const spy = vi.spyOn(store, 'invalidateEntry')
+
+      const wrapper = mount({
+        template: `<p>{{ error }}</p>`,
+        setup() {
+          return {
+            ...useMutation({
+              keys: ['v1', 'v2'],
+              mutator: () => Promise.resolve('hello'),
+            }),
+          }
+        },
+      })
+
+      tipOnFail(() => {
+        expect(spy).not.toHaveBeenCalled()
+      }, 'The "invalidateEntry()" method should only be called when the mutation resolves.')
+
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.mutate().catch(() => {})
+      await vi.runAllTimersAsync()
+      expect(spy).toHaveBeenCalledWith('v1', expect.anything())
+      expect(spy).toHaveBeenCalledWith('v2', expect.anything())
+    })
+
+    it('it accepts a function to compute the keys', async () => {
+      const store = useDataFetchingStore()
+      const spy = vi.spyOn(store, 'invalidateEntry')
+
+      const wrapper = mount({
+        template: `<p>{{ error }}</p>`,
+        setup() {
+          return {
+            ...useMutation({
+              keys: ['v1', ({ variables }): string => `v2-${variables.join('-')}`],
+              mutator: (a: string, b: string) => Promise.resolve(`${a}-${b}`),
+            }),
+          }
+        },
+      })
+
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.mutate('a', 'b').catch(() => {})
+      await vi.runAllTimersAsync()
+      expect(spy).toHaveBeenCalledWith('v1', expect.anything())
+      expect(spy).toHaveBeenCalledWith('v2-a-b', expect.anything())
+    })
+
+    function fakePromise<T = unknown>() {
+      let res!: (value: T | PromiseLike<T>) => void, rej!: (reason?: any) => void
+      // the executor is guaranteed to get executed right away
+      const promise = new Promise<T>((resolve, reject) => {
+        res = resolve
+        rej = reject
+      })
+      return [promise, res, rej] as const
+    }
+
+    it('only considers the last mutation', async () => {
+      const [p1, res1] = fakePromise()
+      const [p2, res2] = fakePromise()
+
+      const wrapper = mount({
+        template: `<p>{{ error }}</p>`,
+        setup() {
+          let n = 0
+          return {
+            ...useMutation({
+              keys: ['v1'],
+              mutator: () => {
+                if (n === 0) {
+                  n++
+                  return p1
+                } else {
+                  return p2
+                }
+              },
+            }),
+          }
+        },
+      })
+
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.mutate().catch(() => {})
+      // @ts-expect-error: vue test utils bug
+      wrapper.vm.mutate().catch(() => {})
+      res2('ok')
+      expect(wrapper.vm.isFetching).toBe(true)
+      await vi.runAllTimersAsync()
+      await nextTick()
+      expect(wrapper.vm.error).toBe(null)
+      expect(wrapper.vm.data).toBe('ok')
+      expect(wrapper.vm.isFetching).toBe(false)
+
+      // resolve the first promise afterwards, it should be ignored
+      res1('ko')
+      await vi.runAllTimersAsync()
+      await nextTick()
+
+      expect(wrapper.vm.error).toBe(null)
+      expect(wrapper.vm.data).toBe('ok')
+      expect(wrapper.vm.isFetching).toBe(false)
     })
   })
 

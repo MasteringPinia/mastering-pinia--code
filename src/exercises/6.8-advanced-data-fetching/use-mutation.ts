@@ -82,10 +82,3 @@ export function useMutation<TResult, TParams extends readonly unknown[], TError 
 
   return mutationReturn
 }
-
-// useMutation({
-//   async mutator(one: string, other?: number) {
-//     return { one, other: other || 0 }
-//   },
-//   keys: ['register', ({ variables: [one], result }) => `register:${one}` + result.one],
-// })

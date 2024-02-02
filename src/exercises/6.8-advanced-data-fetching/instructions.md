@@ -51,7 +51,8 @@ own instead. For example, you can change adapt the _interface_
   - Handle `error`
     - Should be updated when the mutation rejects or resolves
   - Invalidating cached queries based on the `keys` option when the mutation settles
-  - Ensure only the latest mutation result is used
+  - Ensure that new calls to `mutate()` take precedence over the previous ones
+    - The old mutation result should be ignored
 
 ## 💪 Extra goals
 
