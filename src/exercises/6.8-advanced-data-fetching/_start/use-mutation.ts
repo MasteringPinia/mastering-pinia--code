@@ -1,7 +1,7 @@
 import { computed, ref, type ComputedRef, shallowRef } from 'vue'
 import { useDataFetchingStore } from './data-fetching-store'
 
-type _MutatorKeys<TParams extends readonly any[], TResult> = readonly (
+type _MutationKeys<TParams extends readonly any[], TResult> = readonly (
   | string
   | ((context: { variables: TParams; result: TResult }) => string)
 )[]
@@ -10,12 +10,12 @@ export interface UseMutationsOptions<TResult = unknown, TParams extends readonly
   /**
    * Mutator function that will be called when `mutate()` is called
    */
-  mutator: (...args: TParams) => Promise<TResult>
+  mutation: (...args: TParams) => Promise<TResult>
   /**
    * keys related to the data the mutation affects. If the mutation is successful, it will invalidate the query with the
    * same key and refetch it
    */
-  keys?: _MutatorKeys<TParams, TResult>
+  keys?: _MutationKeys<TParams, TResult>
 }
 
 export interface UseMutationReturn<
@@ -48,10 +48,3 @@ export function useMutation<TResult, TParams extends readonly unknown[], TError 
     mutate,
   }
 }
-
-// useMutation({
-//   async mutator(one: string, other?: number) {
-//     return { one, other: other || 0 }
-//   },
-//   keys: ['register', ({ variables: [one], result }) => `register:${one}` + result.one],
-// })

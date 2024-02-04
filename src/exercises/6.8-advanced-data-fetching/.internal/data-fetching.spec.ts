@@ -41,13 +41,13 @@ describe('Data fetching', () => {
 
       const entry = store.ensureEntry('test', {
         key: 'test',
-        fetcher: () => Promise.resolve('hello'),
+        query: () => Promise.resolve('hello'),
         ...USE_QUERY_DEFAULTS,
       })
       expect(entry).toBe(
         store.ensureEntry('test', {
           key: 'test',
-          fetcher: () => Promise.resolve('hello'),
+          query: () => Promise.resolve('hello'),
           ...USE_QUERY_DEFAULTS,
         }),
       )
@@ -59,7 +59,7 @@ describe('Data fetching', () => {
         setup() {
           const { data } = useQuery({
             key: 'test',
-            fetcher: () => Promise.resolve('hello'),
+            query: () => Promise.resolve('hello'),
           })
 
           return {
@@ -78,7 +78,7 @@ describe('Data fetching', () => {
 
       const entry = store.ensureEntry('test', {
         key: 'test',
-        fetcher: () => Promise.resolve('hello'),
+        query: () => Promise.resolve('hello'),
         ...USE_QUERY_DEFAULTS,
       })
       expect(entry).toHaveProperty('refetch', expect.any(Function))
@@ -93,7 +93,7 @@ describe('Data fetching', () => {
           return {
             ...useQuery({
               key: 'test',
-              fetcher: () => Promise.resolve(n++),
+              query: () => Promise.resolve(n++),
             }),
           }
         },
@@ -112,16 +112,16 @@ describe('Data fetching', () => {
     it('refetch reuses pending fetches', async () => {
       const store = useDataFetchingStore()
 
-      const fetcher = vi.fn().mockResolvedValue('hello')
+      const query = vi.fn().mockResolvedValue('hello')
       const entry = store.ensureEntry('test', {
         key: 'test',
-        fetcher,
+        query,
         ...USE_QUERY_DEFAULTS,
       })
       entry.refetch()
       entry.refetch()
       await vi.runAllTimersAsync()
-      expect(fetcher).toHaveBeenCalledTimes(1)
+      expect(query).toHaveBeenCalledTimes(1)
     })
 
     it('useQuery: can use a reactive key', async () => {
@@ -131,7 +131,7 @@ describe('Data fetching', () => {
           const key = ref('test')
           const { data } = useQuery({
             key,
-            fetcher: () => Promise.resolve(key.value),
+            query: () => Promise.resolve(key.value),
           })
 
           return {
@@ -148,15 +148,15 @@ describe('Data fetching', () => {
     })
 
     it('useQuery: fetches again if the key changes', async () => {
-      const fetcher = vi.fn()
+      const query = vi.fn()
       const wrapper = mount({
         template: `<p>{{ data }}</p>`,
         setup() {
           const key = ref('v1')
-          fetcher.mockImplementation(() => Promise.resolve(key.value))
+          query.mockImplementation(() => Promise.resolve(key.value))
           const { data } = useQuery({
             key,
-            fetcher,
+            query,
           })
 
           return {
@@ -177,7 +177,7 @@ describe('Data fetching', () => {
       await vi.runAllTimersAsync()
       console.log(wrapper.html())
       tipOnFail(() => {
-        expect(fetcher).toHaveBeenCalledTimes(2)
+        expect(query).toHaveBeenCalledTimes(2)
       }, 'Use the "toValue()" helper from vue to get the value of a ref/getter/plain value')
     })
 
@@ -188,7 +188,7 @@ describe('Data fetching', () => {
           let n = 0
           const { data, refetch } = useQuery({
             key: 'test',
-            fetcher: () => Promise.resolve(n++),
+            query: () => Promise.resolve(n++),
           })
 
           return {
@@ -207,13 +207,13 @@ describe('Data fetching', () => {
     })
 
     it('keeps the old data if the fetch fails', async () => {
-      const fetcher = vi.fn().mockResolvedValue('hello')
+      const query = vi.fn().mockResolvedValue('hello')
       const wrapper = mount({
         template: `<p>{{ data }}</p>`,
         setup() {
           const { data, refetch } = useQuery({
             key: 'test',
-            fetcher,
+            query,
           })
 
           return {
@@ -224,7 +224,7 @@ describe('Data fetching', () => {
       })
 
       await vi.runAllTimersAsync()
-      fetcher.mockRejectedValueOnce(new Error('fail'))
+      query.mockRejectedValueOnce(new Error('fail'))
       // @ts-expect-error: vue test utils bug
       wrapper.vm.refetch().catch(() => {})
       await vi.runAllTimersAsync()
@@ -237,7 +237,7 @@ describe('Data fetching', () => {
         setup() {
           const { isFetching, refetch } = useQuery({
             key: 'test',
-            fetcher: () => Promise.resolve('hello'),
+            query: () => Promise.resolve('hello'),
           })
 
           return {
@@ -258,13 +258,13 @@ describe('Data fetching', () => {
     })
 
     it('useQuery: has an error property', async () => {
-      const fetcher = vi.fn().mockResolvedValue('hello')
+      const query = vi.fn().mockResolvedValue('hello')
       const wrapper = mount({
         template: `<p>{{ error }}</p>`,
         setup() {
           const { error, refetch } = useQuery({
             key: 'test',
-            fetcher,
+            query,
           })
 
           return {
@@ -276,7 +276,7 @@ describe('Data fetching', () => {
 
       await vi.runAllTimersAsync()
       expect(wrapper.vm.error).toBe(null)
-      fetcher.mockRejectedValueOnce(new Error('fail'))
+      query.mockRejectedValueOnce(new Error('fail'))
       // @ts-expect-error: vue test utils bug
       wrapper.vm.refetch().catch(() => {})
       await vi.runAllTimersAsync()
@@ -284,16 +284,16 @@ describe('Data fetching', () => {
     })
 
     it('useQuery: the error is null when the fetch succeeds', async () => {
-      const fetcher = vi.fn().mockRejectedValueOnce(new Error('fail'))
+      const query = vi.fn().mockRejectedValueOnce(new Error('fail'))
       const wrapper = mount({
         template: `<p>{{ error }}</p>`,
         setup() {
-          return useQuery({ key: 'test', fetcher })
+          return useQuery({ key: 'test', query })
         },
       })
 
       await vi.runAllTimersAsync()
-      fetcher.mockResolvedValueOnce('hello')
+      query.mockResolvedValueOnce('hello')
       // @ts-expect-error: vue test utils bug
       wrapper.vm.refetch().catch(() => {})
       await vi.runAllTimersAsync()
@@ -304,7 +304,7 @@ describe('Data fetching', () => {
       const store = useDataFetchingStore()
       const entry = store.ensureEntry('test', {
         key: 'test',
-        fetcher: () => Promise.reject(new Error('fail')),
+        query: () => Promise.reject(new Error('fail')),
         ...USE_QUERY_DEFAULTS,
       })
       const result = await entry.refresh().catch(e => e)
@@ -316,38 +316,38 @@ describe('Data fetching', () => {
 
     it('ensureQuery: refresh deduplicates calls', async () => {
       const store = useDataFetchingStore()
-      const fetcher = vi.fn().mockResolvedValue('hello')
+      const query = vi.fn().mockResolvedValue('hello')
       const entry = store.ensureEntry('test', {
         key: 'test',
-        fetcher,
+        query,
         ...USE_QUERY_DEFAULTS,
       })
       entry.refresh()
       entry.refresh()
       await vi.runAllTimersAsync()
-      expect(fetcher).toHaveBeenCalledTimes(1)
+      expect(query).toHaveBeenCalledTimes(1)
     })
 
     it('ensureQuery: refresh() skips fetching only if cache is not expired', async () => {
       const store = useDataFetchingStore()
-      const fetcher = vi.fn().mockResolvedValue('hello')
+      const query = vi.fn().mockResolvedValue('hello')
       const entry = store.ensureEntry('test', {
         key: 'test',
-        fetcher,
+        query,
         ...USE_QUERY_DEFAULTS,
         cacheTime: 10,
       })
       await entry.refresh()
       await vi.runAllTimersAsync()
-      expect(fetcher).toHaveBeenCalledTimes(1)
+      expect(query).toHaveBeenCalledTimes(1)
       vi.advanceTimersByTime(5)
       await entry.refresh()
       await entry.refresh()
-      expect(fetcher).toHaveBeenCalledTimes(1)
+      expect(query).toHaveBeenCalledTimes(1)
 
       vi.advanceTimersByTime(11)
       await entry.refresh()
-      expect(fetcher).toHaveBeenCalledTimes(2)
+      expect(query).toHaveBeenCalledTimes(2)
     })
   })
 
@@ -359,7 +359,7 @@ describe('Data fetching', () => {
           return {
             ...useMutation({
               keys: ['test'],
-              mutator: () => Promise.resolve('hello'),
+              mutation: () => Promise.resolve('hello'),
             }),
           }
         },
@@ -382,7 +382,7 @@ describe('Data fetching', () => {
           return {
             ...useMutation({
               keys: ['test'],
-              mutator: () => Promise.resolve('hello'),
+              mutation: () => Promise.resolve('hello'),
             }),
           }
         },
@@ -401,7 +401,7 @@ describe('Data fetching', () => {
           return {
             ...useMutation({
               keys: ['test'],
-              mutator: () => Promise.reject(new Error('fail')),
+              mutation: () => Promise.reject(new Error('fail')),
             }),
           }
         },
@@ -424,7 +424,7 @@ describe('Data fetching', () => {
           return {
             ...useMutation({
               keys: ['v1', 'v2'],
-              mutator: () => Promise.resolve('hello'),
+              mutation: () => Promise.resolve('hello'),
             }),
           }
         },
@@ -451,7 +451,7 @@ describe('Data fetching', () => {
           return {
             ...useMutation({
               keys: ['v1', ({ variables }): string => `v2-${variables.join('-')}`],
-              mutator: (a: string, b: string) => Promise.resolve(`${a}-${b}`),
+              mutation: (a: string, b: string) => Promise.resolve(`${a}-${b}`),
             }),
           }
         },
@@ -485,7 +485,7 @@ describe('Data fetching', () => {
           return {
             ...useMutation({
               keys: ['v1'],
-              mutator: () => {
+              mutation: () => {
                 if (n === 0) {
                   n++
                   return p1

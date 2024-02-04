@@ -74,7 +74,7 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
    */
   function ensureEntry<TResult = unknown, TError = Error>(
     key: string,
-    { fetcher, initialValue, cacheTime }: UseQueryOptionsWithDefaults<TResult>,
+    { query, initialValue, cacheTime }: UseQueryOptionsWithDefaults<TResult>,
   ): UseDataFetchingQueryEntry<TResult, TError> {
     // ensure the data
     console.log('⚙️ Ensuring entry', key)
@@ -116,7 +116,7 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
           isFetchingRegistry.set(key, true)
 
           entry.pending = {
-            refreshCall: fetcher()
+            refreshCall: query()
               .then(data => {
                 errorRegistry.set(key, null)
                 dataRegistry.set(key, data)

@@ -8,7 +8,7 @@ import { useRouteQuery } from '@vueuse/router'
 
 const { data: contactList, isFetching } = useQuery({
   key: 'contacts',
-  fetcher: () => getAllContacts(),
+  query: () => getAllContacts(),
 })
 
 const searchText = useRouteQuery('search', '', {

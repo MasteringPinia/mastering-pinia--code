@@ -74,7 +74,7 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
    */
   function ensureEntry<TResult = unknown, TError = Error>(
     key: string,
-    { fetcher, initialValue, cacheTime }: UseQueryOptionsWithDefaults<TResult>,
+    { query, initialValue, cacheTime }: UseQueryOptionsWithDefaults<TResult>,
   ): UseDataFetchingQueryEntry<TResult, TError> {
     // TODO: implement the code so we can do
 

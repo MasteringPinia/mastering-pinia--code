@@ -36,7 +36,7 @@ export interface UseQueryOptions<TResult = unknown> {
   /**
    * Function that fetches the data.
    */
-  fetcher: () => Promise<TResult>
+  query: () => Promise<TResult>
 
   /**
    * How long should the data be cached in milliseconds. Defaults to 5 seconds
