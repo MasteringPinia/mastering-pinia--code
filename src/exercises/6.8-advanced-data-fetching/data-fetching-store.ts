@@ -36,7 +36,7 @@ export interface UseDataFetchingQueryEntry<TResult = unknown, TError = any> {
   }
 
   /**
-   * When was this query settled (either resolved or rejected)
+   * When was this query settled (either resolved or rejected). Obtained with `Date.now()`
    */
   when: number
 }
