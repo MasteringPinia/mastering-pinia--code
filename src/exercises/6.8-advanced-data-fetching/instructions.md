@@ -22,12 +22,13 @@ Write your notes or questions here.
 
 This exercise is very long and there are many ways to implement the same functionality. I will give you some steps to
 follow but feel free to do it your own way. During the correction, I will follow the steps below. The main goal of the
-exercise is to understand the benefits of combining a store with composables. While we will be adding features to
-`use-query.ts` and `use-mutation.ts`, we will also be writing part of the features into the `data-fetching-store.ts`
-store. You will find many types to guide you through this exercise, but feel free **not to use them**, and create your
-own instead. For example, you can adapt the _interface_ ` UseDataFetchingQueryEntry<TResult = unknown, TError = any>` to
-your needs. Note that you can't change the public API of the entry or `useQuery()` and `useMutation()` (`data`, `error`,
-`isFetching`, `refetch()`, `refresh()`) as those are used by the tests to check your solution.
+exercise is to understand the benefits of **combining a store with composables** rather than **putting everything in a
+store**. While we will be adding features to `use-query.ts` and `use-mutation.ts`, we will also be writing part of the
+features into the `data-fetching-store.ts` store. You will find many types to guide you through this exercise, but feel
+free **to adapt them**, and create your own instead. For example, you can adapt the _interface_
+` UseDataFetchingQueryEntry<TResult = unknown, TError = any>` to your needs. Note that you can't change the public API
+of the entry or `useQuery()` and `useMutation()` (`data`, `error`, `isFetching`, `refetch()`, `refresh()`) as those are
+used by the tests to check your solution.
 
 ```vue
 <script lang="ts" setup>
