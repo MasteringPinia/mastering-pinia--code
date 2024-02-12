@@ -14,6 +14,9 @@ We will be implementing a simplified and limited version of [Pinia Colada](https
   <img src="https://github.com/posva/pinia-colada/assets/664177/02011637-f94d-4a35-854a-02f7aed86a3c" class="instructions-raw-img" style="width: 100px;" alt="Pinia Colada logo">
 </a>
 
+⚠️ This exercise is split in two parts because it can be very long. Don't overdue yourself, it's recommended to solve
+this exercise over the span of multiple days.
+
 ## 📝 Your Notes
 
 Write your notes or questions here.
@@ -61,38 +64,39 @@ const { mutate: updateContact } = useMutation({
 </template>
 ```
 
-### `useQuery()`
+### Part one: Querying
 
 The first step is to implement `useQuery()`. The goal of this composable is to provide a way to fetch data and keep it
 cached for a configurable period of time. It should expose the promise state (loading, error) and a way to manually
 refetch (ignores cache) and refresh (reuses cache if fresh) the data. It will also deduplicate requests whenever
 possible to avoid running the same query multiple times in parallel. The feature itself isn't an easy task but on top of
-making it work, I ask you to also think about how to split the logic between the store and the composable. There is no
+making it work, I ask you to also think about how to split the logic between the store and the composable. Needless to
+say, this also means **you will be writing code in both, `use-query.ts` and `data-fetching-store.ts`**. There is no
 _right_ way to do it so try to pass as many tests as possible while finding an API that you like 😄.
 
 - Start by adding `data` to the returned object of `useQuery()`
   - Implement the store action `ensureEntry()`
   - I recommend you to implement the `refetch()` method first.
-  - `refetch()` calls return the pending promise if it's **still** fetching.
+  - `refetch()` should **not** create a new request if there is already a pending one
   - Ensure `useQuery()` uses the correct entry based on the `key` option, **especially with refs and getters**
   - Ensure `data` is updated **only** when the query resolves. That way we can still display the old value while it's
     loading
 - Add the `isFetching` property
-  - Ensure it is `true` when the query is running and false otherwise
+  - Ensure it is `true` when the query is running and `false` otherwise
 - Add the `error` property
   - Ensure it is updated when the query rejects or resolves
 - Implement `refresh()`
   - Deduplicate requests
   - Only fetches if the `cacheTime` has expired (use `isExpired()`)
 
-### `useMutation()`
+### Part two: Mutating
 
 This part is similar to `useQuery()`. The main point of having a `useMutation()` is to automatically invalidate the
-cache and fetch it again to keep an up to date UI. Like queries, mutations should also handle the async state (loading,
-error). There is no need to deduplicate requests as mutations are always manually triggered.
+cache and fetch it again to keep an always up-to-date UI ✨. Like queries, mutations should also handle the async state
+(loading, error). There is no need to deduplicate requests as mutations are always manually triggered.
 
 - Handle `isFetching` state
-  - Should be `true` when the mutation is running and false otherwise
+  - Should be `true` when the mutation is running and `false` otherwise
 - Handle `data`
   - Should be updated when the mutation resolves
 - Handle `error`
