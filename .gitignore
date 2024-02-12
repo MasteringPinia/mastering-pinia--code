@@ -17,3 +17,5 @@ auto-imports.d.ts
 
 # downloaded bootstrap file
 mastering-pinia-*.mjs
+vite.config.ts.timestamp-*
+vitest.config.ts.timestamp-*
