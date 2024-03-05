@@ -110,4 +110,4 @@ cache and fetch it again to keep an always up-to-date UI ✨. Like queries, muta
 _Extra goals might not have any tests and can be done later or skipped._
 
 - Connect the search text to the URL with a query string named `search`, e.g. `?search=Anna`
-- Replace `useFuse()` with a `useMutation()` that keeps track of the search argument for the cache
+- Replace `useFuse()` with a `useQuery()` that keeps track of the search argument for the cache
