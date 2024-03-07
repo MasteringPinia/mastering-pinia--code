@@ -22,3 +22,37 @@ ul {
     color: var(--nc-tx-2);
   }
 }
+
+.big-layout {
+  --negative-margin: max(min(0px, calc((100vw - 750px) / -2)), -500px);
+  margin-left: var(--negative-margin);
+  margin-right: var(--negative-margin);
+}
+
+@media screen and (min-width: 768px) {
+  .contacts-search {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+  }
+}
+
+.instructions-raw-img {
+  border: none;
+}
+
+.spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: var(--spinner-border-width, 2px) solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

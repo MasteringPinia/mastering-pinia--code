@@ -2,23 +2,27 @@ import { mande } from 'mande'
 
 export const contacts = mande('http://localhost:7777/contacts', {})
 
-export interface Contact {
+export interface _UpdateInfo {
+  createdAt: string
+  updatedAt: string
+}
+
+interface ContactInfo {
   id: number
   firstName: string
   lastName: string
-  email: string
-  job: string
-  pronouns: string | null
   bio: string
-  avatar: string
-  registeredAt: string
+  photoURL: string
   isFavorite: boolean
 }
+
+export interface Contact extends ContactInfo, _UpdateInfo {}
 
 /**
  * Retrieve all the contact list.
  */
-export function getAllContacts() {
+export async function getAllContacts() {
+  // await new Promise(resolve => setTimeout(resolve, 2000))
   return contacts.get<Contact[]>('/')
 }
 
@@ -28,6 +32,19 @@ export function getAllContacts() {
  */
 export function getContactById(id: string | number) {
   return contacts.get<Contact>(id)
+}
+
+export function createContact(contact: Omit<ContactInfo, 'photoURL'>) {
+  return contacts.post<Contact>('/', {
+    photoURL: `https://i.pravatar.cc/150?u=${contact.firstName}${contact.lastName}`,
+    ...contact,
+    registeredAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  })
+}
+
+export function updateContact(contact: Partial<ContactInfo> & { id: number }) {
+  return contacts.patch<Contact>(`/${contact.id}`, contact)
 }
 
 /**

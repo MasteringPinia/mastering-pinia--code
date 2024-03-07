@@ -21,7 +21,7 @@ export async function render(url: string, manifest: Record<string, string[]>) {
   // which we can then use to determine what files need to be preloaded for this
   // request.
   const preloadLinks = renderPreloadLinks(ctx.modules, manifest)
-  return [html, preloadLinks, serializePinia(pinia.state.value)]
+  return [html, preloadLinks, serializePinia(pinia.state.value)] as const
 }
 
 function renderPreloadLinks(modules: string[], manifest: Record<string, string[]>) {

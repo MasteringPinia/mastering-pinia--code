@@ -1,7 +1,8 @@
 import { createRouter as _createRouter, createWebHistory, useRouter, createMemoryHistory } from 'vue-router/auto'
 import { RouteNamedMap } from 'vue-router/auto/routes'
-import { Component, TransitionProps } from 'vue'
+import { Component, TransitionProps, computed } from 'vue'
 import { RouteRecordOverride } from './utils'
+import { useTestClient } from './.internal/utils/testing'
 
 const exerciseRoutesOverrides: Record<string, RouteRecordOverride | undefined> = {
   // TODO: automatic to all folders with some kind of plugin architecture
@@ -37,10 +38,38 @@ export function createRouter() {
 }
 
 export function useExerciseLinks() {
-  return useRouter()
+  const router = useRouter()
+  const exerciseLinks = router
     .getRoutes()
     .filter(route => route.meta.exerciseData?.index === null)
     .sort((a, b) => a.path.localeCompare(b.path))
+
+  if (typeof window === 'undefined') {
+    // computed just to look like the other return
+    return computed(() =>
+      exerciseLinks.map(link => ({
+        name: link.name,
+        path: router.resolve(link).path,
+        status: null,
+      })),
+    )
+  }
+
+  // can only be used in the browser
+  const { files } = useTestClient()
+
+  // this works because there is always a delay between the tests running and the first render
+  // otherwise it would create a hydration mismatch
+  return computed(() => {
+    return exerciseLinks.map(link => {
+      const test = files.value.find(file => file.name.includes(link.name as string))
+      return {
+        name: link.name,
+        path: router.resolve(link).path,
+        status: test ? test.result?.state : null,
+      }
+    })
+  })
 }
 
 // layout system
