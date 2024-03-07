@@ -77,7 +77,7 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
     { query, initialValue, cacheTime }: UseQueryOptionsWithDefaults<TResult>,
   ): UseDataFetchingQueryEntry<TResult, TError> {
     // ensure the data
-    console.log('⚙️ Ensuring entry', key)
+    // console.log('⚙️ Ensuring entry', key)
     // Consider the data fresh by default. Using 0 will also work, it depends on how you want to handle the cache
     let when = Date.now()
     if (!dataRegistry.has(key)) {
@@ -90,7 +90,7 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
 
     // we need to repopulate the entry registry separately from data and errors
     if (!queryEntriesRegistry.has(key)) {
-      console.log(`📝 Creating entry "${key} when: ${when}`)
+      // console.log(`📝 Creating entry "${key} when: ${when}`)
       const entry: UseDataFetchingQueryEntry<TResult, TError> = {
         data: () => dataRegistry.get(key) as TResult,
         error: () => errorRegistry.get(key) as TError,
@@ -99,7 +99,7 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
         async refresh(): Promise<TResult> {
           if (isExpired(entry.when, cacheTime)) {
             if (entry.when) {
-              console.log(`🗑️ "${String(key)}" expired ${entry.when} / ${cacheTime}`)
+              // console.log(`🗑️ "${String(key)}" expired ${entry.when} / ${cacheTime}`)
             }
             await (entry.pending?.refreshCall ?? entry.refetch())
           }
@@ -107,10 +107,10 @@ export const useDataFetchingStore = defineStore('6.8-data-fetching', () => {
           return entry.data()!
         },
         async refetch() {
-          console.log('🔄 refetching', key)
+          // console.log('🔄 refetching', key)
           // when if there an ongoing request
           if (entry.pending) {
-            console.log('  -> skipped!')
+            // console.log('  -> skipped!')
             return entry.pending.refreshCall
           }
           isFetchingRegistry.set(key, true)

@@ -168,14 +168,11 @@ describe('Data fetching', () => {
 
       await vi.runAllTimersAsync()
       expect(wrapper.text()).toContain('v1')
-      console.log(wrapper.vm.key)
       // @ts-ignore: error with vue-tsc???
       wrapper.vm.key = 'v2'
-      console.log(wrapper.vm.key)
       await nextTick()
       await vi.runAllTimersAsync()
       await vi.runAllTimersAsync()
-      console.log(wrapper.html())
       tipOnFail(() => {
         expect(query).toHaveBeenCalledTimes(2)
       }, 'Use the "toValue()" helper from vue to get the value of a ref/getter/plain value')
@@ -308,7 +305,6 @@ describe('Data fetching', () => {
         ...USE_QUERY_DEFAULTS,
       })
       const result = await entry.refresh().catch(e => e)
-      console.log(result)
       tipOnFail(() => {
         expect(result).toBeInstanceOf(Error)
       }, 'Make sure "refresh()" and "refetch()" throw errors **only** when manually called. You should still **catch** the errors when calling these within the store and useQuery() since the user cannot catch them.')
