@@ -6,6 +6,8 @@ import type { ExerciseModule } from './.internal/utils'
 import './.internal/utils/welcome'
 import { ClientOnly } from './components/.internal/ClientOnly'
 import { reviveState } from './pinia-state'
+import { PiniaDebounce } from '@pinia/plugin-debounce'
+import { debounce } from 'ts-debounce'
 
 // SSR requires a fresh app instance per request, therefore we export a function
 // that creates a fresh app instance. If using Vuex, we'd also be creating a
@@ -18,6 +20,7 @@ export function createApp() {
   app.component('ClientOnly', ClientOnly)
 
   const pinia = createPinia()
+  pinia.use(PiniaDebounce(debounce))
   // hydrate the state on client side
   if (!import.meta.env.SSR) {
     if (window.__PINIA_STATE__) {
@@ -41,5 +44,11 @@ export function createApp() {
 declare global {
   interface Window {
     __PINIA_STATE__?: string
+  }
+}
+
+declare module '@pinia/plugin-debounce' {
+  export interface Config {
+    Debounce: typeof debounce
   }
 }

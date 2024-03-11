@@ -27,12 +27,12 @@ export interface User {
   password: string
 }
 
-interface UserAuth {
+export interface UserCredentials {
   email: string
   password: string
 }
 
-export interface UserRegister extends Pick<User, 'email' | 'displayName'>, UserAuth {
+export interface UserRegister extends Pick<User, 'email' | 'displayName'>, UserCredentials {
   photoURL?: string
 }
 
@@ -57,7 +57,7 @@ export async function registerUser(user: UserRegister) {
 
 export const USER_KEY = 'mp_user'
 
-export async function login({ email, password }: UserAuth) {
+export async function login({ email, password }: UserCredentials) {
   const matchedUsers = await users.get<User[]>('/', {
     query: {
       email,
@@ -86,6 +86,21 @@ export async function login({ email, password }: UserAuth) {
   return user
 }
 
+export async function autoLogin() {
+  if (!Cookie.get(USER_KEY)) {
+    return null
+  }
+
+  // fake login, 100% unsafe
+  return users
+    .get<User[]>('/', {
+      query: {
+        email: Cookie.get(USER_KEY),
+      },
+    })
+    .then(users => users.at(0) || null)
+}
+
 export function logout() {
   Cookie.remove(USER_KEY)
   window.localStorage.removeItem(USER_KEY)
@@ -98,6 +113,7 @@ export function logout() {
  */
 export const useCurrentUser = () =>
   useLocalStorage<Pick<User, 'displayName' | 'email' | 'id' | 'photoURL'>>(USER_KEY, null, {
+    initOnMounted: true,
     serializer: {
       read: v => {
         try {
