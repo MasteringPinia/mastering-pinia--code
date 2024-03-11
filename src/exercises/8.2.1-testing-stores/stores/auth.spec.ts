@@ -4,10 +4,10 @@
 
 import { createPinia, getActivePinia, setActivePinia } from 'pinia'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useAuthStore } from '../stores/auth'
+import { useAuthStore } from './auth'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-import { usePreferencesStore } from '../stores/preferences'
+import { usePreferencesStore } from './preferences'
 import { PiniaDebounce } from '@pinia/plugin-debounce'
 import { debounce } from 'ts-debounce'
 import { mount } from '@vue/test-utils'
