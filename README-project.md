@@ -19,13 +19,13 @@ You can update the platform (fetch new exercises and code updates) any time by r
 setup the exercises platform**:
 
 ```bash
-npx zx@7.2 https://gist.githubusercontent.com/posva/d19708c1da18d41d66ac7cec1a1e5557/raw/bootstrap.mjs
+npx zx@7.2 https://esm.is/mastering-pinia
 ```
 
 Or if you specified a folder name:
 
 ```bash
-npx zx@7.2 https://gist.githubusercontent.com/posva/d19708c1da18d41d66ac7cec1a1e5557/raw/bootstrap.mjs my-folder
+npx zx@7.2 https://esm.is/mastering-pinia my-folder
 ```
 
 After updating remember to install the dependencies again with `pnpm i`.
