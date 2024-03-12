@@ -120,6 +120,12 @@ export function useTestClient() {
             title: 'Test Server is back online',
             labelStyle: 'background: #a3e635; color: black;',
           })
+        } else {
+          showMessage('info', {
+            label: '✅',
+            title: 'Connected to Test Server',
+            labelStyle: 'background: #a3e635; color: black;',
+          })
         }
         hasWarnedError = false
         currentRetries = 0
@@ -325,8 +331,16 @@ export function useTestStatus() {
 
   const hasTests = computed(() => _hasTests(currentSpecFiles.value))
 
-  function rerun() {
-    return client.rpc.rerun(currentSpecFiles.value.map(i => i.filepath))
+  async function rerun() {
+    await client.waitForConnection()
+    // avoid error in the console
+    if (client.ws.readyState === WebSocket.CLOSING) {
+      setTimeout(() => rerun, 1000)
+      return
+    } else if (client.ws.readyState !== WebSocket.OPEN) {
+      await client.reconnect()
+    }
+    await client.rpc.rerun(currentSpecFiles.value.map(i => i.filepath))
   }
 
   let timesRan = 0
