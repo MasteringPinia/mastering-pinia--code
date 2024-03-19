@@ -50,7 +50,7 @@ describe('Solution', () => {
     // clean up once the tests are done
     server.close()
   })
-  // TODO: let the student add this
+
   beforeEach(() => {
     const pinia = createPinia()
     pinia.use(PiniaDebounce(debounce))
