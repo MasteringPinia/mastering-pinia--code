@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer'
 import path from 'node:path'
 import minimist from 'minimist'
 import { spawn, spawnSync } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 //
@@ -21,21 +22,30 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
   // Start local server
   console.log('Starting local server...')
-  const PORT = 5174
+  const PORT = 5176
+  console.log(`http://localhost:${PORT}/?hideTests`)
   const server = spawn('pnpm', ['run', 'dev:vite'], {
-    cwd: path.join(path.dirname(new URL(import.meta.url).pathname), '..'),
+    cwd: fileURLToPath(new URL('..', import.meta.url)),
     env: {
       ...process.env,
       PORT,
     },
   })
 
-  // let the server start
-  await sleep(1000)
+  process.on('exit', () => {
+    console.log('Killing local server...')
+    server.kill()
+  })
 
-  server.on('error', error => {
+  // let the server start
+  await sleep(2000)
+
+  server.stdin.on('data', data => {
+    console.log(`${data}`)
+  })
+  server.stderr.on('data', error => {
     console.error('Error starting local server')
-    console.error(error)
+    console.error(`${error}`)
     process.exit(1)
   })
 
