@@ -1,15 +1,15 @@
 import { mount } from '@vue/test-utils'
-import TestComponent from '../index.vue'
+import TestComponent from './index.vue'
 import { describe, it, expect, vi, type Mock, afterAll, afterEach, beforeAll } from 'vitest'
 import { TestingOptions, createTestingPinia } from '@pinia/testing'
 import { PiniaDebounce } from '@pinia/plugin-debounce'
 import { debounce } from 'ts-debounce'
-import { useAuthStore } from '../stores/auth'
+import { useAuthStore } from './stores/auth'
 import type { Store, StoreDefinition } from 'pinia'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 import { delay } from '@tests/mocks/server'
-import { usePreferencesStore } from '../stores/preferences'
+import { usePreferencesStore } from './stores/preferences'
 import { nextTick } from 'vue'
 
 describe('Mocking Stores', () => {
@@ -66,7 +66,7 @@ describe('Mocking Stores', () => {
   })
 
   it('displays the user displayName', async () => {
-    const { pinia, wrapper } = factory({
+    const { wrapper } = factory({
       initialState: {
         auth: {
           user: {
@@ -78,8 +78,8 @@ describe('Mocking Stores', () => {
         },
       },
     })
-    // force the testing pinia
-    const auth = useAuthStore(pinia)
+
+    const auth = useAuthStore()
     // @ts-expect-error: overwrite the displayName
     auth.displayName = 'Faked'
 
@@ -228,6 +228,8 @@ function mockedStore<TStoreDef extends () => unknown>(
         [K in keyof Actions]: Actions[K] extends (...args: infer Args) => infer ReturnT
           ? Mock<Args, ReturnT>
           : Actions[K]
+      } & {
+        [K in keyof Getters]: Getters[K] extends () => infer T ? T : never
       }
     >
   : ReturnType<TStoreDef> {

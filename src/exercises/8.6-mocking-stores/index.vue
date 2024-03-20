@@ -53,7 +53,7 @@ async function login() {
 </script>
 
 <template>
-  <h1>Unit Testing Stores</h1>
+  <h1>Mocking Stores</h1>
 
   <section class="grid grid-flow-row md:grid-cols-2 gap-x-2">
     <form class="flex flex-col" data-test="register-form" @submit.prevent="register">
