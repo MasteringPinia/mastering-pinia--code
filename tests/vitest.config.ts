@@ -3,9 +3,8 @@ import baseConfig from '../vite.config'
 
 // extract everything but test to avoid conflicts with exercises
 const {
-  // @ts-ignore:
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  test,
+  test: __test,
   ...viteConfig
 } = baseConfig
 

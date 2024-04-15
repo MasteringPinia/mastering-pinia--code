@@ -8,6 +8,9 @@ dependencies:
   '@exampledev/new.css':
     specifier: ^1.1.3
     version: 1.1.3
+  '@pinia/plugin-debounce':
+    specifier: ^1.0.1
+    version: 1.0.1
   '@vueuse/core':
     specifier: ^10.7.2
     version: 10.7.2(vue@3.4.15)
@@ -38,6 +41,9 @@ dependencies:
   pinia:
     specifier: ^2.1.7
     version: 2.1.7(typescript@5.2.2)(vue@3.4.15)
+  ts-debounce:
+    specifier: ^4.0.0
+    version: 4.0.0
   vue:
     specifier: ^3.4.15
     version: 3.4.15(typescript@5.2.2)
@@ -621,6 +627,10 @@ packages:
   /@open-draft/until@1.0.3:
     resolution: {integrity: sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==}
     dev: true
+
+  /@pinia/plugin-debounce@1.0.1:
+    resolution: {integrity: sha512-/ITYpdvEk8CvUWs/0zpI3eBQkSOoLI/hgTr+WaULxMHdKP9IWBEM+yY2+aqEMa0e48K4y+uVMFYCM9lcv8g/cQ==}
+    dev: false
 
   /@pkgjs/parseargs@0.11.0:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -5491,6 +5501,10 @@ packages:
     dependencies:
       typescript: 5.2.2
     dev: true
+
+  /ts-debounce@4.0.0:
+    resolution: {integrity: sha512-+1iDGY6NmOGidq7i7xZGA4cm8DAa6fqdYcvO5Z6yBevH++Bdo9Qt/mN0TzHUgcCcKv1gmh9+W5dHqz8pMWbCbg==}
+    dev: false
 
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
