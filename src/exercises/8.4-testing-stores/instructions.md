@@ -33,6 +33,6 @@ your solution**. The file `store/auth.spec.ts` is included in
 - Test that the `logout()` action clears the `store.user`
 - Test that the `login()` action sets the `store.user` with the returned user by the API (this must work without a
   running API server)
-- Automatically logs in the user if a Cookie named `mp_user` is found
+- Test that the stores automatically logs in the user if a Cookie named `mp_user` is found.
 - Make the last test pass by properly adding the _PiniaDebounce_ Pinia plugin, mocking the timers and mounting a
   component
