@@ -141,16 +141,21 @@ describe('Retry Actions Plugin', () => {
   })
 
   it('stops retrying if the retry function returns false', async () => {
+    const retry = vi.fn(() => false)
     const { spy, store } = factory({
-      retry: { retry: () => false },
+      retry: { retry },
     })
 
     spy.mockRejectedValue(new Error('nope'))
+    retry.mockReturnValueOnce(true)
+    retry.mockReturnValueOnce(false)
     expect(spy).toHaveBeenCalledTimes(0)
     store.action().catch(() => {})
     await vi.runOnlyPendingTimersAsync()
     await vi.runOnlyPendingTimersAsync()
-    expect(spy).toHaveBeenCalledTimes(1)
+    await vi.runOnlyPendingTimersAsync()
+    await vi.runOnlyPendingTimersAsync()
+    expect(spy).toHaveBeenCalledTimes(2)
   })
 
   it('waits for the delay before retrying', async () => {

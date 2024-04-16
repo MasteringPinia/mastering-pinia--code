@@ -29,6 +29,7 @@ const isModalOpened = ref(false)
       >
       <template v-if="route.meta.exerciseData.index">
         |
+        <!-- @vue-ignore -->
         <RouterLink active-class="" exact-active-class="" :to="{ name: route.meta.exerciseData.index }">
           Back to index page
         </RouterLink>

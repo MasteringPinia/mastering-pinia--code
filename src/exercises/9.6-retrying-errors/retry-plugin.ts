@@ -70,9 +70,7 @@ export const PiniaRetryPlugin: PiniaPlugin = ({ store, options: { retry } }) => 
       }
 
       const shouldRetry =
-        typeof options.retry === 'number'
-          ? options.retry > entry.retryCount
-          : options.retry(entry.retryCount, error)
+        typeof options.retry === 'number' ? options.retry > entry.retryCount : options.retry(entry.retryCount, error)
 
       if (shouldRetry) {
         const delay = typeof options.delay === 'function' ? options.delay(entry.retryCount) : options.delay
@@ -81,7 +79,9 @@ export const PiniaRetryPlugin: PiniaPlugin = ({ store, options: { retry } }) => 
           isInternalCall = true
           Promise.resolve(store[name](...args)).catch(process.env.NODE_ENV !== 'test' ? console.error : () => {})
           isInternalCall = false
-          entry.retryCount++
+          if (entry) {
+            entry.retryCount++
+          }
         }, delay)
       } else {
         // remove the entry if we are not going to retry
