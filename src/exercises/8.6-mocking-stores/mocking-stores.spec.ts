@@ -10,7 +10,7 @@ import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 import { delay } from '@tests/mocks/server'
 import { usePreferencesStore } from './stores/preferences'
-import { nextTick } from 'vue'
+import { ComputedRef, nextTick } from 'vue'
 
 describe('Mocking Stores', () => {
   function factory(options: TestingOptions = {}) {
@@ -79,8 +79,7 @@ describe('Mocking Stores', () => {
       },
     })
 
-    const auth = useAuthStore()
-    // @ts-expect-error: overwrite the displayName
+    const auth = mockedStore(useAuthStore)
     auth.displayName = 'Faked'
 
     await nextTick()
@@ -223,15 +222,15 @@ function mockedStore<TStoreDef extends () => unknown>(
   ? Store<
       Id,
       State,
-      Getters,
+      Record<string, never>,
       {
         [K in keyof Actions]: Actions[K] extends (...args: infer Args) => infer ReturnT
           ? Mock<Args, ReturnT>
           : Actions[K]
-      } & {
-        [K in keyof Getters]: Getters[K] extends () => infer T ? T : never
       }
-    >
+    > & {
+      [K in keyof Getters]: Getters[K] extends ComputedRef<infer T> ? T : never
+    }
   : ReturnType<TStoreDef> {
   return useStore() as any
 }

@@ -147,8 +147,6 @@ function mockedStore<TStoreDef extends () => unknown>(
         [K in keyof Actions]: Actions[K] extends (...args: infer Args) => infer ReturnT
           ? Mock<Args, ReturnT>
           : Actions[K]
-      } & {
-        [K in keyof Getters]: Getters[K] extends () => infer T ? T : never
       }
     >
   : ReturnType<TStoreDef> {
