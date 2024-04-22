@@ -24,7 +24,27 @@ Everything you need to implement will happen in the `retry-plugin.ts` file. **Yo
 - Accept a `delay` function that receives the number of attempts (starts at 0)
 - Type the `retry` option in the `declare module 'pinia'` block
 - Make sure that any successful attempt resets the number of retries and the delay
-- Manually invoking the action while it's retrying should cancel the retrying mechanism and reset the retry count
+- Manually invoking the action **while it's still retrying** should reset the retry count
+  <details>
+  <summary>💡 Tip: <i>Differentiate <b>how</b> is the action called</i></summary>
+
+  The difficult part is to differentiate between the action being called by the user and the action being called by the retry plugin. Since the `$onAction()` gets called synchronously when the action is called, we can use a flag to differentiate between the two cases. Set the flag to `true` when the action is called (_retried_) within the plugin:
+
+  ```ts
+  let isInternalCall = false
+  store.$onAction((action, context) => {
+    if (!isInternalCall) {
+      // reset the retry count
+    }
+    // ...
+    isInternalCall = true
+    store[name](...args) // or similar 😁
+    isInternalCall = false
+    // ...
+  });
+  ```
+
+  </details>
 
 ## 💪 Extra goals
 
