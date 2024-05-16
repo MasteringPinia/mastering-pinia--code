@@ -78,6 +78,8 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
       // Wait for the content to load
       await page.waitForSelector('#app')
+      await page.waitForNetworkIdle()
+      await sleep(waitTime)
 
       // Set the viewport size
       await page.setViewport({ width: 1200, height: 1000 })
@@ -85,13 +87,11 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
       // Capture the screenshot
       console.log(`Capturing light mode screenshot...`)
       await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' }])
-      await sleep(waitTime)
       const screenshotLight = path.join(folderPath, '.internal/screenshot-light.png')
       await page.screenshot({ path: screenshotLight })
 
       console.log(`Capturing dark mode screenshot...`)
       await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'dark' }])
-      await sleep(waitTime)
       const screenshotDark = path.join(folderPath, '.internal/screenshot-dark.png')
       await page.screenshot({ path: screenshotDark })
 
