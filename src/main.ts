@@ -8,6 +8,7 @@ import { ClientOnly } from './components/.internal/ClientOnly'
 import { reviveState } from './pinia-state'
 import { PiniaDebounce } from '@pinia/plugin-debounce'
 import { debounce } from 'ts-debounce'
+import { GlobalEvents } from 'vue-global-events'
 
 // SSR requires a fresh app instance per request, therefore we export a function
 // that creates a fresh app instance. If using Vuex, we'd also be creating a
@@ -18,6 +19,7 @@ export function createApp() {
     !import.meta.env.SSR && new URLSearchParams(location.search).has('no-ssr') ? _createApp(App) : createSSRApp(App)
 
   app.component('ClientOnly', ClientOnly)
+  app.component('GlobalEvents', GlobalEvents)
 
   const pinia = createPinia()
   pinia.use(PiniaDebounce(debounce))

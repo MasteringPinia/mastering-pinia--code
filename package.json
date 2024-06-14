@@ -31,12 +31,14 @@
     "animate.css": "^4.1.1",
     "devalue": "^4.3.2",
     "fuse.js": "^6.6.2",
+    "idb": "^8.0.0",
     "js-cookie": "^3.0.5",
     "lodash-es": "^4.17.21",
     "mande": "^2.0.8",
     "pinia": "^2.1.7",
     "ts-debounce": "^4.0.0",
     "vue": "^3.4.15",
+    "vue-global-events": "^3.0.1",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {

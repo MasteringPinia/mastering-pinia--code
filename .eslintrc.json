@@ -26,10 +26,9 @@
   ],
   "rules": {
     "promise/param-names": "off",
+    "no-dupe-class-members":"off", // handled by TS
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "error"
-    ],
+    "@typescript-eslint/no-unused-vars": "error",
     // should probably be on by default...
     "no-redeclare": "off",
     "@typescript-eslint/no-redeclare": "error",
