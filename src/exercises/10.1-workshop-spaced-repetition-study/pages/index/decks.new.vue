@@ -12,8 +12,8 @@ const router = useRouter()
 const { error, mutate, isLoading } = useMutation(() => decks.create(name.value), {
   onSuccess(data) {
     router.push({
-      name: '/10.1-workshop-spaced-repetition-study//decks.[id]',
-      params: { id: data.id },
+      name: '/10.1-workshop-spaced-repetition-study//decks.[deckId]',
+      params: { deckId: data.id },
     })
   },
 })

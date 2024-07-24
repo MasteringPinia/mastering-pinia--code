@@ -17,7 +17,7 @@ export function useMutation<Fn extends (...args: unknown[]) => unknown>(
       const res = await (fn(...args) as ReturnType<Fn>)
       data.value = res
       error.value = null
-      options.onSuccess?.(res)
+      await options.onSuccess?.(res)
     } catch (err) {
       error.value = err
       options.onError?.(err)

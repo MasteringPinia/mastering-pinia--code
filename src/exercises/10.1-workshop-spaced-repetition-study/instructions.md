@@ -13,6 +13,10 @@ Write your notes or questions here.
 
 ## 🎯 Goals
 
+- Display the deck list
+  - fetch with store
+  - handle SSR
+  - refresh on mount
 - Deck creation
   - Create the page that handles the creation
   - Create the method in the decks store

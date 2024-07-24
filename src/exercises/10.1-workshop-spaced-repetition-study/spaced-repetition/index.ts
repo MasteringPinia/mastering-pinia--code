@@ -29,7 +29,7 @@ export class SpacedRepetitionDeck {
   constructor(public id: string) {}
 
   static settings = {
-    easeFactorStart: 2.1,
+    easeFactorStart: 1.5,
     /**
      * The minimum value the ease factor can be. This avoids repeating a card too much
      */
@@ -70,7 +70,7 @@ export class SpacedRepetitionDeck {
         // subsequent correct reviews reviews
         card.interval *= card.ease
       }
-      card.repetitions += 1
+      card.repetitions += 1 * DAY_IN_MS
     } else {
       // incorrect answer
       // make them due again until they get it right
