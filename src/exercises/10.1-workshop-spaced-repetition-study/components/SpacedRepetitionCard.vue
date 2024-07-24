@@ -19,8 +19,6 @@ function review(grade: Grade) {
   emit('review', grade)
   reviewed.value = grade
 }
-
-// TODO: add keyboard shortcuts
 </script>
 
 <template>

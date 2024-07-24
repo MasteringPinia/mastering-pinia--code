@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { useMutation } from '@ex/10.1-workshop-spaced-repetition-study/composables/mutation'
-import { useDecksStore } from '@ex/10.1-workshop-spaced-repetition-study/stores/decks'
+import { useMutation } from '../../composables/mutation'
+import { useDecksStore } from '../../stores/decks'
 import { onServerPrefetch, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router/auto'
-import ErrorDisplay from '@ex/10.1-workshop-spaced-repetition-study/components/ErrorDisplay.vue'
+import ErrorDisplay from '../../components/ErrorDisplay.vue'
 
 const router = useRouter()
 const route = useRoute('/10.1-workshop-spaced-repetition-study//decks.[deckId].add-card')

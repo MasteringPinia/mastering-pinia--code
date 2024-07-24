@@ -4,7 +4,7 @@ import SpacedRepetitionCard from '../../components/SpacedRepetitionCard.vue'
 import { Grade } from '../../spaced-repetition'
 import { useDecksStore } from '../../stores/decks'
 import { onMounted, shallowRef, onServerPrefetch, watch } from 'vue'
-import { ReviewSession, useDeckReviewStore } from '@ex/10.1-workshop-spaced-repetition-study/stores/deck-review'
+import { ReviewSession, useDeckReviewStore } from '../../stores/deck-review'
 
 const router = useRouter()
 const route = useRoute('/10.1-workshop-spaced-repetition-study//review.[deckId]')

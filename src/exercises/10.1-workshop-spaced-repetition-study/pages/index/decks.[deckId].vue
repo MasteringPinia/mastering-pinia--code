@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useDeckReviewStore } from '@ex/10.1-workshop-spaced-repetition-study/stores/deck-review'
-import { useDecksStore } from '@ex/10.1-workshop-spaced-repetition-study/stores/decks'
+import { useDeckReviewStore } from '../../stores/deck-review'
+import { useDecksStore } from '../../stores/decks'
 import { onMounted, onServerPrefetch } from 'vue'
 import { useRouter, useRoute } from 'vue-router/auto'
 

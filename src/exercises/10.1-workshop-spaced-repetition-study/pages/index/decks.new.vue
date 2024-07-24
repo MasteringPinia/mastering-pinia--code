@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { useDecksStore } from '@ex/10.1-workshop-spaced-repetition-study/stores/decks'
+import { useDecksStore } from '../../stores/decks'
 import { ref } from 'vue'
-import ErrorDisplay from '@ex/10.1-workshop-spaced-repetition-study/components/ErrorDisplay.vue'
+import ErrorDisplay from '../../components/ErrorDisplay.vue'
 import { useRouter } from 'vue-router/auto'
-import { useMutation } from '@ex/10.1-workshop-spaced-repetition-study/composables/mutation'
+import { useMutation } from '../../composables/mutation'
 
 const decks = useDecksStore()
 const name = ref('')
