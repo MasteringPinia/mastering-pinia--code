@@ -31,7 +31,6 @@
     "animate.css": "^4.1.1",
     "devalue": "^4.3.2",
     "fuse.js": "^6.6.2",
-    "idb": "^8.0.0",
     "js-cookie": "^3.0.5",
     "lodash-es": "^4.17.21",
     "mande": "^2.0.8",
