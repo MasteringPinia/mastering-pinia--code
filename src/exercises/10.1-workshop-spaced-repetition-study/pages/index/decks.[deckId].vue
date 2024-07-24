@@ -1,9 +1,11 @@
 <script lang="ts" setup>
+import { useDeckReviewStore } from '@ex/10.1-workshop-spaced-repetition-study/stores/deck-review'
 import { useDecksStore } from '@ex/10.1-workshop-spaced-repetition-study/stores/decks'
 import { onMounted, onServerPrefetch } from 'vue'
 import { useRouter, useRoute } from 'vue-router/auto'
 
 const decks = useDecksStore()
+const deckReview = useDeckReviewStore()
 const route = useRoute('/10.1-workshop-spaced-repetition-study//decks.[deckId]')
 onServerPrefetch(() => decks.fetchDeck(route.params.deckId))
 onMounted(() => decks.fetchDeck(route.params.deckId))
@@ -45,7 +47,9 @@ async function deleteDeck() {
           params: { deckId: route.params.deckId },
         }"
       >
-        <button>Start review</button>
+        <button :disabled="deckReview.canReview(decks.currentDeck) !== 'yes'">
+          Start review ({{ deckReview.getReviewCards(decks.currentDeck).length }})
+        </button>
       </RouterLink>
 
       <button @click="deleteDeck()">❌ Delete</button>
@@ -64,6 +68,13 @@ async function deleteDeck() {
           }}</time>
           | 📚 <strong>{{ card.repetitions }}</strong> times | ease factor:
           <code>{{ card.ease }}</code>
+          <RouterLink
+            :to="{
+              name: '/10.1-workshop-spaced-repetition-study//cards.[cardId].edit',
+              params: { cardId: card.id },
+            }"
+            >Edit</RouterLink
+          >
         </li>
       </ul>
     </details>

@@ -1,89 +1,56 @@
 <script lang="ts" setup>
+import { useRouter, useRoute } from 'vue-router/auto'
 import SpacedRepetitionCard from '../../components/SpacedRepetitionCard.vue'
-import { Grade, SpacedRepetitionDeck, createCard } from '../../spaced-repetition'
+import { Grade } from '../../spaced-repetition'
 import { useDecksStore } from '../../stores/decks'
-import { onMounted, shallowRef, ref, computed } from 'vue'
+import { onMounted, shallowRef, onServerPrefetch, watch } from 'vue'
+import { ReviewSession, useDeckReviewStore } from '@ex/10.1-workshop-spaced-repetition-study/stores/deck-review'
 
-const sm = new SpacedRepetitionDeck(crypto.randomUUID())
+const router = useRouter()
+const route = useRoute('/10.1-workshop-spaced-repetition-study//review.[deckId]')
 
 const decks = useDecksStore()
-onMounted(async () => {
-  await decks.getDecks()
-  const db = await decks.ensureDB()
-  await db
-    .put('decks', {
-      id: crypto.randomUUID(),
-      name: 'My test deck',
-      creationDate: new Date(),
-    })
-    .catch(err => {
-      console.error('cannot create the deck', err)
-    })
+const deckReviews = useDeckReviewStore()
+onServerPrefetch(() => decks.fetchDeck(route.params.deckId))
+onMounted(() => decks.fetchDeck(route.params.deckId))
 
-  const deck = await db.getFromIndex('decks', 'byName', 'My test deck')
-  if (!deck) {
-    console.error('deck not found')
-    return
-  }
+const reviewQueue = shallowRef<ReviewSession>()
 
-  await db
-    .put('cards', {
-      ...createCard('What is the capital of France?', 'Paris'),
-      deckId: deck.id,
-    })
-    .catch(err => {
-      console.error('cannot create the card', err)
-    })
-})
+watch(
+  () => decks.currentDeck,
+  deck => {
+    if (deck) {
+      // avoid reviewing a deck that cannot be reviewed (deleted, finished, no due cards, etc)
+      if (deckReviews.canReview(deck) !== 'yes') {
+        router.replace({ name: '/10.1-workshop-spaced-repetition-study//decks' })
+        return
+      }
 
-sm.addCard('What is the capital of France?', 'Paris')
-sm.addCard('What is the capital of Spain?', 'Madrid')
-sm.addCard('What is the capital of Germany?', 'Berlin')
-sm.addCard('What is the capital of Italy?', 'Rome')
-sm.addCard('What is the capital of the United Kingdom?', 'London')
-sm.addCard('What is the capital of the United States?', 'Washington, D.C.')
-sm.addCard('What is the capital of Canada?', 'Ottawa')
-sm.addCard('What is the capital of Australia?', 'Canberra')
-sm.addCard('What is the capital of Japan?', 'Tokyo')
-sm.addCard('What is the capital of South Korea?', 'Seoul')
-sm.addCard('What is the capital of China?', 'Beijing')
-sm.addCard('What is the capital of Russia?', 'Moscow')
-sm.addCard('What is the capital of Brazil?', 'Brasília')
-sm.addCard('What is the capital of Argentina?', 'Buenos Aires')
-sm.addCard('What is the capital of South Africa?', 'Pretoria')
-sm.addCard('What is the capital of Nigeria?', 'Abuja')
-sm.addCard('What is the capital of India?', 'New Delhi')
-sm.addCard('What is the capital of Indonesia?', 'Jakarta')
-sm.addCard('What is the capital of Mexico?', 'Mexico City')
-sm.addCard('What is the capital of Egypt?', 'Cairo')
-sm.addCard('What is the capital of Turkey?', 'Ankara')
-sm.addCard('What is the capital of Saudi Arabia?', 'Riyadh')
+      reviewQueue.value = deckReviews.start(deck)
+    }
+  },
+  { immediate: true },
+)
 
-const cards = shallowRef(sm.getDueCards())
-const currentCardIndex = ref(0)
-const currentCard = computed(() => cards.value[currentCardIndex.value])
-function nextCard() {
-  currentCardIndex.value++
-  // get remaining cards
-  if (currentCardIndex.value >= cards.value.length) {
-    cards.value = sm.getDueCards()
-    currentCardIndex.value = 0
-  }
-}
+// TODO: confetti
 </script>
 
 <template>
   <h1>Reviewing deck</h1>
 
-  <SpacedRepetitionCard
-    v-if="currentCard"
-    :key="currentCard.id"
-    :card="currentCard"
-    @pass="nextCard()"
-    @review="(grade: Grade) => sm.reviewCard(currentCard.id, grade)"
-  />
+  <ClientOnly>
+    <p>You have {{ reviewQueue?.cards.length }} cards to review.</p>
 
-  <template v-else>
-    <p>You finished reviewing them.</p>
-  </template>
+    <SpacedRepetitionCard
+      v-if="reviewQueue?.cards[0]"
+      :key="reviewQueue.id + ' ' + reviewQueue.reviewCount"
+      :card="reviewQueue.cards[0]"
+      @review="(grade: Grade) => deckReviews.reviewCard(reviewQueue!.deckId, reviewQueue!.cards[0].id, grade)"
+    />
+
+    <template v-else>
+      <p>🎉 You finished reviewing them!</p>
+      <RouterLink :to="{ name: '/10.1-workshop-spaced-repetition-study//decks' }"> Go back to your decks </RouterLink>
+    </template>
+  </ClientOnly>
 </template>

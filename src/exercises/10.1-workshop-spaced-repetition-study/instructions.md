@@ -27,7 +27,7 @@ Write your notes or questions here.
 
 _Extra goals might not have any tests and can be done later or skipped._
 
-- do...
+- If a deck is not found, an ongoing review should be cancelled
 
 TODO:
 

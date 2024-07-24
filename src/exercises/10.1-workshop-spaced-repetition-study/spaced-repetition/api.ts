@@ -90,8 +90,13 @@ export async function createCard(deckId: string, question: string, answer: strin
   return cards.post<Card>(card)
 }
 
+export async function getCardById(cardId: string): Promise<Card | null> {
+  const card = await cards.get<Card>(cardId).catch(() => null)
+  return card && CardSchema.parse(card)
+}
+
 export async function updateCard(cardId: string, card: Partial<Card>) {
-  return cards.patch<Card>(cardId, card)
+  return cards.patch<Card>(cardId, CardSchema.partial().parse(card))
 }
 
 export async function deleteCard(cardId: string) {
@@ -99,7 +104,7 @@ export async function deleteCard(cardId: string) {
 }
 
 export async function updateDeck(deckId: string, deck: Partial<Deck>) {
-  return decks.patch<Deck>(deckId, deck)
+  return decks.patch<Deck>(deckId, DeckSchema.partial().parse(deck))
 }
 
 export async function getDeckList() {
@@ -278,5 +283,18 @@ export async function seedDecksAndCards() {
   for (const card of uniqueCards) {
     await delay(TIME)
     await createCard(chineseDeck.id, card.word, `${card.pinyin} | ${card.translation}`)
+  }
+}
+
+export async function resetAllDueDates(deckId?: string) {
+  const TIME = 50
+  const deckList = deckId ? [await getDeckWithCards(deckId)] : await getDeckList()
+
+  const now = new Date().getTime() // get around the Date.now() mocking
+  for (const deck of deckList) {
+    for (const card of deck.cards) {
+      await delay(TIME)
+      await updateCard(card.id, { dueDate: now })
+    }
   }
 }

@@ -1,11 +1,14 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import {
+  Card,
   createCard,
   createDeck,
   DeckWithCards,
   deleteDeck,
+  getCardById,
   getDeckList,
   getDeckWithCards,
+  updateCard as _updateCard,
 } from '../spaced-repetition/api'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router/auto'
@@ -57,12 +60,25 @@ export const useDecksStore = defineStore('10-srs-decks', () => {
     }
   }
 
+  const editingCard = ref<Card | null>(null)
+  async function fetchCard(id: string) {
+    editingCard.value = await getCardById(id)
+  }
+  async function updateCardEdit() {
+    if (!editingCard.value) return
+    await _updateCard(editingCard.value.id, editingCard.value)
+  }
+
   return {
     create,
     addCard,
     remove,
     fetchList,
     collection,
+
+    fetchCard,
+    editingCard,
+    updateCardEdit,
 
     currentDeck,
     fetchDeck,

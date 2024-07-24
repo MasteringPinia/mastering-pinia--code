@@ -1,26 +1,25 @@
-import { Card } from './api'
-
-export function createCard(deckId: string, question: string, answer: string): Card {
-  return {
-    id: crypto.randomUUID(),
-    deckId,
-    question,
-    answer,
-    interval: 1,
-    repetitions: 0,
-    ease: SpacedRepetitionDeck.settings.easeFactorStart,
-    dueDate: Date.now(),
-  }
-}
+import { type Card } from './api'
 
 export enum Grade {
+  /**
+   * Repeat the card again during this session
+   */
   Again = 0,
+  /**
+   * The card was difficult to remember. It will be repeated more often in the future
+   */
   Hard = 1,
+  /**
+   * The card was easy to remember. It will be repeated less often in the future
+   */
   Good = 2,
+  /**
+   * The card was very easy to remember. It will be repeated even less often in the future
+   */
   Easy = 3,
 }
 
-const GRADE_MAX = Grade.Easy
+export const GRADE_MAX = Grade.Easy
 const DAY_IN_MS = 1000 * 60 * 60 * 24
 
 export class SpacedRepetitionDeck {
@@ -36,16 +35,9 @@ export class SpacedRepetitionDeck {
     easeFactorMinimum: 1.1,
   }
 
-  addCard(card: Card): Card
-  addCard(question: string, answer: string): Card
-  addCard(questionOrCard: string | Card, answer?: string): Card {
-    if (typeof questionOrCard === 'string') {
-      const newCard = createCard(this.id, questionOrCard, answer!)
-      this.cards.set(newCard.id, newCard)
-      return newCard
-    }
-    this.cards.set(questionOrCard.id, questionOrCard)
-    return questionOrCard
+  addCard(card: Card): Card {
+    this.cards.set(card.id, card)
+    return card
   }
 
   getCard(id: string) {
