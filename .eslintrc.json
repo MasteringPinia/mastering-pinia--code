@@ -26,12 +26,14 @@
   ],
   "rules": {
     "promise/param-names": "off",
-    "no-dupe-class-members":"off", // handled by TS
+    "no-dupe-class-members": "off", // handled by TS
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",
     // should probably be on by default...
     "no-redeclare": "off",
     "@typescript-eslint/no-redeclare": "error",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": "error",
     // make the workshop easier, it's not mainly about TS
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-comment": "off",

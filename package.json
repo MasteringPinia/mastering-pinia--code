@@ -39,7 +39,8 @@
     "ts-debounce": "^4.0.0",
     "vue": "^3.4.15",
     "vue-global-events": "^3.0.1",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@pinia/testing": "^0.1.3",

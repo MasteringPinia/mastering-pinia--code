@@ -1,35 +1,9 @@
-export interface Card {
-  id: string
+import { Card } from './api'
 
-  /**
-   * The front of the card, the question.
-   */
-  question: string
-  /**
-   * The back of the card, the answer.
-   */
-  answer: string
-  /**
-   * Time in ms to wait before reviewing the card again.
-   */
-  interval: number
-  /**
-   * The number of times in a row the card has been correctly reviewed.
-   */
-  repetitions: number
-  /**
-   * The ease factor determines how much the interval should increase after each review.
-   */
-  ease: number
-  /**
-   * The date when the card is due for review in ms, created with `Date.now()`.
-   */
-  dueDate: number
-}
-
-export function createCard(question: string, answer: string) {
+export function createCard(deckId: string, question: string, answer: string): Card {
   return {
     id: crypto.randomUUID(),
+    deckId,
     question,
     answer,
     interval: 1,
@@ -50,8 +24,9 @@ const GRADE_MAX = Grade.Easy
 const DAY_IN_MS = 1000 * 60 * 60 * 24
 
 export class SpacedRepetitionDeck {
-  id = crypto.randomUUID()
   private cards = new Map<string, Card>()
+
+  constructor(public id: string) {}
 
   static settings = {
     easeFactorStart: 2.1,
@@ -65,7 +40,7 @@ export class SpacedRepetitionDeck {
   addCard(question: string, answer: string): Card
   addCard(questionOrCard: string | Card, answer?: string): Card {
     if (typeof questionOrCard === 'string') {
-      const newCard = createCard(questionOrCard, answer!)
+      const newCard = createCard(this.id, questionOrCard, answer!)
       this.cards.set(newCard.id, newCard)
       return newCard
     }
