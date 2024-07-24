@@ -5,11 +5,11 @@ import { onMounted, onServerPrefetch } from 'vue'
 import { useRouter, useRoute } from 'vue-router/auto'
 
 const decks = useDecksStore()
-const deckReview = useDeckReviewStore()
 const route = useRoute('/10.1-workshop-spaced-repetition-study//decks.[deckId]')
 onServerPrefetch(() => decks.fetchDeck(route.params.deckId))
 onMounted(() => decks.fetchDeck(route.params.deckId))
 
+const deckReview = useDeckReviewStore()
 const router = useRouter()
 async function deleteDeck() {
   if (!confirm('Are you sure?')) return

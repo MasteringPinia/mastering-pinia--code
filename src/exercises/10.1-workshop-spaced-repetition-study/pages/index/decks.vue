@@ -21,6 +21,8 @@ onMounted(decks.fetchList)
         >
           Review "{{ review.deckName }}"
         </RouterLink>
+        -
+        <a href="#" role="button" @click="deckReviews.abortSession(review.id)">Drop session</a>
       </li>
     </ul>
   </section>

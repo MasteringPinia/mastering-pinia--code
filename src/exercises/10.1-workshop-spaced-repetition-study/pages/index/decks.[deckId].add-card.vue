@@ -47,7 +47,7 @@ const { error, mutate, isLoading } = useMutation(
         <input id="answer" v-model="answer" required autocomplete="off" type="text" />
       </fieldset>
 
-      <button :disabled="isLoading">Create Deck</button>
+      <button :disabled="isLoading">Add card</button>
     </form>
 
     <hr />

@@ -3,6 +3,7 @@ import { Card, CardSchema, DeckWithCards, updateCard } from '../spaced-repetitio
 import { useLocalStorage } from '@vueuse/core'
 import { z } from 'zod'
 import { Grade, GRADE_MAX } from '../spaced-repetition'
+import { watch } from 'vue'
 
 export const ReviewSessionSchema = z.object({
   id: z.string().uuid(),
@@ -17,6 +18,9 @@ export const ReviewSessionSchema = z.object({
    */
   deckId: z.string().uuid(),
 
+  /**
+   * Deck name.
+   */
   deckName: z.string(),
 
   /**
@@ -52,6 +56,20 @@ export const useDeckReviewStore = defineStore('10-srs-deck-review', () => {
     },
     initOnMounted: true,
   })
+
+  // strip off empty reviews
+  watch(
+    ongoingReviews,
+    reviews => {
+      for (let i = 0; i < reviews.length; i++) {
+        const review = reviews[i]
+        if (review.cards.length === 0) {
+          reviews.splice(i, 1)
+        }
+      }
+    },
+    { deep: true },
+  )
 
   /**
    * Checks if a deck can be reviewed. If it can't, it returns a string with the reason. Otherwise it returns 'yes'
@@ -113,6 +131,13 @@ export const useDeckReviewStore = defineStore('10-srs-deck-review', () => {
     return review
   }
 
+  function abortSession(sessionId: string) {
+    const index = ongoingReviews.value.findIndex(review => review.id === sessionId)
+    if (index >= 0) {
+      ongoingReviews.value.splice(index, 1)
+    }
+  }
+
   function reviewCard(deckId: string, cardId: string, grade: Grade) {
     const review = ongoingReviews.value.find(review => review.deckId === deckId)
     if (!review) {
@@ -125,57 +150,31 @@ export const useDeckReviewStore = defineStore('10-srs-deck-review', () => {
     }
 
     // create a copy to modify
-    const card = { ...review.cards[cardIndex]! }
-
-    if (grade >= Grade.Good) {
-      // correct answer
-      if (card.repetitions === 0) {
-        card.interval = 1 * 1000 * 60 * 60 * 24 // 1 day
-      } else if (card.repetitions === 1) {
-        // card has been correctly reviewed twice in a row
-        card.interval = 4 * 1000 * 60 * 60 * 24 // 4 days
-      } else {
-        // subsequent correct reviews reviews
-        card.interval *= card.ease
-      }
-      card.repetitions += 1
-    } else {
-      // incorrect answer
-      // make them due again until they get it right
-      card.interval = 0
-      card.repetitions = 0
-    }
-
-    // Update ease factor
-    card.ease += 0.1 - (GRADE_MAX - grade) * (0.08 + (GRADE_MAX - grade) * 0.02)
-    card.ease = Math.max(card.ease, 1.1)
-
-    // Set next due date
-    const now = Date.now()
-    card.dueDate = now + card.interval
+    const card = gradeCard(review.cards[cardIndex]!, grade)
 
     updateCard(card.id, card).catch(err => {
       console.error('Failed to update card', err)
-      // TODO: handle possible error
+      // TODO: we could handle the different errors:
+      // - card not found, remove it from review if it exists
     })
 
     review.reviewCount++
     // remove the old card
     review.cards.splice(cardIndex, 1)
     // if the card is still due, add it back randomly
-    if (card.dueDate <= now) {
+    if (card.dueDate <= Date.now()) {
       review.cards.splice(Math.round(Math.random() * review.cards.length), 0, card)
-    }
-
-    if (review.cards.length === 0) {
-      const reviewIndex = ongoingReviews.value.findIndex(r => r.id === review.id)
-      if (reviewIndex > -1) {
-        ongoingReviews.value.splice(reviewIndex, 1)
-      }
     }
   }
 
-  return { start, ongoingReviews, canReview, getReviewCards, reviewCard }
+  return {
+    start,
+    abortSession,
+    ongoingReviews,
+    canReview,
+    getReviewCards,
+    reviewCard,
+  }
 })
 
 if (import.meta.hot) {
@@ -188,4 +187,37 @@ function shuffle<T>(array: T[]) {
     ;[array[i], array[j]] = [array[j], array[i]]
   }
   return array
+}
+
+function gradeCard(originalCard: Card, grade: Grade) {
+  const card = { ...originalCard }
+
+  if (grade >= Grade.Good) {
+    // correct answer
+    if (card.repetitions === 0) {
+      card.interval = 1 * 1000 * 60 * 60 * 24 // 1 day
+    } else if (card.repetitions === 1) {
+      // card has been correctly reviewed twice in a row
+      card.interval = 4 * 1000 * 60 * 60 * 24 // 4 days
+    } else {
+      // subsequent correct reviews reviews
+      card.interval *= card.ease
+    }
+    card.repetitions += 1
+  } else {
+    // incorrect answer
+    // make them due again until they get it right
+    card.interval = 0
+    card.repetitions = 0
+  }
+
+  // Update ease factor
+  card.ease += 0.1 - (GRADE_MAX - grade) * (0.08 + (GRADE_MAX - grade) * 0.02)
+  card.ease = Math.max(card.ease, 1.1)
+
+  // Set next due date
+  const now = Date.now()
+  card.dueDate = now + card.interval
+
+  return card
 }

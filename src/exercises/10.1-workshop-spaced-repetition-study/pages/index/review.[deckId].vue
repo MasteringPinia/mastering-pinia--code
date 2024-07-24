@@ -31,8 +31,6 @@ watch(
   },
   { immediate: true },
 )
-
-// TODO: confetti
 </script>
 
 <template>
