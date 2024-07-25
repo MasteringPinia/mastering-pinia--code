@@ -23,7 +23,6 @@ export const useDecksStore = defineStore('10-srs-decks', () => {
   }
 
   const collection = ref<DeckWithCards[]>([])
-
   async function fetchList() {
     collection.value = await getDeckList()
   }
