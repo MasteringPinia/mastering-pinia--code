@@ -224,9 +224,7 @@ function mockedStore<TStoreDef extends () => unknown>(
       State,
       Record<string, never>,
       {
-        [K in keyof Actions]: Actions[K] extends (...args: infer Args) => infer ReturnT
-          ? Mock<Args, ReturnT>
-          : Actions[K]
+        [K in keyof Actions]: Actions[K] extends (...args: any[]) => unknown ? Mock<Actions[K]> : Actions[K]
       }
     > & {
       [K in keyof Getters]: Getters[K] extends ComputedRef<infer T> ? T : never

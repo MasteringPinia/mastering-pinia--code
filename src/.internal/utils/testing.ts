@@ -1,14 +1,22 @@
 import { createClient, getTests, hasTests as _hasTests, VitestClient } from '@vitest/ws-client'
 import { type WebSocketStatus } from '@vueuse/core'
-import { ResolvedConfig, TaskState, File as TestFile, Test, Task, Suite, UserConsoleLog } from 'vitest'
+import {
+  TaskState,
+  RunnerTestFile,
+  RunnerTestCase,
+  RunnerTask,
+  RunnerTestSuite,
+  UserConsoleLog,
+  SerializedConfig,
+} from 'vitest'
 import { computed, onScopeDispose, reactive, Ref, ref, shallowRef, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { LogMessageTypeEnum, showMessage } from './logging'
 import { $settings } from './settings'
 
 // NOTE: not exported by vitest
-export type TaskCustom = Exclude<Task, Test | TestFile | Suite>
-export type TestResult = Test | TaskCustom
+export type TaskCustom = Exclude<RunnerTask, RunnerTestCase | RunnerTestFile | RunnerTestSuite>
+export type TestResult = RunnerTestCase | TaskCustom
 
 export const PORT = '51205'
 export const HOST = import.meta.env.SSR ? 'localhost' : [location.hostname, PORT].filter(Boolean).join(':')
@@ -24,7 +32,7 @@ const MESSAGE_MARKER = '__MESSAGE'
 
 export type RunState = 'idle' | 'running'
 
-function handleTestConsoleLogs(log: UserConsoleLog, task?: Task | Test) {
+function handleTestConsoleLogs(log: UserConsoleLog, task?: RunnerTask | RunnerTestCase) {
   // there could be other logs from the user
   const messageMarkerPos = log.content.indexOf(MESSAGE_MARKER)
   if (log.type === 'stdout' && messageMarkerPos > -1) {
@@ -65,11 +73,11 @@ function handleTestConsoleLogs(log: UserConsoleLog, task?: Task | Test) {
 
 interface UseTestClientReturn {
   client: VitestClient
-  config: Ref<ResolvedConfig>
+  config: Ref<SerializedConfig>
   status: Ref<WebSocketStatus>
   testRunState: Ref<RunState>
   runId: Ref<number>
-  files: Ref<TestFile[]>
+  files: Ref<RunnerTestFile[]>
 }
 
 let memoizedClientReturn: UseTestClientReturn | undefined
@@ -98,7 +106,7 @@ export function useTestClient() {
     },
   })
 
-  const config = shallowRef<ResolvedConfig>({} as any)
+  const config = shallowRef<SerializedConfig>({} as any)
   const status = ref<WebSocketStatus>('CONNECTING')
   const testRunState: Ref<RunState> = ref('idle')
 
@@ -223,21 +231,21 @@ const testStatusTextMap: Record<TaskState, string> = {
   todo: 'Has yet to be implemented',
 }
 
-export function getStatusIcon(test: Test | TaskCustom) {
+export function getStatusIcon(test: RunnerTestCase | TaskCustom) {
   return testGroupStatusIconMap[test.result?.state || test.mode] || '❓'
 }
 
-export function getTestStatusIcon(test: Test | TaskCustom) {
+export function getTestStatusIcon(test: RunnerTestCase | TaskCustom) {
   return testStatusIconMap[test.result?.state || test.mode] || '❓'
 }
 
-export function getTestStatusText(test: Test | TaskCustom) {
+export function getTestStatusText(test: RunnerTestCase | TaskCustom) {
   return testStatusTextMap[test.result?.state || test.mode] || 'Idle'
 }
 
 export interface TestSuiteInfo {
   name: string
-  tests: Array<Test | TaskCustom>
+  tests: Array<RunnerTestCase | TaskCustom>
   state: string
   stateText: string
 }
@@ -246,7 +254,7 @@ export interface TestSuiteInfo {
  * Groups tests per suite. Only takes into account nested suites.
  * @param tests - The tests to group
  */
-function groupTestPerSuite(tests: Array<Test | TaskCustom>) {
+function groupTestPerSuite(tests: Array<RunnerTestCase | TaskCustom>) {
   return tests.reduce((acc, test) => {
     // they have multiple levels of nesting describe > describe
     if (test.suite?.suite?.name) {

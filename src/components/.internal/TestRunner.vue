@@ -24,8 +24,8 @@ const isEnlarged = useLocalStorage('_test-runner:isEnlarged', false)
 // details can be expanded by default
 const isPassingExpanded = useLocalStorage('_test-runner:isPassingExpanded', false)
 
-function saveExpandSetting(event: Event & { target: HTMLDetailsElement }) {
-  isPassingExpanded.value = event.target.open
+function saveExpandSetting(event: ToggleEvent) {
+  isPassingExpanded.value = (event.target as HTMLDetailsElement)?.open ?? !isPassingExpanded.value
 }
 
 const route = useRoute()
