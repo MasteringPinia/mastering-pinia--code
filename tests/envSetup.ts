@@ -1,6 +1,6 @@
 import { VueRouterMock, createRouterMock, injectRouterMock } from 'vue-router-mock'
 import { config } from '@vue/test-utils'
-import { SpyInstance, beforeEach, vi } from 'vitest'
+import { type Mock, beforeEach, vi } from 'vitest'
 import { ClientOnly } from '@/components/.internal/ClientOnly'
 import { createPinia, setActivePinia } from 'pinia'
 
@@ -15,7 +15,7 @@ const router = createRouterMock({
   runInComponentGuards: true,
   spy: {
     create: vi.fn,
-    reset: (spy: SpyInstance) => spy.mockClear(),
+    reset: (spy: Mock) => spy.mockClear(),
   },
 })
 // allows calling getRouter()

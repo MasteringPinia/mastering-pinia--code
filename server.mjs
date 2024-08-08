@@ -8,6 +8,7 @@ import open from 'open'
 const isTest = process.env.VITEST
 
 const PORT = process.env.PORT || 5173
+const BASE = process.env.BASE || '/'
 
 export async function createServer(
   root = process.cwd(),
@@ -19,7 +20,7 @@ export async function createServer(
 
   const indexProd = isProd ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8') : ''
 
-  const manifest = isProd ? JSON.parse(fs.readFileSync(resolve('dist/client/ssr-manifest.json'), 'utf-8')) : {}
+  const manifest = isProd ? JSON.parse(fs.readFileSync(resolve('dist/client/.vite/ssr-manifest.json'), 'utf-8')) : {}
 
   const app = express()
 
@@ -28,10 +29,9 @@ export async function createServer(
    */
   let vite = null
   if (!isProd) {
-    vite = await (
-      await import('vite')
-    ).createServer({
-      // base: '/',
+    const { createServer: createViteServer } = await import('vite')
+    vite = await createViteServer({
+      base: BASE,
       root,
       clearScreen: false,
       logLevel: isTest ? 'error' : 'info',
@@ -48,17 +48,13 @@ export async function createServer(
     app.use(vite.middlewares)
   } else {
     app.use((await import('compression')).default())
-    app.use(
-      '/',
-      (await import('serve-static')).default(resolve('dist/client'), {
-        index: false,
-      }),
-    )
+    const sirv = (await import('sirv')).default
+    app.use(BASE, sirv('./dist/client', { extensions: [] }))
   }
 
   app.use('*', async (req, res) => {
     try {
-      const url = req.originalUrl
+      const url = req.originalUrl.replace(BASE, '')
 
       let template, render
       // vite is always there in dev
@@ -90,9 +86,9 @@ export async function createServer(
             `</script>`,
         )
 
-      res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+      res.status(200).set({ 'Content-Type': 'text/html' }).send(html)
     } catch (e) {
-      vite && vite.ssrFixStacktrace(e)
+      vite?.ssrFixStacktrace(e)
       const debugURL = new URL(req.originalUrl, `http://localhost:${PORT}`)
       debugURL.searchParams.set('no-ssr', '')
       res

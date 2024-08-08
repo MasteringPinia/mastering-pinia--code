@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import TestComponent from '../pages/index/todo-list-2.vue'
-import { describe, it, expect, vi, beforeEach, afterEach, SpyInstance } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from 'vitest'
 import { isRef, toRef, toRefs, toRaw } from 'vue'
 import { setActivePinia, storeToRefs } from 'pinia'
 import { tipOnFail } from '@tests/utils'
@@ -36,9 +36,9 @@ describe('broken stores', () => {
     it('do we need that many toRef(s)/storeToRefs?', async () => {
       mount(TestComponent)
       const totalCalls =
-        (toRef as unknown as SpyInstance).mock.calls.length +
-        (toRefs as unknown as SpyInstance).mock.calls.length +
-        (storeToRefs as unknown as SpyInstance).mock.calls.length
+        (toRef as unknown as Mock).mock.calls.length +
+        (toRefs as unknown as Mock).mock.calls.length +
+        (storeToRefs as unknown as Mock).mock.calls.length
       tipOnFail(() => {
         expect(totalCalls).toBe(1)
       }, "You don't need more than one of these functions to destructure the store. You can use `toRef()`, `toRefs()`, or `storeToRefs()`.")

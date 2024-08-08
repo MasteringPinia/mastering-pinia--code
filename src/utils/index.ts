@@ -1,13 +1,10 @@
 import { useIntervalFn } from '@vueuse/core'
-import { MandeError } from 'mande'
-import { MaybeRefOrGetter, ref, toValue } from 'vue'
-import { RouteRecordRaw } from 'vue-router'
+import type { MandeError } from 'mande'
+import { type MaybeRefOrGetter, ref, toValue } from 'vue'
 
 export function isMandeError<T = any>(error: any): error is MandeError<T> {
   return 'response' in error
 }
-
-export type RouteRecordOverride = Omit<RouteRecordRaw, 'path' | 'name' | 'component' | 'components' | 'redirect'>
 
 /**
  * Formats a time in ms to a string, rounded to the nearest unit.

@@ -8,6 +8,10 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 
 export default defineConfig({
+  ssr: {
+    noExternal: ['vue-router'],
+  },
+
   plugins: [
     VueRouter({
       pathParser: {

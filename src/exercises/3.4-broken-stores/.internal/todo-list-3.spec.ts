@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import TestComponent from '../pages/index/todo-list-3.vue'
-import { describe, it, expect, vi, beforeEach, afterEach, SpyInstance } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from 'vitest'
 import { isRef, toRef, toRefs, toRaw, watch, isReactive } from 'vue'
 import { isComputed, showMessage, tipOnFail } from '@tests/utils'
 import { useTimeAgo } from '@vueuse/core'
@@ -43,7 +43,7 @@ describe('broken stores', () => {
       }, 'Did you just remove the `useTimeAgo()` 🙃?')
 
       tipOnFail(() => {
-        expect(isComputed((useTimeAgo as unknown as SpyInstance).mock.lastCall!.at(0))).toBe(false)
+        expect(isComputed((useTimeAgo as unknown as Mock).mock.lastCall!.at(0))).toBe(false)
         expect(useTimeAgo).toHaveBeenCalledWith(expect.any(Function), expect.objectContaining({}))
       }, 'You can avoid passing a `computed()` to `useTimeAgo()` by passing a simple getter function.')
 
@@ -70,7 +70,7 @@ describe('broken stores', () => {
       expect(watch).toHaveBeenCalled()
 
       tipOnFail(() => {
-        const watched = (watch as unknown as SpyInstance).mock.lastCall!.at(0)
+        const watched = (watch as unknown as Mock).mock.lastCall!.at(0)
         expect(watched).toBeDefined()
         expect(isRef(watched)).toBe(false)
       }, 'You seem to be passing `list` directly to `watch()`. This version only works if you add `{ deep: true }` to the watcher options. For the test to pass, use the function version.')
@@ -84,7 +84,7 @@ describe('broken stores', () => {
       }, 'You can pass a function to `watch()` instead of watching the whole store.')
 
       tipOnFail(() => {
-        const watched = (watch as unknown as SpyInstance).mock.lastCall!.at(0)()
+        const watched = (watch as unknown as Mock).mock.lastCall!.at(0)()
         expect(isReactive(watched)).toBe(true)
         expect(watched).toBeInstanceOf(Array)
       }, 'You only need to watch the array of todos.')

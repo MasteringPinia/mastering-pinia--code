@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
-import { onBeforeRouteUpdate } from 'vue-router'
-import { useRouter, useRoute } from 'vue-router'
+import { onBeforeRouteUpdate , useRouter, useRoute } from 'vue-router'
 import { useArtGalleryStore } from './stores/art-gallery'
 
 const route = useRoute()

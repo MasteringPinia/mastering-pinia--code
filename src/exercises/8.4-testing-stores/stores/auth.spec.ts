@@ -113,14 +113,14 @@ describe('Solution', () => {
   it('can login the user', async () => {
     const auth = useAuthStore()
     await auth.login({ email: 'a', password: 'a' })
-    expect(auth.user).toContain({ email: 'a' })
+    expect(auth.user).toMatchObject({ email: 'a' })
   })
 
   it('automatically logins if a cookie exists', async () => {
     Cookies.set('mp_user', 'a')
     const auth = useAuthStore()
     await vi.runOnlyPendingTimersAsync()
-    expect(auth.user).toContain({ email: 'a' })
+    expect(auth.user).toMatchObject({ email: 'a' })
   })
 
   // it doesn't fail because we are not actually using the plugin since there is no app
