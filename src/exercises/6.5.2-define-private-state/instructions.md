@@ -5,11 +5,10 @@
   <img src="./.internal/screenshot-light.png">
 </picture>
 
-In the next few exercises, we are going to implement some custom _defineStore()_.
-We will start with `definePrivateState()`,
-then do `definePrivateStore()`, and `defineReadonlyState()` functions. These exercises can feel **particularly challenging** if
-done in TypeScript. Feel free to use some of the _forbidden_ `as any`, or `@ts-ignore` to make _the yellow/red lines go
-away_.
+In the next few exercises, we are going to implement some custom _defineStore()_. We will start with
+`definePrivateState()`, then do `definePrivateStore()`, and `defineReadonlyState()` functions. These exercises can feel
+**particularly challenging** if done in TypeScript. Feel free to use some of the _forbidden_ `as any`, or `@ts-ignore`
+to make _the yellow/red lines go away_.
 
 ## 📝 Your Notes
 
@@ -60,7 +59,7 @@ what we are trying to achieve and to test out things in the browser.
   <details>
   <summary>💡 <img class="tip-logo" src="/logo-ts.svg" alt="TypeScript"> Tip: <i>Arguments</i></summary>
 
-  `definePrivateState()` should accept 3 generics. One used by each argument. This doesn't mean it should just be:
+  `definePrivateState()` should accept 3 generics. One used by each argument. **This doesn't mean it should just be**:
 
   ```ts
   definePrivateState<
@@ -145,6 +144,33 @@ what we are trying to achieve and to test out things in the browser.
   ) {
     // ... hiding the rest of the solution
     setup(privateStore.$state) // ✅ No error!
+  }
+  ```
+
+  </details>
+
+  <details>
+  <summary>💡 <img class="tip-logo" src="/logo-ts.svg" alt="TypeScript"> Tip: <code>UnwrapRef</code></summary>
+
+  In Vue, `ref()` and `reactive()` _unwrap_ nested refs. This means that if you have a ref inside a reactive object,
+  you, don't need to write `.value` to access it. This is used by Pinia to make things more convenient but it can be a
+  bit tricky to type. You might need to use `UnwrapRef` to get the actual type of the `PrivateState` that exists in
+  `store.$state`.
+
+  ```ts
+  export function definePrivateState<
+    Id,
+    // we are aligning with the type of the 2nd argument
+    PrivateState extends StateTree,
+    SetupReturn,
+  >(
+    id: Id,
+    // 👉 Here the type PrivateState is closer to what we need
+    privateStateFn: () => PrivateState,
+    // 👉 And we can use it directly here
+    setup: (privateSTate: UnwrapRef<PrivateState>) => SetupReturn,
+  ) {
+    // ... hiding the rest of the solution
   }
   ```
 

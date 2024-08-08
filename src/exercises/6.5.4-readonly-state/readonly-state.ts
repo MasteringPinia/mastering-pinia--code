@@ -2,13 +2,13 @@
 // to work on the Type Safety part
 /* eslint @typescript-eslint/no-explicit-any:0 */
 import { StateTree, defineStore } from 'pinia'
-import { ComputedRef, computed } from 'vue'
+import { ComputedRef, UnwrapRef, computed } from 'vue'
 
 export function defineReadonlyState<
   Id extends string,
   PrivateState extends StateTree, // TODO: add tip about this
   SS, // TODO: tip
->(id: Id, privateStateFn: () => PrivateState, setup: (privateSTate: PrivateState) => SS) {
+>(id: Id, privateStateFn: () => PrivateState, setup: (privateSTate: UnwrapRef<PrivateState>) => SS) {
   const usePrivateStore = defineStore(id + '_private', {
     state: privateStateFn,
   })
@@ -18,7 +18,7 @@ export function defineReadonlyState<
     const result = setup(privateStore.$state)
 
     const privateStateAsGetters: {
-      [K in keyof PrivateState]: ComputedRef<PrivateState[K]>
+      [K in keyof UnwrapRef<PrivateState>]: ComputedRef<UnwrapRef<PrivateState>[K]>
       // NOTE: this one is a bit harder to get typed correctly as we fill the object afterwards
     } = {} as any
 
