@@ -50,7 +50,7 @@ export function tipOnFailCaught(fn: () => unknown, ...messageTips: unknown[]): P
           // to add the void return type
         })
     }
-  } catch (e) {
+  } catch (_error) {
     // ignore error
   }
 }

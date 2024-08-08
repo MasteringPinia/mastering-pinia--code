@@ -3,8 +3,10 @@ import baseConfig from '../vite.config'
 
 // extract everything but test to avoid conflicts with exercises
 const {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // the test is used for some exercises
   test: __test,
+  // the ssr option creates injection issues in tests
+  ssr: __ssr,
   ...viteConfig
 } = baseConfig
 

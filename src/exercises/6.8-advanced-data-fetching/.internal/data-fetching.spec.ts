@@ -1,4 +1,4 @@
-import { mount, renderToString } from '@vue/test-utils'
+import { flushPromises, mount, renderToString } from '@vue/test-utils'
 import ContactList from '../index.vue'
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { FunctionalComponent, defineComponent, h, nextTick, ref, useSlots } from 'vue'
@@ -17,7 +17,7 @@ describe('Data fetching', () => {
     getRouter().addRoute({
       path: '/6.8-advanced-data-fetching/:id',
       name: '/6.8-advanced-data-fetching//[id]',
-      component: defineComponent({ setup: () => 'Dummy Route' }),
+      component: defineComponent({ render: () => 'Dummy Route' }),
     })
   })
   beforeEach(() => {
@@ -535,11 +535,13 @@ describe('Data fetching', () => {
         },
       })
 
-      await vi.runAllTimersAsync()
+      await flushPromises()
+
       await wrapper.find('input[type=search]').setValue('nothing')
-      await vi.runAllTimersAsync()
+      await flushPromises()
+
       await wrapper.find('input[type=search]').setValue('')
-      await vi.runAllTimersAsync()
+      await flushPromises()
 
       // all contacts
       expect(wrapper.findAll('li')).toHaveLength(5)
@@ -552,7 +554,8 @@ describe('Data fetching', () => {
         },
       })
 
-      await vi.runAllTimersAsync()
+      await flushPromises()
+
       await wrapper.find('input[type=search]').setValue('Eduardo')
       await vi.runAllTimersAsync()
 

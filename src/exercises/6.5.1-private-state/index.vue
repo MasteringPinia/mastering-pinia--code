@@ -58,7 +58,7 @@ function shouldFail() {
       photoURL: `https://i.pravatar.cc/150?u=john-doe`,
     }
     isFailingAsExpected.value = false
-  } catch (err) {
+  } catch (_error) {
     isFailingAsExpected.value = true
   }
 }

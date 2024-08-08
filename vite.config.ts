@@ -133,16 +133,6 @@ export default defineConfig({
     },
   },
 
-  optimizeDeps: {
-    exclude: [
-      // needed when we use vue-demi based libraries
-      // 'vue-demi',
-      // '@vueuse/shared',
-      // '@vueuse/core',
-      // 'pinia',
-    ],
-  },
-
   // config for vitest
   test: {
     environment: 'happy-dom',
