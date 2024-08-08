@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ContactCard from '../../ContactCard.vue'
 import { getContactById, updateContact as _updateContact } from '@/api/contacts'
-import { useRoute } from 'vue-router/auto'
+import { useRoute } from 'vue-router'
 import { useQuery } from '../../use-query'
 import { useMutation } from '../../use-mutation'
 

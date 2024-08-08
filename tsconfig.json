@@ -16,9 +16,6 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "types": [
-      "vite/client"
-    ],
     "paths": {
       "@tests/*": [
         "tests/*"

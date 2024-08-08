@@ -1,17 +1,10 @@
 import { computed, nextTick } from 'vue'
-import {
-  type LocationQueryRaw,
-  type LocationQueryValueRaw,
-  useRoute,
-  useRouter,
-} from 'vue-router/auto'
+import { type LocationQueryRaw, type LocationQueryValueRaw, useRoute, useRouter } from 'vue-router'
 
 // exported to ensure the same value is used across the app
 export let pendingQuery: null | undefined | LocationQueryRaw
 
-export function useRouteQuery<
-  T extends LocationQueryValueRaw | LocationQueryValueRaw[] = string,
->(
+export function useRouteQuery<T extends LocationQueryValueRaw | LocationQueryValueRaw[] = string>(
   name: string,
   {
     // consider them as strings by default

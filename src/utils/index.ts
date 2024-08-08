@@ -1,7 +1,7 @@
 import { useIntervalFn } from '@vueuse/core'
 import { MandeError } from 'mande'
 import { MaybeRefOrGetter, ref, toValue } from 'vue'
-import { RouteRecordRaw } from 'vue-router/auto'
+import { RouteRecordRaw } from 'vue-router'
 
 export function isMandeError<T = any>(error: any): error is MandeError<T> {
   return 'response' in error

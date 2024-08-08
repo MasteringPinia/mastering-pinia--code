@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRoute } from 'vue-router/auto'
+import { useRoute } from 'vue-router'
 import { openFile } from '@/.internal/utils/files'
 import InstructionsModal from './InstructionsModal.vue'
 

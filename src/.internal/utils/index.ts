@@ -1,6 +1,6 @@
 import { Pinia } from 'pinia'
 import { App, onScopeDispose } from 'vue'
-import { useRouter, Router, NavigationHookAfter } from 'vue-router/auto'
+import { useRouter, Router, NavigationHookAfter } from 'vue-router'
 
 /**
  * The `install` function is called with application globals.

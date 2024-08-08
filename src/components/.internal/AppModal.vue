@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router/auto'
+import { useRoute } from 'vue-router'
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void

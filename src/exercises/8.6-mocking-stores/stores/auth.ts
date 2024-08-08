@@ -60,7 +60,6 @@ export const useAuthStore = defineStore(
       // this should use an external module to authenticate
       // ...
       user.value = await apiLogin(credentials)
-      console.log('got ', user.value)
     }
 
     async function logout() {

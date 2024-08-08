@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Component, computed, defineAsyncComponent, nextTick, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router/auto'
+import { useRoute } from 'vue-router'
 import { openFile } from '@/.internal/utils/files'
 
 const emit = defineEmits<{

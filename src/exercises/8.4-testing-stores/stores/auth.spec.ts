@@ -141,7 +141,7 @@ describe('Solution', () => {
       anonymizeName: false,
     }
     // we don't even need to to add anything to it
-    mount(defineComponent({ template: '' }), {
+    mount(defineComponent({ template: '<p></p>' }), {
       global: {
         plugins: [getActivePinia()!],
       },

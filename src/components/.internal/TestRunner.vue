@@ -3,7 +3,7 @@ import { onAfterEach } from '@/.internal/utils'
 import { useTestStatus, getTestStatusIcon, getTestStatusText } from '@/.internal/utils/testing'
 import { useLocalStorage } from '@vueuse/core'
 import { computed } from 'vue'
-import { useRoute } from 'vue-router/auto'
+import { useRoute } from 'vue-router'
 
 const {
   rerun,

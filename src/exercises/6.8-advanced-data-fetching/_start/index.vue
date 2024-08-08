@@ -2,7 +2,7 @@
 import { getAllContacts } from '@/api/contacts'
 import { useFuse } from '@vueuse/integrations/useFuse'
 import { useQuery } from './use-query'
-import { useRouter, useRoute } from 'vue-router/auto'
+import { useRouter, useRoute } from 'vue-router'
 import { watchDebounced } from '@vueuse/core'
 import { useRouteQuery } from '@vueuse/router'
 

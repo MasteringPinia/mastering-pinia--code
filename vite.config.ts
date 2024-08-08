@@ -66,12 +66,12 @@ export default defineConfig({
       },
     }),
     Components({
-      types: [
-        {
-          from: 'vue-router/auto',
-          names: ['RouterLink', 'RouterView'],
-        },
-      ],
+      // types: [
+      //   {
+      //     from: 'vue-router',
+      //     names: ['RouterLink', 'RouterView'],
+      //   },
+      // ],
       globs: ['src/exercises/*/.internal/components/*.vue', './src/components/.internal/*.vue'],
     }),
     AutoImport({

@@ -1,4 +1,4 @@
-import { useRoute } from 'vue-router/auto'
+import { useRoute } from 'vue-router'
 import { openFile } from '../utils/files'
 
 /**

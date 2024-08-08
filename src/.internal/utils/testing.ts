@@ -2,7 +2,7 @@ import { createClient, getTests, hasTests as _hasTests, VitestClient } from '@vi
 import { type WebSocketStatus } from '@vueuse/core'
 import { ResolvedConfig, TaskState, File as TestFile, Test, Task, Suite, UserConsoleLog } from 'vitest'
 import { computed, onScopeDispose, reactive, Ref, ref, shallowRef, watch } from 'vue'
-import { useRoute } from 'vue-router/auto'
+import { useRoute } from 'vue-router'
 import { LogMessageTypeEnum, showMessage } from './logging'
 import { $settings } from './settings'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router/auto'
+import { useRoute } from 'vue-router'
 import { useExerciseLinks } from '../router'
 
 const exerciseLinks = useExerciseLinks()

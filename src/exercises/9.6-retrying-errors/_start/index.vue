@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
-import { useRouter, useRoute } from 'vue-router/auto'
+import { useRouter, useRoute } from 'vue-router'
 import { useArtGalleryStore } from './stores/art-gallery'
 
 const route = useRoute()
@@ -34,9 +34,8 @@ const art = useArtGalleryStore()
       <input v-model.number="art.successRate" type="range" min="0" max="1" step="0.05" />
       <span>{{ (art.successRate * 100).toFixed(0) }}%</span>
     </label>
-  <p class="text-xs">Lower this to make requests fail.</p>
+    <p class="text-xs">Lower this to make requests fail.</p>
   </div>
-
 
   <hr />
 

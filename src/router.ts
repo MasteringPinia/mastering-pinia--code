@@ -1,5 +1,5 @@
-import { createRouter as _createRouter, createWebHistory, useRouter, createMemoryHistory } from 'vue-router/auto'
-import { RouteNamedMap } from 'vue-router/auto/routes'
+import { createRouter as _createRouter, createWebHistory, useRouter, createMemoryHistory } from 'vue-router'
+import { type RouteNamedMap, routes as _routes } from 'vue-router/auto-routes'
 import { Component, TransitionProps, computed } from 'vue'
 import { RouteRecordOverride } from './utils'
 import { useTestClient } from './.internal/utils/testing'
@@ -8,20 +8,22 @@ const exerciseRoutesOverrides: Record<string, RouteRecordOverride | undefined> =
   // TODO: automatic to all folders with some kind of plugin architecture
 }
 
+const routes = _routes || []
+
+console.log(routes)
+for (const route of routes) {
+  if (typeof route.name === 'string' && route.name in exerciseRoutesOverrides) {
+    const oldMeta = route.meta
+    const override = exerciseRoutesOverrides[route.name]!
+    Object.assign(route, override)
+    route.meta = { ...oldMeta, ...override.meta }
+  }
+}
+
 export function createRouter() {
   const router = _createRouter({
     history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
-    extendRoutes(routes) {
-      for (const route of routes) {
-        if (typeof route.name === 'string' && route.name in exerciseRoutesOverrides) {
-          const oldMeta = route.meta
-          const override = exerciseRoutesOverrides[route.name]!
-          Object.assign(route, override)
-          route.meta = { ...oldMeta, ...override.meta }
-        }
-      }
-      return routes
-    },
+    routes,
   })
 
   const resolvedLayouts = new Map<string, Component>()

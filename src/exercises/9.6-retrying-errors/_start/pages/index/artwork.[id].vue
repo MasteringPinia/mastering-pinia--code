@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { watch } from 'vue'
 import { useArtGalleryStore } from '../../stores/art-gallery'
-import { useRoute } from 'vue-router/auto'
+import { useRoute } from 'vue-router'
 
 const route = useRoute('/9.6-retrying-errors//artwork.[id]')
 

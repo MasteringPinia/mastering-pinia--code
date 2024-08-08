@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, toValue } from 'vue'
 import type { TransitionProps } from 'vue'
-import { useRoute, viewDepthKey } from 'vue-router/auto'
+import { useRoute, viewDepthKey } from 'vue-router'
 import AppFooter from '@/components/.internal/AppFooter.vue'
 import AppHeader from '@/components/.internal/AppHeader.vue'
 
@@ -22,7 +22,7 @@ const depth = inject(viewDepthKey, 0)
   <div class="relative grow">
     <RouterView v-slot="{ Component, route: resolvedRoute }">
       <Transition v-bind="transitionProps">
-        <div :key="resolvedRoute.matched[toValue(depth)].path || resolvedRoute.path" class="grow">
+        <div :key="resolvedRoute.matched[toValue(depth)]?.path || resolvedRoute.path" class="grow">
           <component :is="Component" />
         </div>
       </Transition>
