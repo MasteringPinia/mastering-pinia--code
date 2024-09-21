@@ -24,7 +24,8 @@ Write your notes or questions here.
 
 This exercise is a little bit different because we will be writing our own tests. **There is no automated test to check
 your solution**. The file `store/auth.spec.ts` is included in
-[the already running tests](http://localhost:51205/__vitest__/#/?file=-580791252).
+[the already running tests](http://localhost:51205/__vitest__/#/?file=-580791252). You will need to remove the `.todo`
+on `it.todo('...')` to ensure the test runs.
 
 - Setup pinia in the tests
 - Test that `store.displayName` returns the user's name

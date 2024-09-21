@@ -37,7 +37,7 @@ describe('Writing tests', () => {
     server.close()
   })
 
-  // Complete this test
+  // Complete this test and don't forget to remove the `.todo` too!
   it.todo('resets the user on logout', async () => {
     // ...
     const auth = useAuthStore()
