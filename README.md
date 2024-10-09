@@ -1,4 +1,4 @@
-# Mastering Pinia Exercises
+# [Mastering Pinia Exercises](https://masteringpinia.com/lessons)
 
 ![Hero Image](./public/hero-image.svg)
 
